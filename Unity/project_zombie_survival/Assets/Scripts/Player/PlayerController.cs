@@ -7,7 +7,7 @@ public class PlayerController : NetworkBehaviour {
 
     [SerializeField] private PlayerAttack attack;
     //[SerializeField] private Camera playerCamera;
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Rigidbody rb;
 
     [SerializeField] private float speed = 1.0f;
     private Vector3 input;
@@ -41,7 +41,7 @@ public class PlayerController : NetworkBehaviour {
             input.y = Input.GetAxis("Vertical");
             input.z = 0f;
 
-            rb.AddForce(input * speed, ForceMode2D.Impulse);
+            rb.AddForce(input * speed, ForceMode.Impulse);
 
             // Rotation
             // Grabs the current mouse position on the screen
@@ -52,7 +52,7 @@ public class PlayerController : NetworkBehaviour {
 
             //Set Camera in between player and cursor
             Vector2 lMidPoint = (mousePosToPlayer / 10.0f) + new Vector2(transform.position.x, transform.position.y);
-            Camera.main.transform.position = new Vector3(lMidPoint.x, lMidPoint.y, Camera.main.transform.position.z);
+            //Camera.main.transform.position = new Vector3(lMidPoint.x, lMidPoint.y, Camera.main.transform.position.z);
         }
     }
 }
