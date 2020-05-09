@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b25886f9f5a1c4e95e0fa75022060c, type: 3}
+  m_Name: BetaTomcat
+  m_EditorClassIdentifier: 
+  weaponName: Beta Tomcat
+  weaponDescription: A small pocket pistol popular for concealed carrying, the Tomcat
+    was a great deterrent against would-be robbers due to its size, making it easily
+    concealable. However, it lacks the stopping power for killing zombies en masse,
+    and thus it's better known as a desperate last-resort weapon.
+  weaponType: 1
+  ammoType: 1
+  ammoCapacity: 7
+  damage: 3.03
+  reloadSpeed: 5
+  firingSpeed: 0.5
+  accuracy: 25
+  range: 10
+  criticalChance: 0
+  skillRequired: 0
+  fireSound: {fileID: 8300000, guid: ef07dc3e234daab428405861d3daeb84, type: 3}
+  reloadSound: {fileID: 8300000, guid: 33c00e76037936f4190a78db7f0b23cf, type: 3}
