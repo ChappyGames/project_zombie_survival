@@ -10,49 +10,63 @@ public class PlayerController : NetworkBehaviour {
     [SerializeField] private Rigidbody rb;
 
     [SerializeField] private float speed = 1.0f;
+
+    [SerializeField] private Vector3 cameraPosOffset;
+    
     private Vector3 input;
+    private Vector3 inputVelocity;
 
-    private Vector2 mousePos;
-    private Vector2 mousePosToPlayer;
-
-    public Vector2 MousePos { get { return mousePos; } }
-    public Vector2 MousePosToPlayer { get { return mousePosToPlayer; } }
+    private Plane groundPlane;
 
     private void Awake() {
         
     }
 
     private void Start() {
-        
+
+        groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
 
     private void Update() {
+
         if (isLocalPlayer == true) {
+
             if (Input.GetMouseButton(0) == true) {
+                
                 attack.TryPerformAttack();
             }
+
+            // Get movement values
+            input = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+            inputVelocity = input * speed;
+
+            // Rotate to cursor
+            Ray lCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            float lRayLength;
+            Vector3 lPointToLook = Vector3.zero;
+
+            if (groundPlane.Raycast(lCameraRay, out lRayLength)) {
+
+                lPointToLook = lCameraRay.GetPoint(lRayLength);
+                Debug.DrawLine(lCameraRay.origin, lPointToLook, Color.blue);
+
+                transform.LookAt(new Vector3(lPointToLook.x, transform.position.y, lPointToLook.z));
+
+                /* TODO: If the cursor is too close to the player, the rotation will change wildly. Perhaps limit the amount of rotation that can be done in a single frame. */
+            }
+
+            // Position camera between player and cursor
+            Vector3 lPlayerToCursorDistance = lPointToLook - transform.position;
+
+            Camera.main.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z) + (lPlayerToCursorDistance * (attack.Range / 100f));
         }
     }
 
     private void FixedUpdate() {
         if (isLocalPlayer == true) {
-            // Movement
-            input.x = Input.GetAxis("Horizontal");
-            input.y = Input.GetAxis("Vertical");
-            input.z = 0f;
 
-            rb.AddForce(input * speed, ForceMode.Impulse);
-
-            // Rotation
-            // Grabs the current mouse position on the screen
-            mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z - Camera.main.transform.position.z));
-            mousePosToPlayer = mousePos - new Vector2(transform.position.x, transform.position.y);
-            // Rotates toward the mouse
-            transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2((mousePos.y - transform.position.y), (mousePos.x - transform.position.x)) * Mathf.Rad2Deg + 270f);
-
-            //Set Camera in between player and cursor
-            Vector2 lMidPoint = (mousePosToPlayer / 10.0f) + new Vector2(transform.position.x, transform.position.y);
-            //Camera.main.transform.position = new Vector3(lMidPoint.x, lMidPoint.y, Camera.main.transform.position.z);
+            // Apply movement
+            rb.velocity = inputVelocity;
         }
     }
 }
