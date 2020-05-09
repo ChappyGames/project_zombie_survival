@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Mirror;
+using Mirror;
 
-public class PlayerController : MonoBehaviour { //NetworkBehaviour {
+public class PlayerController : NetworkBehaviour {
 
     [SerializeField] private PlayerAttack attack;
     //[SerializeField] private Camera playerCamera;
@@ -27,15 +27,15 @@ public class PlayerController : MonoBehaviour { //NetworkBehaviour {
     }
 
     private void Update() {
-        //if (isLocalPlayer == true) {
+        if (isLocalPlayer == true) {
             if (Input.GetMouseButton(0) == true) {
                 attack.TryPerformAttack();
             }
-        //}
+        }
     }
 
     private void FixedUpdate() {
-        //if (isLocalPlayer == true) {
+        if (isLocalPlayer == true) {
             // Movement
             input.x = Input.GetAxis("Horizontal");
             input.y = Input.GetAxis("Vertical");
@@ -53,6 +53,6 @@ public class PlayerController : MonoBehaviour { //NetworkBehaviour {
             //Set Camera in between player and cursor
             Vector2 lMidPoint = (mousePosToPlayer / 10.0f) + new Vector2(transform.position.x, transform.position.y);
             Camera.main.transform.position = new Vector3(lMidPoint.x, lMidPoint.y, Camera.main.transform.position.z);
-        //}
+        }
     }
 }
