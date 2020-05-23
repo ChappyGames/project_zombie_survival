@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+/[Bb]uild/
+/[Bb]uilds/
 Unity/project_zombie_survival/[Ll]ibrary/
 Unity/project_zombie_survival/[Tt]emp/
 Unity/project_zombie_survival/[Oo]bj/

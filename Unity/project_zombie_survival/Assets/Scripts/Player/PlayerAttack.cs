@@ -55,17 +55,7 @@ public class PlayerAttack : MonoBehaviour {
 
     private void PerformAttack() {
 
-        Ray lCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        float lRayLength;
-        Vector3 lPointToLook = Vector3.zero;
-
-        if (groundPlane.Raycast(lCameraRay, out lRayLength)) {
-
-            lPointToLook = lCameraRay.GetPoint(lRayLength);
-            Debug.DrawLine(lCameraRay.origin, lPointToLook, Color.blue);
-        }
-
-        Vector3 lDir = lPointToLook;
+        Vector3 lDir = attackPoint.transform.forward;
 
         if (Mathf.Abs(lDir.x) > spreadFactor || Mathf.Abs(lDir.z) > spreadFactor) {
 
@@ -74,14 +64,14 @@ public class PlayerAttack : MonoBehaviour {
             lDir.z += Random.Range(-spreadFactor, spreadFactor);
         }
 
-        Debug.DrawRay(transform.position, new Vector3(lDir.x, 0f, lDir.z), Color.green, 1f, false);
+        Debug.DrawRay(attackPoint.transform.position, lDir, Color.green, 1f, false);
         Debug.Log("Firing");
 
         weaponAudioSource.clip = weapon.FireSound;
         weaponAudioSource.Play();
 
         RaycastHit lHit;
-        Physics.Raycast(new Vector3(attackPoint.transform.position.x, attackPoint.transform.position.y, attackPoint.transform.position.z), lDir, out lHit);
+        Physics.Raycast(attackPoint.transform.position, lDir, out lHit);
 
         if (lHit.collider != null) {
 
