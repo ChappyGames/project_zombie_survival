@@ -20,7 +20,7 @@ MonoBehaviour:
   weaponType: 1
   ammoType: 1
   ammoCapacity: 7
-  damage: 3.03
+  damage: 3
   reloadSpeed: 5
   firingSpeed: 0.5
   accuracy: 100

@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 2769288668829226301}
   - component: {fileID: 2769288668829226300}
   - component: {fileID: 2769288668829226303}
-  - component: {fileID: -3810150258360697490}
   - component: {fileID: -9071652869307406563}
   - component: {fileID: 130259632089454294}
   - component: {fileID: -8394522386267125108}
   - component: {fileID: 6732549142775123402}
-  - component: {fileID: 2690372549075787127}
+  - component: {fileID: 4307342521466320110}
+  - component: {fileID: 2787729438591552392}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -102,22 +102,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-3810150258360697490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2769288668829226302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  m_AssetId: 
-  hasSpawned: 0
 --- !u!114 &-9071652869307406563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  maxHealth: 0
   attack: {fileID: 130259632089454294}
   rb: {fileID: -8394522386267125108}
   speed: 5
@@ -148,6 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f09058c7d1036d40b4e966d96ebf81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   player: {fileID: -9071652869307406563}
   weaponAudioSource: {fileID: 6732549142775123402}
   weapon: {fileID: 11400000, guid: 6fd53a8a4ba0e45469145c505b50edfb, type: 2}
@@ -264,7 +251,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2690372549075787127
+--- !u!114 &4307342521466320110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2769288668829226302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
+--- !u!114 &2787729438591552392
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

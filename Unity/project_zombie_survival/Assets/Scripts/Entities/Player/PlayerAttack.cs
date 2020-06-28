@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerAttack : MonoBehaviour {
+public class PlayerAttack : NetworkBehaviour {
 
-    [SerializeField] private PlayerController player;
+    [SerializeField] private Player player;
     [SerializeField] private AudioSource weaponAudioSource;
 
     [SerializeField] private Weapon weapon;
@@ -13,7 +14,7 @@ public class PlayerAttack : MonoBehaviour {
     private int currentAmmo;
 
     public int MaxAmmo => weapon.AmmoCapacity;
-    public float Damage => weapon.Damage;
+    public int Damage => weapon.Damage;
     public float ReloadSpeed => weapon.ReloadSpeed;
     public float FiringSpeed => weapon.FiringSpeed;
     public float Accuracy => weapon.Accuracy;
@@ -25,6 +26,8 @@ public class PlayerAttack : MonoBehaviour {
     private float spreadFactor;
 
     private Plane groundPlane;
+
+    private Entity target;
 
     private void Start() {
 
@@ -67,8 +70,7 @@ public class PlayerAttack : MonoBehaviour {
         Debug.DrawRay(attackPoint.transform.position, lDir, Color.green, 1f, false);
         Debug.Log("Firing");
 
-        weaponAudioSource.clip = weapon.FireSound;
-        weaponAudioSource.Play();
+        RpcPlayWeaponAttackSound();
 
         RaycastHit lHit;
         Physics.Raycast(attackPoint.transform.position, lDir, out lHit);
@@ -76,9 +78,32 @@ public class PlayerAttack : MonoBehaviour {
         if (lHit.collider != null) {
 
             Debug.Log("We just shot something!");
+            Debug.Log("Authority: " + hasAuthority);
+            target = lHit.collider.gameObject.GetComponent<Entity>();
+
+
+            if (target != null) {
+                CmdPerformAttack(target.gameObject);
+            }
+
+            //lHit.collider.gameObject.GetComponent<Entity>()?.CmdModifyHealth(-Damage);
         }
 
         StartCoroutine(WaitForFireSpeed());
+    }
+
+    [Command]
+    private void CmdPerformAttack(GameObject aTarget) {
+        Debug.Log("Server is registering attack.");
+        Entity lEntity = aTarget.GetComponent<Entity>();
+        lEntity.ModifyHealth(-Damage);
+        lEntity.RpcModifyHealth(-Damage);
+        
+    }
+
+    private void RpcPlayWeaponAttackSound() {
+        weaponAudioSource.clip = weapon.FireSound;
+        weaponAudioSource.Play();
     }
 
     private IEnumerator WaitForFireSpeed() {

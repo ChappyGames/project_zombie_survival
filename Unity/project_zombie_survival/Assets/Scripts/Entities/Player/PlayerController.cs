@@ -1,72 +1,65 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 
 public class PlayerController : NetworkBehaviour {
 
-    [SerializeField] private PlayerAttack attack;
-    //[SerializeField] private Camera playerCamera;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private NetworkIdentity identity;
 
-    [SerializeField] private float speed = 1.0f;
-
-    [SerializeField] private Vector3 cameraPosOffset;
+    [SerializeField] private Player playerPrefab;
+    [SerializeField] private NetworkTransformChild playerTransform;
     
-    private Vector3 input;
-    private Vector3 inputVelocity;
+    [SerializeField] private Player player;
 
-    private Plane groundPlane;
+    public override void OnStartClient() {
+        base.OnStartClient();
 
-    private void Awake() {
-        
-    }
-
-    private void Start() {
-
-        groundPlane = new Plane(Vector3.up, Vector3.zero);
+        CmdSpawnPlayer();
     }
 
     private void Update() {
-
-        if (isLocalPlayer == true) {
-
-            if (Input.GetMouseButton(0) == true) {
-                
-                attack.TryPerformAttack();
-            }
-
-            // Get movement values
-            input = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-            inputVelocity = input * speed;
-
-            // Rotate to cursor
-            Ray lCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            float lRayLength;
-            Vector3 lPointToLook = Vector3.zero;
-
-            if (groundPlane.Raycast(lCameraRay, out lRayLength)) {
-
-                lPointToLook = lCameraRay.GetPoint(lRayLength);
-                Debug.DrawLine(lCameraRay.origin, lPointToLook, Color.blue);
-
-                transform.LookAt(new Vector3(lPointToLook.x, transform.position.y, lPointToLook.z));
-
-                /* TODO: If the cursor is too close to the player, the rotation will change wildly. Perhaps limit the amount of rotation that can be done in a single frame. */
-            }
-
-            // Position camera between player and cursor
-            Vector3 lPlayerToCursorDistance = lPointToLook - transform.position;
-
-            Camera.main.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z) + (lPlayerToCursorDistance * (attack.Range / 100f));
+        if (hasAuthority == true) {
+            player?.Process();
         }
     }
 
     private void FixedUpdate() {
-        if (isLocalPlayer == true) {
-
-            // Apply movement
-            rb.velocity = inputVelocity;
+        if (hasAuthority == true) {
+            player?.FixedProcess();
         }
+    }
+
+    private void OnPlayerDeath() {
+
+        Destroy(player);
+
+        if (hasAuthority == true) {
+            GameController.instance.respawnCanvas.gameObject.SetActive(true);
+        }
+    }
+
+    [Command]
+    public void CmdSpawnPlayer() {
+
+        player = GameObject.Instantiate(playerPrefab);
+        NetworkServer.Spawn(player.gameObject, base.connectionToClient);
+        //CmdRequestAuthority(player.GetComponent<NetworkIdentity>());
+        //playerTransform.target = player.transform;
+        player.transform.position = new Vector3(0, 1, 0);
+
+        RpcSpawnPlayer(player.gameObject);
+
+    }
+
+    [ClientRpc]
+    public void RpcSpawnPlayer(GameObject aObj) {
+        player = aObj.GetComponent<Player>();
+        player.Initialize(OnPlayerDeath);
+    }
+    public void CmdRequestAuthority(NetworkIdentity aOtherId) {
+        Debug.Log("Received request authority for " + gameObject.name);
+        aOtherId.AssignClientAuthority(connectionToClient);
     }
 }

@@ -24,7 +24,7 @@ public class Weapon : ScriptableObject {
     [SerializeField] private AmmoType ammoType;
     [SerializeField] private int ammoCapacity;
 
-    [SerializeField] private float damage;
+    [SerializeField] private int damage;
 
     [SerializeField] private float reloadSpeed;
     [SerializeField] private float firingSpeed;
@@ -42,7 +42,7 @@ public class Weapon : ScriptableObject {
     public AmmoType AmmoType { get { return ammoType; } }
 
     public int AmmoCapacity { get { return ammoCapacity; } }
-    public float Damage { get { return damage; } }
+    public int Damage { get { return damage; } }
 
     public float ReloadSpeed { get { return reloadSpeed; } }
     public float FiringSpeed { get { return firingSpeed; } }
