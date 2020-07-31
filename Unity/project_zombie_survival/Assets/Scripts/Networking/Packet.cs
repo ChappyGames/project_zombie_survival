@@ -7,14 +7,16 @@ using UnityEngine;
 /// Sent from server to client. 
 /// </summary>
 public enum ServerPackets {
-    WELCOME = 1
+    WELCOME = 1,
+    UDP_TEST = 2
 }
 
 /// <summary>
 /// Sent from client to server.
 /// </summary>
 public enum ClientPackets {
-    WELCOME_RECEIVED = 1
+    WELCOME_RECEIVED = 1,
+    UDP_TEST_RECEIVED = 2
 }
 
 public class Packet : IDisposable {

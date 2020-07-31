@@ -11,10 +11,12 @@ namespace GameServer {
 
         public int id;
         public TCP tcp;
+        public UDP udp;
 
         public Client(int aClientId) {
             id = aClientId;
             tcp = new TCP(id);
+            udp = new UDP(id);
         }
 
         public class TCP {
@@ -22,6 +24,7 @@ namespace GameServer {
 
             private readonly int id;
             private NetworkStream stream;
+            private Packet receivedData;
             private byte[] receiveBuffer;
 
             public TCP(int aId) {
@@ -35,6 +38,7 @@ namespace GameServer {
 
                 stream = socket.GetStream();
 
+                receivedData = new Packet();
                 receiveBuffer = new byte[dataBufferSize];
 
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
@@ -63,7 +67,7 @@ namespace GameServer {
                     byte[] lData = new byte[lByteLength];
                     Array.Copy(receiveBuffer, lData, lByteLength);
 
-                    //TODO: handle data
+                    receivedData.Reset(HandleData(lData));
                     stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
                 } catch (Exception e) {
@@ -71,7 +75,76 @@ namespace GameServer {
 
                     // TODO: disconnect client
                 }
-            } 
+            }
+
+            private bool HandleData(byte[] aData) {
+                int lPacketLength = 0;
+
+                receivedData.SetBytes(aData);
+
+                if (receivedData.UnreadLength() >= 4) {
+                    lPacketLength = receivedData.ReadInt();
+                    if (lPacketLength <= 0) {
+                        return true;
+                    }
+                }
+
+                while (lPacketLength > 0 && lPacketLength <= receivedData.UnreadLength()) {
+                    byte[] lPacketBytes = receivedData.ReadBytes(lPacketLength);
+                    ThreadManager.ExecuteOnMainThread(() => {
+                        using (Packet lPacket = new Packet(lPacketBytes)) {
+                            int lPacketId = lPacket.ReadInt();
+                            Server.packetHandlers[lPacketId](id, lPacket);
+                        }
+                    });
+
+                    lPacketLength = 0;
+
+                    if (receivedData.UnreadLength() >= 4) {
+                        lPacketLength = receivedData.ReadInt();
+                        if (lPacketLength <= 0) {
+                            return true;
+                        }
+                    }
+                }
+
+                if (lPacketLength <= 1) {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public class UDP {
+            public IPEndPoint endPoint;
+
+            private int id;
+
+            public UDP(int aId) {
+                id = aId;
+            }
+
+            public void Connect(IPEndPoint aEndPoint) {
+                endPoint = aEndPoint;
+                ServerSend.UDPTest(id);
+            }
+
+            public void SendData(Packet aPacket) {
+                Server.SendUDPData(endPoint, aPacket);
+            }
+
+            public void HandleData(Packet aPacketData) {
+                int lPacketLength = aPacketData.ReadInt();
+                byte[] lPacketBytes = aPacketData.ReadBytes(lPacketLength);
+
+                ThreadManager.ExecuteOnMainThread(() => {
+                    using (Packet lPacket = new Packet(lPacketBytes)) {
+                        int lPacketId = lPacket.ReadInt();
+                        Server.packetHandlers[lPacketId](id, lPacket);
+                    }
+                });
+            }
         }
     }
 }
