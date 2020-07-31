@@ -5,7 +5,6 @@ C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\bin\Debug\n
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\bin\Debug\netcoreapp3.1\GameServer.dll
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\bin\Debug\netcoreapp3.1\GameServer.pdb
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\obj\Debug\netcoreapp3.1\GameServer.csprojAssemblyReference.cache
-C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\obj\Debug\netcoreapp3.1\GameServer.csproj.CoreCompileInputs.cache
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\obj\Debug\netcoreapp3.1\GameServer.AssemblyInfoInputs.cache
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\obj\Debug\netcoreapp3.1\GameServer.AssemblyInfo.cs
 C:\Dev\project_zombie_survival\DedicatedServer\GameServer\GameServer\obj\Debug\netcoreapp3.1\GameServer.dll

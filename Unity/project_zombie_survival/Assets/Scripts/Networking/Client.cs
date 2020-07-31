@@ -11,6 +11,7 @@ public class Client : MonoBehaviour {
         public TcpClient socket;
 
         private NetworkStream stream;
+        private Packet receivedData;
         private byte[] receiveBuffer;
 
         public void Connect() {
@@ -32,6 +33,8 @@ public class Client : MonoBehaviour {
 
             stream = socket.GetStream();
 
+            receivedData = new Packet();
+
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
@@ -46,11 +49,49 @@ public class Client : MonoBehaviour {
                 byte[] lData = new byte[lByteLength];
                 Array.Copy(receiveBuffer, lData, lByteLength);
 
-                //TODO: handle data
+                receivedData.Reset(HandleData(lData));
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             } catch {
                 // TODO: disconnect
             }
+        }
+
+        private bool HandleData(byte[] aData) {
+            int lPacketLength = 0;
+
+            receivedData.SetBytes(aData);
+
+            if (receivedData.UnreadLength() >= 4) {
+                lPacketLength = receivedData.ReadInt();
+                if (lPacketLength <= 0) {
+                    return true;
+                }
+            }
+
+            while (lPacketLength > 0 && lPacketLength <= receivedData.UnreadLength()) {
+                byte[] lPacketBytes = receivedData.ReadBytes(lPacketLength);
+                ThreadManager.ExecuteOnMainThread(() => {
+                    using (Packet lPacket = new Packet(lPacketBytes)) {
+                        int lPacketId = lPacket.ReadInt();
+                        packetHandlers[lPacketId](lPacket);
+                    }
+                });
+
+                lPacketLength = 0;
+
+                if (receivedData.UnreadLength() >= 4) {
+                    lPacketLength = receivedData.ReadInt();
+                    if (lPacketLength <= 0) {
+                        return true;
+                    }
+                }
+            }
+
+            if (lPacketLength <= 1) {
+                return true;
+            }
+
+            return false;
         }
     }
 
@@ -61,6 +102,9 @@ public class Client : MonoBehaviour {
     public int port = 42069;
     public int id = 0;
     public TCP tcp;
+
+    private delegate void PacketHandler(Packet aPacket);
+    private static Dictionary<int, PacketHandler> packetHandlers;
 
     private void Awake() {
         if (instance == null) {
@@ -76,6 +120,14 @@ public class Client : MonoBehaviour {
     }
 
     public void ConnectToServer() {
+        InitializeClientData();
         tcp.Connect();
+    }
+
+    private void InitializeClientData() {
+        packetHandlers = new Dictionary<int, PacketHandler>() {
+            { (int)ServerPackets.WELCOME, ClientHandle.Welcome }
+        };
+        Debug.Log("[Client] - Initialized packets.");
     }
 }
