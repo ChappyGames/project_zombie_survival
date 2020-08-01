@@ -6,6 +6,10 @@ public class Player : MonoBehaviour {
     public int id;
     public string username;
 
+    public Transform attackOrigin;
+    public float health;
+    public float maxHealth;
+
     private float moveSpeed = 5f / Constants.TICKS_PER_SECOND;
     private bool[] inputs;
 
@@ -13,10 +17,17 @@ public class Player : MonoBehaviour {
         id = aId;
         username = aUsername;
 
+        health = maxHealth;
+
         inputs = new bool[4];
     }
 
     public void FixedUpdate() {
+
+        if (health <= 0f) {
+            return;
+        }
+
         Vector2 lInputDirection = Vector2.zero;
         if (inputs[0]) {
             lInputDirection.y += 1;
@@ -47,5 +58,40 @@ public class Player : MonoBehaviour {
     public void SetInput(bool[] aInput, Quaternion aRotation) {
         inputs = aInput;
         transform.rotation = aRotation;
+    }
+
+    public void Attack(Vector3 aViewDirection) {
+        Debug.Log("Attacking...");
+        Debug.DrawRay(attackOrigin.position, aViewDirection);
+        if (Physics.Raycast(attackOrigin.position, aViewDirection, out RaycastHit aHit, 25f)) {
+            if (aHit.collider.CompareTag("Player")) {
+                Debug.Log("Player Hit!");
+                aHit.collider.GetComponentInParent<Player>().TakeDamage(50f);
+            }
+        }
+    }
+
+    public void TakeDamage(float aDamage) {
+        if (health <= 0f) {
+            return;
+        }
+
+        health -= aDamage;
+        if (health <= 0f) {
+            health = 0f;
+            transform.position = new Vector3(0f, 0f, 0f);
+            ServerSend.PlayerPosition(this);
+            StartCoroutine(Respawn());
+        }
+
+        ServerSend.PlayerHealth(this);
+    }
+
+    private IEnumerator Respawn() {
+        yield return new WaitForSeconds(5f);
+
+        health = maxHealth;
+        ServerSend.PlayerRespawned(this);
+        
     }
 }

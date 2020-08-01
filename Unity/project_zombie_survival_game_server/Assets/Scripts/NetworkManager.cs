@@ -11,11 +11,11 @@ public class NetworkManager : Singleton<NetworkManager> {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
 
-#if UNITY_EDITOR
-        Debug.LogError("Build the project to start the server!");
-#else
         Server.Start(50, 42069);
-#endif
+    }
+
+    private void OnApplicationQuit() {
+        Server.Stop();
     }
 
     public Player InstantiatePlayer() {

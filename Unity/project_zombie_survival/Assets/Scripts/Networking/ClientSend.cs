@@ -36,5 +36,13 @@ public class ClientSend : MonoBehaviour {
             SendUDPData(lPacket);
         }
     }
+
+    public static void PlayerAttack(Vector3 aFacing) {
+        using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ATTACK)) {
+            lPacket.Write(aFacing);
+
+            SendTCPData(lPacket);
+        }
+    }
     #endregion
 }

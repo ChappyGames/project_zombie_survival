@@ -18,8 +18,7 @@ public class GameManager : Singleton<GameManager> {
             lPlayer = Instantiate(playerPrefab, aPosition, aRotation);
         }
 
-        lPlayer.GetComponent<PlayerManager>().id = aId;
-        lPlayer.GetComponent<PlayerManager>().username = aUsername;
+        lPlayer.GetComponent<PlayerManager>().Initialize(aId, aUsername);
         players.Add(aId, lPlayer.GetComponent<PlayerManager>());
     }
 }

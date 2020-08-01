@@ -10,7 +10,10 @@ public enum ServerPackets {
     WELCOME = 1,
     SPAWN_PLAYER = 2,
     PLAYER_POS = 3,
-    PLAYER_ROTATION = 4
+    PLAYER_ROTATION = 4,
+    PLAYER_DISCONNECTED = 5,
+    PLAYER_HEALTH = 6,
+    PLAYER_RESPAWNED = 7
 }
 
 /// <summary>
@@ -18,7 +21,8 @@ public enum ServerPackets {
 /// </summary>
 public enum ClientPackets {
     WELCOME_RECEIVED = 1,
-    PLAYER_MOVEMENT = 2
+    PLAYER_MOVEMENT = 2,
+    PLAYER_ATTACK = 3
 }
 
 public class Packet : IDisposable {

@@ -29,4 +29,10 @@ public class ServerHandle {
 
         Server.clients[aFromClient].player.SetInput(lInputs, lRotation);
     }
+
+    public static void PlayerAttack(int aFromClient, Packet aPacket) {
+        Vector3 lAttackDirection = aPacket.ReadVector3();
+
+        Server.clients[aFromClient].player.Attack(lAttackDirection);
+    }
 }

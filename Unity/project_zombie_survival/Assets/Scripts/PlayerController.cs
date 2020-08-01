@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour {
 
     private void Update() {
         RotateToCursor();
+
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            ClientSend.PlayerAttack(playerModel.transform.forward);
+        }
     }
 
     private void RotateToCursor() {

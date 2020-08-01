@@ -84,5 +84,30 @@ public class ServerSend {
             SendUDPDataToAll(aPlayer.id, lPacket);
         }
     }
+
+    public static void PlayerDisconnected(int aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_DISCONNECTED)) {
+            lPacket.Write(aPlayer);
+
+            SendTCPDataToAll(lPacket);
+        }
+    }
+
+    public static void PlayerHealth(Player aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_HEALTH)) {
+            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.health);
+
+            SendTCPDataToAll(lPacket);
+        }
+    }
+
+    public static void PlayerRespawned(Player aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_RESPAWNED)) {
+            lPacket.Write(aPlayer.id);
+
+            SendTCPDataToAll(lPacket);
+        }
+    }
     #endregion
 }

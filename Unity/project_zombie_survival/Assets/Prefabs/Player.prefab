@@ -223,9 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42064fab68584a348a0c01dbd996dfda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerModel: {fileID: 2769288668829226302}
+  playerObj: {fileID: 2769288668829226302}
+  playerModel: {fileID: 2769288668829226300}
   id: 0
   username: 
+  health: 0
+  maxHealth: 100
 --- !u!1 &2847765394395952953
 GameObject:
   m_ObjectHideFlags: 0

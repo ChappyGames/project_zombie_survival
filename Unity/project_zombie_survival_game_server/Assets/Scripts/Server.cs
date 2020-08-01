@@ -76,6 +76,7 @@ public class Server {
             }
         }
         catch (Exception e) {
+            // If you see the error 'Error receiving UDP data: System.ObjectDisposedException: Cannot access a disposed object.' when closing the server in the editor, know that this error is by design.
             Debug.Log($"Error receiving UDP data: {e}");
         }
     }
@@ -98,8 +99,14 @@ public class Server {
 
         packetHandlers = new Dictionary<int, PacketHandler>() {
                 { (int)ClientPackets.WELCOME_RECEIVED, ServerHandle.WelcomeReceived },
-                { (int)ClientPackets.PLAYER_MOVEMENT, ServerHandle.PlayerMovement }
+                { (int)ClientPackets.PLAYER_MOVEMENT, ServerHandle.PlayerMovement },
+                { (int)ClientPackets.PLAYER_ATTACK, ServerHandle.PlayerAttack }
             };
         Debug.Log("Initialized packets.");
+    }
+
+    public static void Stop() {
+        tcpListener.Stop();
+        udpListener.Close();
     }
 }
