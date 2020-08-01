@@ -57,11 +57,32 @@ namespace GameServer {
             }
         }
 
-        public static void UDPTest(int aToClient) {
-            using (Packet lPacket = new Packet((int)ServerPackets.UDP_TEST)) {
-                lPacket.Write("A test packet for UDP.");
+        public static void SpawnPlayer(int aToClient, Player aPlayer) {
+            using (Packet lPacket = new Packet((int)ServerPackets.SPAWN_PLAYER)) {
+                lPacket.Write(aPlayer.id);
+                lPacket.Write(aPlayer.username);
+                lPacket.Write(aPlayer.pos);
+                lPacket.Write(aPlayer.rotation);
 
-                SendUDPData(aToClient, lPacket);
+                SendTCPData(aToClient, lPacket);
+            }
+        }
+
+        public static void PlayerPosition(Player aPlayer) {
+            using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_POS)) {
+                lPacket.Write(aPlayer.id);
+                lPacket.Write(aPlayer.pos);
+
+                SendUDPDataToAll(lPacket);
+            }
+        }
+
+        public static void PlayerRotation(Player aPlayer) {
+            using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_ROTATION)) {
+                lPacket.Write(aPlayer.id);
+                lPacket.Write(aPlayer.rotation);
+
+                SendUDPDataToAll(aPlayer.id, lPacket);
             }
         }
         #endregion

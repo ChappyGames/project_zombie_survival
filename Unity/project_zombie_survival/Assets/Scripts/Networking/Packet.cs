@@ -8,7 +8,9 @@ using UnityEngine;
 /// </summary>
 public enum ServerPackets {
     WELCOME = 1,
-    UDP_TEST = 2
+    SPAWN_PLAYER = 2,
+    PLAYER_POS = 3,
+    PLAYER_ROTATION = 4
 }
 
 /// <summary>
@@ -16,7 +18,7 @@ public enum ServerPackets {
 /// </summary>
 public enum ClientPackets {
     WELCOME_RECEIVED = 1,
-    UDP_TEST_RECEIVED = 2
+    PLAYER_MOVEMENT = 2
 }
 
 public class Packet : IDisposable {
@@ -187,6 +189,27 @@ public class Packet : IDisposable {
         Write(aValue.Length); // Add the length of the string to the packet
         buffer.AddRange(Encoding.ASCII.GetBytes(aValue)); // Add the string itself
     }
+
+    /// <summary>
+    /// Adds a Vector3 to the packet.
+    /// </summary>
+    /// <param name="aValue">The Vector3 to add.</param>
+    public void Write(Vector3 aValue) {
+        Write(aValue.x);
+        Write(aValue.y);
+        Write(aValue.z);
+    }
+
+    /// <summary>
+    /// Adds a Quaternion to the packet.
+    /// </summary>
+    /// <param name="aValue">The Quaternion to add.</param>
+    public void Write(Quaternion aValue) {
+        Write(aValue.x);
+        Write(aValue.y);
+        Write(aValue.z);
+        Write(aValue.w);
+    }
     #endregion
 
     #region Read Data
@@ -341,6 +364,22 @@ public class Packet : IDisposable {
         catch {
             throw new Exception("Could not read value of type 'string'!");
         }
+    }
+
+    /// <summary>
+    /// Reads a Vector3 from the packet.
+    /// </summary>
+    /// <param name="aMoveReadPos">Whether or not to move the buffer's read position.</param>
+    public Vector3 ReadVector3(bool aMoveReadPos = true) {
+        return new Vector3(ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos));
+    }
+
+    /// <summary>
+    /// Reads a Quaternion from the packet.
+    /// </summary>
+    /// <param name="aMoveReadPos">Whether or not to move the buffer's read position.</param>
+    public Quaternion ReadQuaternion(bool aMoveReadPos = true) {
+        return new Quaternion(ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos));
     }
     #endregion
 

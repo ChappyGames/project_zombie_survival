@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 
 namespace GameServer {
     class Client {
@@ -10,6 +11,9 @@ namespace GameServer {
         public static int dataBufferSize = 4096;
 
         public int id;
+
+        public Player player;
+
         public TCP tcp;
         public UDP udp;
 
@@ -60,7 +64,7 @@ namespace GameServer {
                 try {
                     int lByteLength = stream.EndRead(aResult);
                     if (lByteLength <= 0) {
-                        //TODO: disconnect client
+                        Server.clients[id].Disconnect();
                         return;
                     }
 
@@ -73,7 +77,7 @@ namespace GameServer {
                 } catch (Exception e) {
                     Console.WriteLine("[ERROR] - exception occured while receiving TCP data: " + e.ToString());
 
-                    // TODO: disconnect client
+                    Server.clients[id].Disconnect();
                 }
             }
 
@@ -114,6 +118,14 @@ namespace GameServer {
 
                 return false;
             }
+
+            public void Disconnect() {
+                socket.Close();
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
         }
 
         public class UDP {
@@ -127,7 +139,6 @@ namespace GameServer {
 
             public void Connect(IPEndPoint aEndPoint) {
                 endPoint = aEndPoint;
-                ServerSend.UDPTest(id);
             }
 
             public void SendData(Packet aPacket) {
@@ -145,6 +156,37 @@ namespace GameServer {
                     }
                 });
             }
+
+            public void Disconnect() {
+                endPoint = null;
+            }
+        }
+
+        public void SendIntoGame(string aPlayerName) {
+            player = new Player(id, aPlayerName, new Vector3(0, 0, 0));
+
+            foreach (Client lClient in Server.clients.Values) {
+                if (lClient.player != null) {
+                    if (lClient.id != id) {
+                        ServerSend.SpawnPlayer(id, lClient.player);
+                    }
+                }
+            }
+
+            foreach (Client lClient in Server.clients.Values) {
+                if (lClient.player != null) {
+                    ServerSend.SpawnPlayer(lClient.id, player);
+                }
+            }
+        }
+
+        private void Disconnect() {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
+
+            player = null;
+
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }

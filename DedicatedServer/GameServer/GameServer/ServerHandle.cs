@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Numerics;
 
 namespace GameServer {
     class ServerHandle {
@@ -17,13 +18,18 @@ namespace GameServer {
                 Console.WriteLine($"Hello {lUsername}!");
             }
 
-            //TODO: Send player into the game.
+            Server.clients[aFromClient].SendIntoGame(lUsername);
         }
 
-        public static void UDPTestReceived(int aFromClient, Packet aPacket) {
-            string lMessage = aPacket.ReadString();
+        public static void PlayerMovement(int aFromClient, Packet aPacket) {
 
-            Console.WriteLine($"Received packet via UDP. Contains message: {lMessage}");
+            bool[] lInputs = new bool[aPacket.ReadInt()];
+            for (int i = 0; i < lInputs.Length; i++) {
+                lInputs[i] = aPacket.ReadBool();
+            }
+            Quaternion lRotation = aPacket.ReadQuaternion();
+
+            Server.clients[aFromClient].player.SetInput(lInputs, lRotation);
         }
     }
 }
