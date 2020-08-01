@@ -12,6 +12,14 @@ Unity/project_zombie_survival/[Bb]uilds/
 Unity/project_zombie_survival/[Ll]ogs/
 Unity/project_zombie_survival/[Uu]ser[Ss]ettings/
 
+Unity/project_zombie_survival_game_server/[Ll]ibrary/
+Unity/project_zombie_survival_game_server/[Tt]emp/
+Unity/project_zombie_survival_game_server/[Oo]bj/
+Unity/project_zombie_survival_game_server/[Bb]uild/
+Unity/project_zombie_survival_game_server/[Bb]uilds/
+Unity/project_zombie_survival_game_server/[Ll]ogs/
+Unity/project_zombie_survival_game_server/[Uu]ser[Ss]ettings/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
