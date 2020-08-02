@@ -12,9 +12,10 @@ public enum AmmoType {
     PISTOL_32
 }
 
-[CreateAssetMenu(menuName = "Dead Frontier Clone/New Weapon")]
+[CreateAssetMenu(menuName = "Project Zombie Survival/New Weapon")]
 public class Weapon : ScriptableObject {
 
+    [SerializeField] private string id;
     [SerializeField] private string weaponName;
     [TextArea(3, 5)]
     [SerializeField] private string weaponDescription;
@@ -37,7 +38,7 @@ public class Weapon : ScriptableObject {
     [SerializeField] private AudioClip fireSound;
     [SerializeField] private AudioClip reloadSound;
 
-
+    public string ID { get { return id; } }
     public WeaponType WeaponType { get { return weaponType; } }
     public AmmoType AmmoType { get { return ammoType; } }
 

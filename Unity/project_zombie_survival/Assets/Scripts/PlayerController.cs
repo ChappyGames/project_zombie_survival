@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour {
 
     public Camera camera;
     public GameObject playerModel;
+    public PlayerManager parent;
     public Vector3 cameraPosOffset;
 
     private Plane groundPlane;
 
     private void Awake() {
         groundPlane = new Plane(Vector3.up, Vector3.zero);
+        parent = GetComponent<PlayerManager>();
     }
 
     private void FixedUpdate() {
@@ -40,7 +42,7 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 lPlayerToCursorDistance = lPointToLook - transform.position;
 
-        //camera.transform.position = cameraPosOffset;
+        camera.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z) + lPlayerToCursorDistance * (parent.CurrentWeapon.Range / 100f);
     }
 
     private void SendInputToServer() {

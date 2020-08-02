@@ -33,6 +33,6 @@ public class ServerHandle {
     public static void PlayerAttack(int aFromClient, Packet aPacket) {
         Vector3 lAttackDirection = aPacket.ReadVector3();
 
-        Server.clients[aFromClient].player.Attack(lAttackDirection);
+        Server.clients[aFromClient].player.attack.TryPerformAttack(lAttackDirection);
     }
 }

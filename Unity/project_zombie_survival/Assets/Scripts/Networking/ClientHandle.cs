@@ -22,8 +22,9 @@ public class ClientHandle : MonoBehaviour {
         string lUsername = aPacket.ReadString();
         Vector3 lPosition = aPacket.ReadVector3();
         Quaternion lRotation = aPacket.ReadQuaternion();
+        string lWeaponId = aPacket.ReadString();
 
-        GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation);
+        GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation, lWeaponId);
     }
 
     public static void PlayerPosition(Packet aPacket) {
@@ -58,6 +59,25 @@ public class ClientHandle : MonoBehaviour {
         int lId = aPacket.ReadInt();
 
         GameManager.players[lId].Respawn();
+    }
+
+    public static void WeaponEquipped(Packet aPacket) {
+        int lId = aPacket.ReadInt();
+        string lWeaponId = aPacket.ReadString();
+
+        GameManager.players[lId].SetWeapon(lWeaponId);
+    }
+
+    public static void WeaponFired(Packet aPacket) {
+        int lId = aPacket.ReadInt();
+
+        GameManager.players[lId].FireWeapon();
+    }
+
+    public static void WeaponReloaded(Packet aPacket) {
+        int lId = aPacket.ReadInt();
+
+        GameManager.players[lId].ReloadWeapon();
     }
 
 }

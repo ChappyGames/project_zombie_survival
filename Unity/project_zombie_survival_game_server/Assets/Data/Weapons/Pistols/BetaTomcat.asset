@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1845af7eadcd334ca8929aada840ad7, type: 3}
+  m_Script: {fileID: 11500000, guid: f48b5e4a14523d64fa4f2c1e7f64fc14, type: 3}
   m_Name: BetaTomcat
   m_EditorClassIdentifier: 
   id: pistol_beta_tomcat
@@ -28,5 +28,5 @@ MonoBehaviour:
   range: 10
   criticalChance: 0
   skillRequired: 0
-  fireSound: {fileID: 8300000, guid: ef07dc3e234daab428405861d3daeb84, type: 3}
-  reloadSound: {fileID: 8300000, guid: 33c00e76037936f4190a78db7f0b23cf, type: 3}
+  fireSound: {fileID: 0}
+  reloadSound: {fileID: 0}

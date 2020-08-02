@@ -5,10 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public int id;
     public string username;
-
-    public Transform attackOrigin;
+    
     public float health;
     public float maxHealth;
+
+    public PlayerAttack attack;
 
     private float moveSpeed = 5f / Constants.TICKS_PER_SECOND;
     private bool[] inputs;
@@ -16,10 +17,10 @@ public class Player : MonoBehaviour {
     public void Initialize(int aId, string aUsername) {
         id = aId;
         username = aUsername;
-
         health = maxHealth;
-
         inputs = new bool[4];
+
+        attack.Initialize(this);
     }
 
     public void FixedUpdate() {
@@ -58,17 +59,6 @@ public class Player : MonoBehaviour {
     public void SetInput(bool[] aInput, Quaternion aRotation) {
         inputs = aInput;
         transform.rotation = aRotation;
-    }
-
-    public void Attack(Vector3 aViewDirection) {
-        Debug.Log("Attacking...");
-        Debug.DrawRay(attackOrigin.position, aViewDirection);
-        if (Physics.Raycast(attackOrigin.position, aViewDirection, out RaycastHit aHit, 25f)) {
-            if (aHit.collider.CompareTag("Player")) {
-                Debug.Log("Player Hit!");
-                aHit.collider.GetComponentInParent<Player>().TakeDamage(50f);
-            }
-        }
     }
 
     public void TakeDamage(float aDamage) {

@@ -62,6 +62,7 @@ public class ServerSend {
             lPacket.Write(aPlayer.username);
             lPacket.Write(aPlayer.transform.position);
             lPacket.Write(aPlayer.transform.rotation);
+            lPacket.Write(aPlayer.attack.CurrentWeapon.ID);
 
             SendTCPData(aToClient, lPacket);
         }
@@ -106,6 +107,33 @@ public class ServerSend {
         using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_RESPAWNED)) {
             lPacket.Write(aPlayer.id);
 
+            SendTCPDataToAll(lPacket);
+        }
+    }
+
+    public static void WeaponEquipped(Player aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_EQUIPPED)) {
+            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.attack.CurrentWeapon.ID);
+
+            SendTCPDataToAll(lPacket);
+        }
+    }
+
+    public static void WeaponFire(Player aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_FIRED)) {
+            lPacket.Write(aPlayer.id);
+
+            //TODO: At some point, we shouldn't have to send this packet to the client firing their weapon since it should be handled on the client side.
+            SendTCPDataToAll(lPacket);
+        }
+    }
+
+    public static void WeaponReload(Player aPlayer) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_RELOADED)) {
+            lPacket.Write(aPlayer.id);
+
+            //TODO: At some point, we shouldn't have to send this packet to the client reloading their weapon since it should be handled on the client side.
             SendTCPDataToAll(lPacket);
         }
     }

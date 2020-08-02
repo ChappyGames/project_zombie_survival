@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager> {
     public GameObject localPlayerPrefab;
     public GameObject playerPrefab;
 
-    public void SpawnPlayer(int aId, string aUsername, Vector3 aPosition, Quaternion aRotation) {
+    public void SpawnPlayer(int aId, string aUsername, Vector3 aPosition, Quaternion aRotation, string aWeaponId) {
         GameObject lPlayer;
 
         if (aId == Client.instance.id) {
@@ -18,7 +18,7 @@ public class GameManager : Singleton<GameManager> {
             lPlayer = Instantiate(playerPrefab, aPosition, aRotation);
         }
 
-        lPlayer.GetComponent<PlayerManager>().Initialize(aId, aUsername);
+        lPlayer.GetComponent<PlayerManager>().Initialize(aId, aUsername, aWeaponId);
         players.Add(aId, lPlayer.GetComponent<PlayerManager>());
     }
 }
