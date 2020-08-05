@@ -1,0 +1,79 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EntityManager : Singleton<EntityManager> {
+
+    private Dictionary<int, Dictionary<int, IEntity>> entities;
+
+    protected override void Awake() {
+        base.Awake();
+
+        Initialize();
+    }
+
+    private void Initialize() {
+        entities = new Dictionary<int, Dictionary<int, IEntity>>();
+    }
+
+    public bool RegisterEntity(IEntity aEntity) {
+        bool lEntityAdded = false;
+
+        if (!entities.ContainsKey((int)aEntity.Type)) {
+            entities.Add((int)aEntity.Type, new Dictionary<int, IEntity>());
+        }
+
+        if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
+            entities[(int)aEntity.Type].Add(aEntity.ID, aEntity);
+            lEntityAdded = true;
+        }
+        else {
+            Debug.LogError($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' already exists.");
+        }
+
+        return lEntityAdded;
+    }
+
+    public bool UnregisterEntity(int aEntityType, int aEntityId) {
+        bool lEntityRemoved = false;
+
+        if (entities.ContainsKey(aEntityType)) {
+
+            if (entities[aEntityType].ContainsKey(aEntityId)) {
+                entities[aEntityType].Remove(aEntityId);
+                lEntityRemoved = true;
+            }
+            else {
+                Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' with ID '{aEntityId}' does not exist.");
+            }
+
+        }
+        else {
+            Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' does not exist.");
+        }
+
+        return lEntityRemoved;
+    }
+
+    public IEntity GetEntity(int aEntityType, int aEntityId) {
+        IEntity lEntity = null;
+
+        if (entities.ContainsKey(aEntityType)) {
+
+            if (entities[aEntityType].ContainsKey(aEntityId)) {
+                lEntity = entities[aEntityType][aEntityId];
+            }
+            else {
+                Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' with ID '{aEntityId}' does not exist.");
+            }
+
+        }
+        else {
+            Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' does not exist.");
+        }
+
+        return lEntity;
+    }
+
+
+}

@@ -58,7 +58,7 @@ public class ServerSend {
 
     public static void SpawnPlayer(int aToClient, Player aPlayer) {
         using (Packet lPacket = new Packet((int)ServerPackets.SPAWN_PLAYER)) {
-            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.ID);
             lPacket.Write(aPlayer.username);
             lPacket.Write(aPlayer.transform.position);
             lPacket.Write(aPlayer.transform.rotation);
@@ -68,21 +68,23 @@ public class ServerSend {
         }
     }
 
-    public static void PlayerPosition(Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_POS)) {
-            lPacket.Write(aPlayer.id);
-            lPacket.Write(aPlayer.transform.position);
+    public static void EntityPosition(Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_POS)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
+            lPacket.Write(aEntity.transform.position);
 
             SendUDPDataToAll(lPacket);
         }
     }
 
-    public static void PlayerRotation(Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_ROTATION)) {
-            lPacket.Write(aPlayer.id);
-            lPacket.Write(aPlayer.transform.rotation);
+    public static void EntityRotation(Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_ROTATION)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
+            lPacket.Write(aEntity.transform.rotation);
 
-            SendUDPDataToAll(aPlayer.id, lPacket);
+            SendUDPDataToAll(aEntity.ID, lPacket);
         }
     }
 
@@ -94,18 +96,20 @@ public class ServerSend {
         }
     }
 
-    public static void PlayerHealth(Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_HEALTH)) {
-            lPacket.Write(aPlayer.id);
-            lPacket.Write(aPlayer.health);
+    public static void EntityHealth(Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_HEALTH)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
+            lPacket.Write(aEntity.Health);
 
             SendTCPDataToAll(lPacket);
         }
     }
 
-    public static void PlayerRespawned(Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_RESPAWNED)) {
-            lPacket.Write(aPlayer.id);
+    public static void EntityRespawned(Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_RESPAWNED)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
 
             SendTCPDataToAll(lPacket);
         }
@@ -113,7 +117,7 @@ public class ServerSend {
 
     public static void WeaponEquipped(Player aPlayer) {
         using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_EQUIPPED)) {
-            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.ID);
             lPacket.Write(aPlayer.attack.CurrentWeapon.ID);
 
             SendTCPDataToAll(lPacket);
@@ -122,7 +126,7 @@ public class ServerSend {
 
     public static void WeaponFire(Player aPlayer) {
         using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_FIRED)) {
-            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.ID);
 
             //TODO: At some point, we shouldn't have to send this packet to the client firing their weapon since it should be handled on the client side.
             SendTCPDataToAll(lPacket);
@@ -131,7 +135,7 @@ public class ServerSend {
 
     public static void WeaponReload(Player aPlayer) {
         using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_RELOADED)) {
-            lPacket.Write(aPlayer.id);
+            lPacket.Write(aPlayer.ID);
 
             //TODO: At some point, we shouldn't have to send this packet to the client reloading their weapon since it should be handled on the client side.
             SendTCPDataToAll(lPacket);

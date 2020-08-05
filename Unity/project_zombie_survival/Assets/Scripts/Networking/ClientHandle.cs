@@ -27,18 +27,20 @@ public class ClientHandle : MonoBehaviour {
         GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation, lWeaponId);
     }
 
-    public static void PlayerPosition(Packet aPacket) {
+    public static void EntityPosition(Packet aPacket) {
+        int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
         Vector3 lPosition = aPacket.ReadVector3();
 
-        GameManager.players[lId].transform.position = lPosition;
+        EntityManager.Instance.GetEntity(lType, lId).Transform.position = lPosition;
     }
 
-    public static void PlayerRotation(Packet aPacket) {
+    public static void EntityRotation(Packet aPacket) {
+        int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
         Quaternion lRotation = aPacket.ReadQuaternion();
 
-        GameManager.players[lId].ModelTransform.rotation = lRotation;
+        EntityManager.Instance.GetEntity(lType, lId).Transform.rotation = lRotation;
     }
 
     public static void PlayerDisconnected(Packet aPacket) {
@@ -48,17 +50,19 @@ public class ClientHandle : MonoBehaviour {
         GameManager.players.Remove(lId);
     }
 
-    public static void PlayerHealth(Packet aPacket) {
+    public static void EntityHealth(Packet aPacket) {
+        int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
         float lHealth = aPacket.ReadFloat();
 
-        GameManager.players[lId].SetHealth(lHealth);
+        EntityManager.Instance.GetEntity(lType, lId).SetHealth(lHealth);
     }
 
-    public static void PlayerRespawned(Packet aPacket) {
+    public static void EntityRespawned(Packet aPacket) {
+        int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
 
-        GameManager.players[lId].Respawn();
+        EntityManager.Instance.GetEntity(lType, lId).OnRespawn();
     }
 
     public static void WeaponEquipped(Packet aPacket) {

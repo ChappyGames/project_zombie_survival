@@ -31,7 +31,7 @@ public class ClientSend : MonoBehaviour {
                 lPacket.Write(lInput);
             }
 
-            lPacket.Write(GameManager.players[Client.instance.id].ModelTransform.rotation);
+            lPacket.Write(GameManager.players[Client.instance.id].Transform.rotation);
 
             SendUDPData(lPacket);
         }

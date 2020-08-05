@@ -6,20 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Client {
-    public static int dataBufferSize = 4096;
-
-    public int id;
-
-    public Player player;
-
-    public TCP tcp;
-    public UDP udp;
-
-    public Client(int aClientId) {
-        id = aClientId;
-        tcp = new TCP(id);
-        udp = new UDP(id);
-    }
 
     public class TCP {
         public TcpClient socket;
@@ -160,6 +146,20 @@ public class Client {
         public void Disconnect() {
             endPoint = null;
         }
+    }
+
+    public static int dataBufferSize = 4096;
+
+    public int id;
+    public Player player;
+
+    public TCP tcp;
+    public UDP udp;
+
+    public Client(int aClientId) {
+        id = aClientId;
+        tcp = new TCP(id);
+        udp = new UDP(id);
     }
 
     public void SendIntoGame(string aPlayerName) {

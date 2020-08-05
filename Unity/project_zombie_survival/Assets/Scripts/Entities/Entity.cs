@@ -1,53 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 
-public class Entity : NetworkBehaviour {
+public enum EntityType {
+    ENTITY_NONE = 0,
+    ENTITY_PLAYER = 1,
+    ENTITY_ZOMBIE = 2
+}
 
-    [SerializeField] private int maxHealth;
+public interface IEntity {
+    int ID { get; }
+    EntityType Type { get; }
+    Transform Transform { get; }
 
-    [SyncVar]
-    private int health;
+    void SetHealth(float aHealth);
+    void OnRespawn();
+}
 
-    protected virtual void Initialize() {
+public class Entity : MonoBehaviour, IEntity {
+
+    protected float maxHealth;
+    protected float health;
+
+    protected int id;
+    protected EntityType type;
+
+    public int ID { get { return id; } }
+    public EntityType Type { get { return type; } }
+    public virtual Transform Transform { get { return transform; } }
+    public float MaxHealth { get { return maxHealth; } }
+    public float Health { get { return health; } }
+
+
+    public virtual void Initialize(int aId, EntityType aType) {
+        id = aId;
+        type = aType;
+
         health = maxHealth;
     }
 
-    public virtual void ModifyHealth(int aAmount) {
-        health = Mathf.Clamp(health + aAmount, 0, maxHealth);
-        Debug.Log("Health: " + health);
-        if (health <= 0) {
-            OnDeath();
+    public virtual void SetHealth(float aHealth) {
+        health = aHealth;
+
+        if (health <= 0f) {
+            OnDie();
         }
     }
 
-    [Command]
-    public virtual void CmdModifyHealth(int aAmount) {
-        Debug.Log("Server is modifying health");
-        ModifyHealth(aAmount);
-        //RpcModifyHealth(aAmount);
-    }
+    protected virtual void OnDie() {}
 
-    [ClientRpc]
-    public virtual void RpcModifyHealth(int aAmount) {
-        Debug.Log("Client is receiving modified health");
-        ModifyHealth(aAmount);
-    }
-
-    protected virtual void OnDeath() {
-        NetworkServer.Destroy(gameObject);
-        Debug.Log("Entity has died!");
-    }
-
-    [Command]
-    public virtual void CmdOnDeath() {
-        OnDeath();
-        RpcOnDeath();
-    }
-
-    [ClientRpc]
-    public virtual void RpcOnDeath() {
-        OnDeath();
-    }
+    public virtual void OnRespawn() {}
 }

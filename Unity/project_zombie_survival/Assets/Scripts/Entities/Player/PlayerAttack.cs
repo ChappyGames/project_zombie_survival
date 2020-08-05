@@ -96,8 +96,8 @@ public class PlayerAttack : NetworkBehaviour {
     private void CmdPerformAttack(GameObject aTarget) {
         Debug.Log("Server is registering attack.");
         Entity lEntity = aTarget.GetComponent<Entity>();
-        lEntity.ModifyHealth(-Damage);
-        lEntity.RpcModifyHealth(-Damage);
+        //lEntity.ModifyHealth(-Damage);
+        //lEntity.RpcModifyHealth(-Damage);
         
     }
 

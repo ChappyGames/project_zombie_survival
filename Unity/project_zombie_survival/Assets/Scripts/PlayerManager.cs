@@ -2,30 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour {
+public class PlayerManager : Entity {
 
     public GameObject playerObj;
 
     public AudioSource playerAudioSource;
 
-    public int id;
     public string username;
-
-    public float health;
-    public float maxHealth;
 
     private string currentWeaponId;
 
-    public Transform ModelTransform { get { return playerObj.transform; } }
+    public override Transform Transform { get { return playerObj.transform; } }
 
     public Weapon CurrentWeapon { get { return ItemManager.Instance.GetWeapon(currentWeaponId); } }
 
     public void Initialize(int aId, string aUsername, string aWeaponId) {
-        id = aId;
+        base.Initialize(aId, EntityType.ENTITY_PLAYER);
+
         username = aUsername;
         SetWeapon(aWeaponId);
-
-        health = maxHealth;
     }
 
     public void SetWeapon(string aWeaponId) {
@@ -40,19 +35,11 @@ public class PlayerManager : MonoBehaviour {
         playerAudioSource.PlayOneShot(CurrentWeapon.ReloadSound);
     }
 
-    public void SetHealth(float aHealth) {
-        health = aHealth;
-
-        if (health <= 0f) {
-            Die();
-        }
-    }
-
-    public void Die() {
+    protected override void OnDie() {
         playerObj.SetActive(false);
     }
 
-    public void Respawn() {
+    public override void OnRespawn() {
         playerObj.SetActive(true);
         SetHealth(maxHealth);
     }

@@ -228,11 +228,11 @@ public class Client : MonoBehaviour {
         packetHandlers = new Dictionary<int, PacketHandler>() {
             { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
             { (int)ServerPackets.SPAWN_PLAYER, ClientHandle.SpawnPlayer },
-            { (int)ServerPackets.PLAYER_POS, ClientHandle.PlayerPosition },
-            { (int)ServerPackets.PLAYER_ROTATION, ClientHandle.PlayerRotation },
+            { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
+            { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },
             { (int)ServerPackets.PLAYER_DISCONNECTED, ClientHandle.PlayerDisconnected },
-            { (int)ServerPackets.PLAYER_HEALTH, ClientHandle.PlayerHealth },
-            { (int)ServerPackets.PLAYER_RESPAWNED, ClientHandle.PlayerRespawned },
+            { (int)ServerPackets.ENTITY_HEALTH, ClientHandle.EntityHealth },
+            { (int)ServerPackets.ENTITY_RESPAWNED, ClientHandle.EntityRespawned },
             { (int)ServerPackets.PLAYER_WEAPON_EQUIPPED, ClientHandle.WeaponEquipped },
             { (int)ServerPackets.PLAYER_WEAPON_FIRED, ClientHandle.WeaponFired },
             { (int)ServerPackets.PLAYER_WEAPON_RELOADED, ClientHandle.WeaponReloaded }

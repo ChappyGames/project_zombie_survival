@@ -18,7 +18,7 @@ public class Zombie : Entity {
         fov = GetComponent<FieldOfView>();
         nav = GetComponent<NavMeshAgent>();
 
-        base.Initialize();
+        //base.Initialize();
     }
 
     private void Update() {
@@ -42,6 +42,7 @@ public class Zombie : Entity {
 
     #endregion
 
+    /*
     public override void ModifyHealth(int aAmount) {
 
         //TODO: Blood splats? Hurt zombie sounds?
@@ -74,4 +75,5 @@ public class Zombie : Entity {
 
         base.RpcOnDeath();
     }
+    */
 }

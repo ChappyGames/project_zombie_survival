@@ -2,38 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-    public int id;
+public class Player : Entity {
     public string username;
-    
-    public float health;
-    public float maxHealth;
 
     public PlayerAttack attack;
 
-    private float moveSpeed = 5f / Constants.TICKS_PER_SECOND;
     private bool[] inputs;
 
     public void Initialize(int aId, string aUsername) {
-        id = aId;
+        base.Initialize(aId, EntityType.ENTITY_PLAYER);
         username = aUsername;
-        health = maxHealth;
         inputs = new bool[4];
+
+        OnEntityDamaged.AddListener(PlayerDamaged);
+        OnEntityDeath.AddListener(PlayerDeath);
 
         attack.Initialize(this);
     }
 
-    public void FixedUpdate() {
-
-        if (health <= 0f) {
-            return;
-        }
+    protected override void FixedUpdate() {
+        base.FixedUpdate();
 
         Vector2 lInputDirection = Vector2.zero;
         if (inputs[0]) {
             lInputDirection.y += 1;
         }
-
         if (inputs[1]) {
             lInputDirection.y -= 1;
         }
@@ -50,10 +43,10 @@ public class Player : MonoBehaviour {
     private void Move(Vector2 aInputDirection) {
 
         Vector3 lMoveDirection = new Vector3(1,0,0) * aInputDirection.x + new Vector3(0,0,1) * aInputDirection.y;
-        transform.position += lMoveDirection * moveSpeed;
+        transform.position += lMoveDirection * MoveSpeed;
 
-        ServerSend.PlayerPosition(this);
-        ServerSend.PlayerRotation(this);
+        ServerSend.EntityPosition(this);
+        ServerSend.EntityRotation(this);
     }
 
     public void SetInput(bool[] aInput, Quaternion aRotation) {
@@ -61,27 +54,20 @@ public class Player : MonoBehaviour {
         transform.rotation = aRotation;
     }
 
-    public void TakeDamage(float aDamage) {
-        if (health <= 0f) {
-            return;
-        }
+    private void PlayerDamaged(float aDamage) {
+        ServerSend.EntityHealth(this);
+    }
 
-        health -= aDamage;
-        if (health <= 0f) {
-            health = 0f;
-            transform.position = new Vector3(0f, 0f, 0f);
-            ServerSend.PlayerPosition(this);
-            StartCoroutine(Respawn());
-        }
-
-        ServerSend.PlayerHealth(this);
+    private void PlayerDeath() {
+        ServerSend.EntityPosition(this);
+        StartCoroutine(Respawn());
     }
 
     private IEnumerator Respawn() {
         yield return new WaitForSeconds(5f);
 
         health = maxHealth;
-        ServerSend.PlayerRespawned(this);
+        ServerSend.EntityRespawned(this);
         
     }
 }

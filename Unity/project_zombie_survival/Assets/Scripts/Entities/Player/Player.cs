@@ -27,12 +27,12 @@ public class Player : Entity {
         onDeath = aOnDeath;
         groundPlane = new Plane(Vector3.up, Vector3.zero);
 
-        base.Initialize();
+        //base.Initialize();
     }
 
     public void Process() {
 
-        Debug.Log(hasAuthority);
+        //Debug.Log(hasAuthority);
 
         if (Input.GetMouseButton(0) == true) {
                 
@@ -72,6 +72,7 @@ public class Player : Entity {
 
     #endregion
 
+    /*
     public override void ModifyHealth(int aAmount) {
 
 
@@ -85,6 +86,6 @@ public class Player : Entity {
 
         base.OnDeath();
     }
-
+    */
     
 }
