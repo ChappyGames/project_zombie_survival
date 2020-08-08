@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,8 @@ public class EntityManager : Singleton<EntityManager> {
         if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
             entities[(int)aEntity.Type].Add(aEntity.ID, aEntity);
             lEntityAdded = true;
-        } else {
+        }
+        else {
             Debug.LogError($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' already exists.");
         }
 
@@ -54,6 +56,10 @@ public class EntityManager : Singleton<EntityManager> {
         return lEntityRemoved;
     }
 
+    public bool UnregisterEntity(IEntity aEntity) {
+        return UnregisterEntity((int)aEntity.Type, aEntity.ID);
+    }
+
     public IEntity GetEntity(int aEntityType, int aEntityId) {
         IEntity lEntity = null;
 
@@ -61,16 +67,35 @@ public class EntityManager : Singleton<EntityManager> {
 
             if (entities[aEntityType].ContainsKey(aEntityId)) {
                 lEntity = entities[aEntityType][aEntityId];
-            } else {
+            }
+            else {
                 Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' with ID '{aEntityId}' does not exist.");
             }
 
-        } else {
+        }
+        else {
             Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' does not exist.");
         }
 
         return lEntity;
     }
 
+    public int GetEntityCount(int aEntityType) {
+        int lCount = 0;
+
+        if (entities.ContainsKey(aEntityType)) {
+            lCount = entities[aEntityType].Count;
+        }
+
+        return lCount;
+    }
+
+    public void InvokeOnAllEntities(Action<IEntity> aAction) {
+        foreach (KeyValuePair<int, Dictionary<int, IEntity>> lEntityType in entities) {
+            foreach (IEntity lEntity in lEntityType.Value.Values) {
+                aAction.Invoke(lEntity);
+            }
+        }
+    }
 
 }

@@ -12,7 +12,8 @@ public class PlayerManager : Entity {
 
     private string currentWeaponId;
 
-    public override Transform Transform { get { return playerObj.transform; } }
+    public override Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+    public override Quaternion Rotation { get { return playerObj.transform.rotation; } set { playerObj.transform.rotation = value; } }
 
     public Weapon CurrentWeapon { get { return ItemManager.Instance.GetWeapon(currentWeaponId); } }
 

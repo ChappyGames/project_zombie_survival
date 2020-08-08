@@ -12,6 +12,8 @@ public enum EntityType {
 public interface IEntity {
     int ID { get; }
     EntityType Type { get; }
+
+    void ServerSpawnEntity(int aToClient);
 }
 public class Entity : MonoBehaviour, IEntity {
 
@@ -38,6 +40,21 @@ public class Entity : MonoBehaviour, IEntity {
         type = aType;
 
         health = maxHealth;
+
+        EntityManager.Instance.RegisterEntity(this);
+        SpawnToAllExistingPlayers();
+    }
+
+    protected virtual void SpawnToAllExistingPlayers() {
+        foreach (Client lClient in Server.clients.Values) {
+            if (lClient.player != null) {
+                ServerSpawnEntity(lClient.id);
+            }
+        }
+    }
+
+    public virtual void ServerSpawnEntity(int aToClient) {
+        ServerSend.SpawnEntity(aToClient, this);
     }
 
 
@@ -60,5 +77,9 @@ public class Entity : MonoBehaviour, IEntity {
         }
 
         OnEntityDamaged.Invoke(aDamage);
+    }
+
+    protected virtual void OnDestroy() {
+        EntityManager.Instance.UnregisterEntity(this);
     }
 }

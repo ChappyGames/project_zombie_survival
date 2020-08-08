@@ -27,12 +27,21 @@ public class ClientHandle : MonoBehaviour {
         GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation, lWeaponId);
     }
 
+    public static void SpawnEntity(Packet aPacket) {
+        int lType = aPacket.ReadInt();
+        int lId = aPacket.ReadInt();
+        Vector3 lPosition = aPacket.ReadVector3();
+        Quaternion lRotation = aPacket.ReadQuaternion();
+
+
+    }
+
     public static void EntityPosition(Packet aPacket) {
         int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
         Vector3 lPosition = aPacket.ReadVector3();
 
-        EntityManager.Instance.GetEntity(lType, lId).Transform.position = lPosition;
+        EntityManager.Instance.GetEntity(lType, lId).Position = lPosition;
     }
 
     public static void EntityRotation(Packet aPacket) {
@@ -40,7 +49,7 @@ public class ClientHandle : MonoBehaviour {
         int lId = aPacket.ReadInt();
         Quaternion lRotation = aPacket.ReadQuaternion();
 
-        EntityManager.Instance.GetEntity(lType, lId).Transform.rotation = lRotation;
+        EntityManager.Instance.GetEntity(lType, lId).Rotation = lRotation;
     }
 
     public static void PlayerDisconnected(Packet aPacket) {

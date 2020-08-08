@@ -9,15 +9,16 @@ using UnityEngine;
 /// </summary>
 public enum ServerPackets {
     WELCOME = 1,
-    SPAWN_PLAYER = 2,
-    ENTITY_POS = 3,
-    ENTITY_ROTATION = 4,
-    PLAYER_DISCONNECTED = 5,
-    ENTITY_HEALTH = 6,
-    ENTITY_RESPAWNED = 7,
-    PLAYER_WEAPON_EQUIPPED = 8,
-    PLAYER_WEAPON_FIRED = 9,
-    PLAYER_WEAPON_RELOADED = 10
+    ENTITY_SPAWN,
+    PLAYER_SPAWN,
+    ENTITY_POS,
+    ENTITY_ROTATION,
+    PLAYER_DISCONNECTED,
+    ENTITY_HEALTH,
+    ENTITY_RESPAWNED,
+    PLAYER_WEAPON_EQUIPPED,
+    PLAYER_WEAPON_FIRED,
+    PLAYER_WEAPON_RELOADED
 }
 
 /// <summary>
@@ -25,8 +26,8 @@ public enum ServerPackets {
 /// </summary>
 public enum ClientPackets {
     WELCOME_RECEIVED = 1,
-    PLAYER_MOVEMENT = 2,
-    PLAYER_ATTACK = 3
+    PLAYER_MOVEMENT,
+    PLAYER_ATTACK
 }
 
 public class Packet : IDisposable {

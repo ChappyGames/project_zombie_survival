@@ -12,11 +12,18 @@ public class Zombie : Entity {
 
     private Player target;
 
+    private void Start() {
+        // IDs should start at 1
+        Initialize(EntityManager.Instance.GetEntityCount((int)EntityType.ENTITY_ZOMBIE) + 1);
+    }
+
     public void Initialize(int aId) {
         base.Initialize(aId, EntityType.ENTITY_ZOMBIE);
 
         fov = GetComponent<FieldOfView>();
         nav = GetComponent<NavMeshAgent>();
+
+        nav.speed = rawMoveSpeed;
     }
 
     protected override void FixedUpdate() {
@@ -36,7 +43,11 @@ public class Zombie : Entity {
         } else {
 
             // Navigate to target player. 
+            nav.destination = target.transform.position;
         }
+
+        ServerSend.EntityPosition(this);
+        ServerSend.EntityRotation(this);
     }
 
     private void OnTargetDeath() {

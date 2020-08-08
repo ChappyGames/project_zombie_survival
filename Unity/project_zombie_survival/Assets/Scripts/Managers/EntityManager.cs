@@ -55,6 +55,10 @@ public class EntityManager : Singleton<EntityManager> {
         return lEntityRemoved;
     }
 
+    public bool UnregisterEntity(IEntity aEntity) {
+        return UnregisterEntity((int)aEntity.Type, aEntity.ID);
+    }
+
     public IEntity GetEntity(int aEntityType, int aEntityId) {
         IEntity lEntity = null;
 

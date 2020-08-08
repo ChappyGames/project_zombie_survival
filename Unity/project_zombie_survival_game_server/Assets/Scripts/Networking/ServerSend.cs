@@ -57,12 +57,23 @@ public class ServerSend {
     }
 
     public static void SpawnPlayer(int aToClient, Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.SPAWN_PLAYER)) {
+        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_SPAWN)) {
             lPacket.Write(aPlayer.ID);
             lPacket.Write(aPlayer.username);
             lPacket.Write(aPlayer.transform.position);
             lPacket.Write(aPlayer.transform.rotation);
             lPacket.Write(aPlayer.attack.CurrentWeapon.ID);
+
+            SendTCPData(aToClient, lPacket);
+        }
+    }
+
+    public static void SpawnEntity(int aToClient, Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_SPAWN)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
+            lPacket.Write(aEntity.transform.position);
+            lPacket.Write(aEntity.transform.rotation);
 
             SendTCPData(aToClient, lPacket);
         }

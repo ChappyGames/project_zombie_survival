@@ -18,6 +18,17 @@ public class Player : Entity {
         OnEntityDeath.AddListener(PlayerDeath);
 
         attack.Initialize(this);
+
+        SpawnAllEntitiesToPlayerClient();
+    }
+
+    private void SpawnAllEntitiesToPlayerClient() {
+        //TODO: This spawns all server entities to the client INCLUDING the client entity itself. We should skip that one instance.
+        EntityManager.Instance.InvokeOnAllEntities((lEntity) => { lEntity.ServerSpawnEntity(id); });
+    }
+
+    public override void ServerSpawnEntity(int aToClient) {
+        ServerSend.SpawnPlayer(aToClient, this);
     }
 
     protected override void FixedUpdate() {
@@ -68,6 +79,5 @@ public class Player : Entity {
 
         health = maxHealth;
         ServerSend.EntityRespawned(this);
-        
     }
 }

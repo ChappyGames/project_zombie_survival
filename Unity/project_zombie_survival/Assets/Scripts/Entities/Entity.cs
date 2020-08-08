@@ -11,7 +11,8 @@ public enum EntityType {
 public interface IEntity {
     int ID { get; }
     EntityType Type { get; }
-    Transform Transform { get; }
+    Vector3 Position { get; set; }
+    Quaternion Rotation { get; set; }
 
     void SetHealth(float aHealth);
     void OnRespawn();
@@ -27,7 +28,8 @@ public class Entity : MonoBehaviour, IEntity {
 
     public int ID { get { return id; } }
     public EntityType Type { get { return type; } }
-    public virtual Transform Transform { get { return transform; } }
+    public virtual Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+    public virtual Quaternion Rotation { get { return transform.rotation; } set { transform.rotation = value; } }
     public float MaxHealth { get { return maxHealth; } }
     public float Health { get { return health; } }
 
@@ -37,6 +39,8 @@ public class Entity : MonoBehaviour, IEntity {
         type = aType;
 
         health = maxHealth;
+
+        EntityManager.Instance.RegisterEntity(this);
     }
 
     public virtual void SetHealth(float aHealth) {
@@ -50,4 +54,8 @@ public class Entity : MonoBehaviour, IEntity {
     protected virtual void OnDie() {}
 
     public virtual void OnRespawn() {}
+
+    protected virtual void OnDestroy() {
+        EntityManager.Instance.UnregisterEntity(this);
+    }
 }

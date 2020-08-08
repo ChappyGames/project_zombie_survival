@@ -165,27 +165,12 @@ public class Client {
     public void SendIntoGame(string aPlayerName) {
         player = NetworkManager.Instance.InstantiatePlayer();
         player.Initialize(id, aPlayerName);
-
-        foreach (Client lClient in Server.clients.Values) {
-            if (lClient.player != null) {
-                if (lClient.id != id) {
-                    ServerSend.SpawnPlayer(id, lClient.player);
-                }
-            }
-        }
-
-        foreach (Client lClient in Server.clients.Values) {
-            if (lClient.player != null) {
-                ServerSend.SpawnPlayer(lClient.id, player);
-            }
-        }
     }
 
     private void Disconnect() {
         Debug.Log($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
 
         ThreadManager.ExecuteOnMainThread(() => {
-
             UnityEngine.Object.Destroy(player.gameObject);
             player = null;
         });
