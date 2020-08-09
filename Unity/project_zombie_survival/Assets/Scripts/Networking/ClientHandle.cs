@@ -11,7 +11,6 @@ public class ClientHandle : MonoBehaviour {
 
         Debug.Log($"[Client Handle] - Message from server: {lMessage}");
         Client.instance.id = lMyId;
-        //TODO: send welcome received packet
         ClientSend.WelcomeReceived();
 
         Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
@@ -19,6 +18,10 @@ public class ClientHandle : MonoBehaviour {
 
     public static void SpawnPlayer(Packet aPacket) {
         int lId = aPacket.ReadInt();
+        // Quick fix for the issue where the server sends two spawn player packets for the client.
+        if (EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
+            return;
+        }
         string lUsername = aPacket.ReadString();
         Vector3 lPosition = aPacket.ReadVector3();
         Quaternion lRotation = aPacket.ReadQuaternion();
@@ -33,7 +36,7 @@ public class ClientHandle : MonoBehaviour {
         Vector3 lPosition = aPacket.ReadVector3();
         Quaternion lRotation = aPacket.ReadQuaternion();
 
-
+        GameManager.Instance.SpawnEntity(lId, lType, "zombie", lPosition, lRotation);
     }
 
     public static void EntityPosition(Packet aPacket) {
@@ -41,15 +44,26 @@ public class ClientHandle : MonoBehaviour {
         int lId = aPacket.ReadInt();
         Vector3 lPosition = aPacket.ReadVector3();
 
-        EntityManager.Instance.GetEntity(lType, lId).Position = lPosition;
+        IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
+        if (lEntity != null) {
+            lEntity.Position = lPosition;
+        }
     }
 
     public static void EntityRotation(Packet aPacket) {
+        // Quick fix for the issue where the server sends rotation packets for the client.
         int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
+
+        if (lType == (int)EntityType.ENTITY_PLAYER && lId == Client.instance.id) {
+            return;
+        }
         Quaternion lRotation = aPacket.ReadQuaternion();
 
-        EntityManager.Instance.GetEntity(lType, lId).Rotation = lRotation;
+        IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
+        if (lEntity != null) {
+            lEntity.Rotation = lRotation;
+        }
     }
 
     public static void PlayerDisconnected(Packet aPacket) {

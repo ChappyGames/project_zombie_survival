@@ -143,12 +143,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42064fab68584a348a0c01dbd996dfda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 10
   playerObj: {fileID: 8323573719470617013}
   playerAudioSource: {fileID: 2550718412955502318}
-  id: 0
   username: 
-  health: 0
-  maxHealth: 10
 --- !u!114 &2817119555942016300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 3658788737733200628}
   playerModel: {fileID: 8323573719470617013}
+  parent: {fileID: 0}
   cameraPosOffset: {x: 0, y: 20, z: -10}
 --- !u!82 &2550718412955502318
 AudioSource:

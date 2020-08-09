@@ -12,7 +12,7 @@ public enum AmmoType {
     PISTOL_32
 }
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/New Weapon")]
+[CreateAssetMenu(menuName = "Project Zombie Survival/Items/Weapons/New Weapon")]
 public class Weapon : ScriptableObject {
 
     [SerializeField] private string id;

@@ -227,6 +227,7 @@ public class Client : MonoBehaviour {
     private void InitializeClientData() {
         packetHandlers = new Dictionary<int, PacketHandler>() {
             { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
+            { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.SpawnEntity },
             { (int)ServerPackets.PLAYER_SPAWN, ClientHandle.SpawnPlayer },
             { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
             { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },

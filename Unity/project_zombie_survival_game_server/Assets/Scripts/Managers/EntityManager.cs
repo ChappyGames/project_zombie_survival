@@ -27,6 +27,7 @@ public class EntityManager : Singleton<EntityManager> {
         if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
             entities[(int)aEntity.Type].Add(aEntity.ID, aEntity);
             lEntityAdded = true;
+            Debug.Log($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' registered.");
         }
         else {
             Debug.LogError($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' already exists.");

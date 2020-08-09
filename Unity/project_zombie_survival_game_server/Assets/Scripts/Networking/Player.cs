@@ -14,9 +14,6 @@ public class Player : Entity {
         username = aUsername;
         inputs = new bool[4];
 
-        OnEntityDamaged.AddListener(PlayerDamaged);
-        OnEntityDeath.AddListener(PlayerDeath);
-
         attack.Initialize(this);
 
         SpawnAllEntitiesToPlayerClient();
@@ -33,6 +30,10 @@ public class Player : Entity {
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
+
+        if (health <= 0f) {
+            return;
+        }
 
         Vector2 lInputDirection = Vector2.zero;
         if (inputs[0]) {
@@ -63,21 +64,5 @@ public class Player : Entity {
     public void SetInput(bool[] aInput, Quaternion aRotation) {
         inputs = aInput;
         transform.rotation = aRotation;
-    }
-
-    private void PlayerDamaged(float aDamage) {
-        ServerSend.EntityHealth(this);
-    }
-
-    private void PlayerDeath() {
-        ServerSend.EntityPosition(this);
-        StartCoroutine(Respawn());
-    }
-
-    private IEnumerator Respawn() {
-        yield return new WaitForSeconds(5f);
-
-        health = maxHealth;
-        ServerSend.EntityRespawned(this);
     }
 }

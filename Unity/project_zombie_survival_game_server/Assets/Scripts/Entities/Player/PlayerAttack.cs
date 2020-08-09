@@ -49,10 +49,10 @@ public class PlayerAttack : MonoBehaviour {
         Debug.Log($"[Player Attack] - Player '{parent.username}' has started attacking.");
         Debug.DrawRay(attackOrigin.position, aViewDirection, Color.green, 5f, false);
         if (Physics.Raycast(attackOrigin.position, aViewDirection, out RaycastHit aHit)) {
-            Player lPlayerHit = aHit.collider.GetComponentInParent<Player>();
-            if (lPlayerHit != null) {
-                Debug.Log($"[Player Attack] - Player '{parent.username}' has hit player '{lPlayerHit.username}' for {CurrentWeapon.Damage} damage.");
-                lPlayerHit.TakeDamage(CurrentWeapon.Damage);
+            Entity lEntityHit = aHit.collider.GetComponentInParent<Entity>();
+            if (lEntityHit != null) {
+                Debug.Log($"[Player Attack] - Player '{parent.username}' has hit entity '{lEntityHit.Type}' with ID '{lEntityHit.ID}' for {CurrentWeapon.Damage} damage.");
+                lEntityHit.TakeDamage(CurrentWeapon.Damage);
             }
         }
 

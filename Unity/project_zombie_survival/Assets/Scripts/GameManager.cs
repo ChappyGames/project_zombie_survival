@@ -13,12 +13,19 @@ public class GameManager : Singleton<GameManager> {
         GameObject lPlayer;
 
         if (aId == Client.instance.id) {
-            lPlayer = Instantiate(localPlayerPrefab, aPosition, aRotation);
+            //lPlayer = Instantiate(localPlayerPrefab, aPosition, aRotation);
+            lPlayer = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData("player_local").EntityObject, aPosition, aRotation);
         } else {
-            lPlayer = Instantiate(playerPrefab, aPosition, aRotation);
+            //lPlayer = Instantiate(playerPrefab, aPosition, aRotation);
+            lPlayer = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData("player_other").EntityObject, aPosition, aRotation);
         }
 
         lPlayer.GetComponent<PlayerManager>().Initialize(aId, aUsername, aWeaponId);
         players.Add(aId, lPlayer.GetComponent<PlayerManager>());
+    }
+
+    public void SpawnEntity(int aId, int aType, string aEntityId, Vector3 aPosition, Quaternion aRotation) {
+        GameObject lEntity = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData(aEntityId).EntityObject, aPosition, aRotation);
+        lEntity.GetComponent<Entity>().Initialize(aId, (EntityType)aType);
     }
 }

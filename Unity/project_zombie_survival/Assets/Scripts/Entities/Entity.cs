@@ -20,7 +20,7 @@ public interface IEntity {
 
 public class Entity : MonoBehaviour, IEntity {
 
-    protected float maxHealth;
+    [SerializeField] protected float maxHealth;
     protected float health;
 
     protected int id;

@@ -41,6 +41,9 @@ public class Entity : MonoBehaviour, IEntity {
 
         health = maxHealth;
 
+        OnEntityDamaged.AddListener(EntityDamaged);
+        OnEntityDeath.AddListener(EntityDeath);
+
         EntityManager.Instance.RegisterEntity(this);
         SpawnToAllExistingPlayers();
     }
@@ -77,6 +80,22 @@ public class Entity : MonoBehaviour, IEntity {
         }
 
         OnEntityDamaged.Invoke(aDamage);
+    }
+
+    private void EntityDamaged(float aDamage) {
+        ServerSend.EntityHealth(this);
+    }
+
+    private void EntityDeath() {
+        ServerSend.EntityPosition(this);
+        StartCoroutine(Respawn());
+    }
+
+    private IEnumerator Respawn() {
+        yield return new WaitForSeconds(5f);
+
+        health = maxHealth;
+        ServerSend.EntityRespawned(this);
     }
 
     protected virtual void OnDestroy() {

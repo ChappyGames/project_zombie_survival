@@ -95,7 +95,7 @@ public class ServerSend {
             lPacket.Write(aEntity.ID);
             lPacket.Write(aEntity.transform.rotation);
 
-            SendUDPDataToAll(aEntity.ID, lPacket);
+            SendUDPDataToAll(lPacket);
         }
     }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/New Item Database")]
+[CreateAssetMenu(menuName = "Project Zombie Survival/Items/New Item Database")]
 public class ItemDatabase : ScriptableObject {
     [Header("Weapons")]
     [SerializeField] private List<Weapon> weapons;

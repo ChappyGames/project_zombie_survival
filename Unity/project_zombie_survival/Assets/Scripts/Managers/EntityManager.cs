@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class EntityManager : Singleton<EntityManager> {
 
+    [SerializeField] private EntityDatabase entityDatabase;
+
     private Dictionary<int, Dictionary<int, IEntity>> entities;
+
+    public EntityDatabase EntityDatabase => entityDatabase;
 
     protected override void Awake() {
         base.Awake();
@@ -13,6 +17,7 @@ public class EntityManager : Singleton<EntityManager> {
     }
 
     private void Initialize() {
+        entityDatabase.Initialize();
         entities = new Dictionary<int, Dictionary<int, IEntity>>();
     }
 
@@ -44,12 +49,12 @@ public class EntityManager : Singleton<EntityManager> {
                 lEntityRemoved = true;
             }
             else {
-                Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' with ID '{aEntityId}' does not exist.");
+                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
             }
 
         }
         else {
-            Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' does not exist.");
+            Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
         }
 
         return lEntityRemoved;
@@ -68,12 +73,12 @@ public class EntityManager : Singleton<EntityManager> {
                 lEntity = entities[aEntityType][aEntityId];
             }
             else {
-                Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' with ID '{aEntityId}' does not exist.");
+                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
             }
 
         }
         else {
-            Debug.LogError($"[Entity Manager] - Entity type '{aEntityType}' does not exist.");
+            Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
         }
 
         return lEntity;

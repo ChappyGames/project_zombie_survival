@@ -24,12 +24,18 @@ public class Zombie : Entity {
         nav = GetComponent<NavMeshAgent>();
 
         nav.speed = rawMoveSpeed;
+
+        OnEntityDeath.AddListener(OnZombieDeath);
     }
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
 
-         if (target == null) {
+        if (health <= 0f) {
+            return;
+        }
+
+        if (target == null) {
             
             // Fetch a visible player if any.
             for (int i = 0; i < fov.visibleTargets.Count; i++) {
@@ -55,10 +61,8 @@ public class Zombie : Entity {
         target = null;
     }
 
-    private IEnumerator Respawn() {
-        yield return new WaitForSeconds(5f);
-
-        health = maxHealth;
+    private void OnZombieDeath() {
+        target = null;
+        nav.SetDestination(transform.position);
     }
-
 }
