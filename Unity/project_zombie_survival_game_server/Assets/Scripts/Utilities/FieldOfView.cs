@@ -26,6 +26,7 @@ public class FieldOfView : MonoBehaviour {
         Collider[] lTargets = Physics.OverlapSphere(transform.position, viewRadius);
 
         for (int i = 0; i < lTargets.Length; i++) {
+
             Transform lTarget = lTargets[i].transform;
             Vector3 lDirToTarget = (lTarget.position - transform.position).normalized;
             if (Vector3.Angle(transform.forward, lDirToTarget) < viewAngle / 2.0f) {

@@ -7,6 +7,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Zombie : Entity {
 
+    [Header("Zombie Properties")]
+    public ZombieAttack attack;
+
     private FieldOfView fov;
     private NavMeshAgent nav;
 
@@ -24,6 +27,8 @@ public class Zombie : Entity {
         nav = GetComponent<NavMeshAgent>();
 
         nav.speed = rawMoveSpeed;
+
+        attack.Initialize(this);
 
         OnEntityDeath.AddListener(OnZombieDeath);
     }
@@ -57,7 +62,8 @@ public class Zombie : Entity {
     }
 
     private void OnTargetDeath() {
-        target.OnEntityDeath.RemoveListener(OnTargetDeath);
+        //Double check this setup at some point.
+        target?.OnEntityDeath.RemoveListener(OnTargetDeath);
         target = null;
     }
 

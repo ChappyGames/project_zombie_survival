@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Entity {
+    [Header("Player Properties")]
     public string username;
-
     public PlayerAttack attack;
 
     private bool[] inputs;

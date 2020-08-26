@@ -135,9 +135,10 @@ public class ServerSend {
         }
     }
 
-    public static void WeaponFire(Player aPlayer) {
-        using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_FIRED)) {
-            lPacket.Write(aPlayer.ID);
+    public static void WeaponFire(Entity aEntity) {
+        using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_ATTACK)) {
+            lPacket.Write((int)aEntity.Type);
+            lPacket.Write(aEntity.ID);
 
             //TODO: At some point, we shouldn't have to send this packet to the client firing their weapon since it should be handled on the client side.
             SendTCPDataToAll(lPacket);
