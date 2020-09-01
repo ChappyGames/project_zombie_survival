@@ -26,7 +26,7 @@ public class ItemDatabase : ScriptableObject {
     public Weapon GetWeapon(string aWeaponId) {
         Weapon lWeapon = null;
 
-        if (weaponsById.ContainsKey(aWeaponId) == true) {
+        if (string.IsNullOrEmpty(aWeaponId) == false && weaponsById.ContainsKey(aWeaponId) == true) {
             lWeapon = weaponsById[aWeaponId];
         } else {
             Debug.LogError($"[Item Database] - ERROR: Weapon ID '{aWeaponId}' not found.");

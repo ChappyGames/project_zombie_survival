@@ -2,37 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ServerHandle {
-    public static void WelcomeReceived(int aFromClient, Packet aPacket) {
+namespace ChappyGames.Networking {
 
-        int lClientIdCheck = aPacket.ReadInt();
-        string lUsername = aPacket.ReadString();
+    public class ServerHandle {
+        public static void WelcomeReceived(int aFromClient, Packet aPacket) {
 
-        Debug.Log($"{Server.clients[aFromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {aFromClient}.");
-        if (aFromClient != lClientIdCheck) {
-            Debug.Log($"Player \"{lUsername}\" (ID: {aFromClient}) has assumed the wrong client ID ({lClientIdCheck})!");
+            int lClientIdCheck = aPacket.ReadInt();
+            string lUsername = aPacket.ReadString();
+
+            Debug.Log($"{Server.clients[aFromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {aFromClient}.");
+            if (aFromClient != lClientIdCheck) {
+                Debug.Log($"Player \"{lUsername}\" (ID: {aFromClient}) has assumed the wrong client ID ({lClientIdCheck})!");
+            }
+            else {
+                Debug.Log($"Hello {lUsername}!");
+            }
+
+            Server.clients[aFromClient].SendIntoGame(lUsername);
         }
-        else {
-            Debug.Log($"Hello {lUsername}!");
+
+        public static void PlayerMovement(int aFromClient, Packet aPacket) {
+
+            bool[] lInputs = new bool[aPacket.ReadInt()];
+            for (int i = 0; i < lInputs.Length; i++) {
+                lInputs[i] = aPacket.ReadBool();
+            }
+            Quaternion lRotation = aPacket.ReadQuaternion();
+
+            Server.clients[aFromClient].player.SetInput(lInputs, lRotation);
         }
 
-        Server.clients[aFromClient].SendIntoGame(lUsername);
-    }
+        public static void PlayerAttack(int aFromClient, Packet aPacket) {
+            Vector3 lAttackDirection = aPacket.ReadVector3();
 
-    public static void PlayerMovement(int aFromClient, Packet aPacket) {
-
-        bool[] lInputs = new bool[aPacket.ReadInt()];
-        for (int i = 0; i < lInputs.Length; i++) {
-            lInputs[i] = aPacket.ReadBool();
+            Server.clients[aFromClient].player.attack.TryPerformAttack(lAttackDirection);
         }
-        Quaternion lRotation = aPacket.ReadQuaternion();
-
-        Server.clients[aFromClient].player.SetInput(lInputs, lRotation);
-    }
-
-    public static void PlayerAttack(int aFromClient, Packet aPacket) {
-        Vector3 lAttackDirection = aPacket.ReadVector3();
-
-        Server.clients[aFromClient].player.attack.TryPerformAttack(lAttackDirection);
     }
 }

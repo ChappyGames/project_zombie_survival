@@ -13,12 +13,9 @@ public enum AmmoType {
 }
 
 [CreateAssetMenu(menuName = "Project Zombie Survival/New Weapon")]
-public class Weapon : ScriptableObject {
+public class Weapon : Item {
 
-    [SerializeField] private string id;
-    [SerializeField] private string weaponName;
-    [TextArea(3, 5)]
-    [SerializeField] private string weaponDescription;
+    [Header("Weapon Properties")]
 
     [SerializeField] private WeaponType weaponType;
 
@@ -38,7 +35,7 @@ public class Weapon : ScriptableObject {
     [SerializeField] private AudioClip fireSound;
     [SerializeField] private AudioClip reloadSound;
 
-    public string ID { get { return id; } }
+    public override ItemType Type { get { return ItemType.ITEM_WEAPON; } }
     public WeaponType WeaponType { get { return weaponType; } }
     public AmmoType AmmoType { get { return ammoType; } }
 

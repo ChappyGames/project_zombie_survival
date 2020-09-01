@@ -17,11 +17,10 @@ public class PlayerManager : Entity {
 
     public Weapon CurrentWeapon { get { return ItemManager.Instance.GetWeapon(currentWeaponId); } }
 
-    public void Initialize(int aId, string aUsername, string aWeaponId) {
+    public void Initialize(int aId, string aUsername) {
         base.Initialize(aId, EntityType.ENTITY_PLAYER);
 
         username = aUsername;
-        SetWeapon(aWeaponId);
     }
 
     public void SetWeapon(string aWeaponId) {

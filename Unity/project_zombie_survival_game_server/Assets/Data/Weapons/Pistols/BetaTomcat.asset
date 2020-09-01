@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: BetaTomcat
   m_EditorClassIdentifier: 
   id: pistol_beta_tomcat
-  weaponName: Beta Tomcat
-  weaponDescription: A small pocket pistol popular for concealed carrying, the Tomcat
-    was a great deterrent against would-be robbers due to its size, making it easily
-    concealable. However, it lacks the stopping power for killing zombies en masse,
-    and thus it's better known as a desperate last-resort weapon.
+  itemName: Beta Tomcat
+  itemDescription: This is a dumb pistol.
+  itemWeight: 1
+  worldModel: {fileID: 0}
   weaponType: 1
   ammoType: 1
   ammoCapacity: 7

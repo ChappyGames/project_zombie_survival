@@ -25,9 +25,8 @@ public class ClientHandle : MonoBehaviour {
         string lUsername = aPacket.ReadString();
         Vector3 lPosition = aPacket.ReadVector3();
         Quaternion lRotation = aPacket.ReadQuaternion();
-        string lWeaponId = aPacket.ReadString();
 
-        GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation, lWeaponId);
+        GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation);
     }
 
     public static void SpawnEntity(Packet aPacket) {

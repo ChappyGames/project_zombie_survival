@@ -42,7 +42,10 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 lPlayerToCursorDistance = lPointToLook - transform.position;
 
-        camera.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z) + lPlayerToCursorDistance * (parent.CurrentWeapon.Range / 100f);
+        camera.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z);
+        if (parent.CurrentWeapon != null) {
+            camera.transform.position += lPlayerToCursorDistance * (parent.CurrentWeapon.Range / 100f);
+        }
     }
 
     private void SendInputToServer() {

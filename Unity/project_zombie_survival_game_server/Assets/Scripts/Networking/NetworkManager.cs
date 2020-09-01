@@ -1,24 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ChappyGames.Entities;
 
-public class NetworkManager : Singleton<NetworkManager> {
+namespace ChappyGames.Networking {
 
-    public GameObject playerPrefab;
+    public class NetworkManager : Singleton<NetworkManager> {
 
-    private void Start() {
+        public GameObject playerPrefab;
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 30;
+        private void Start() {
 
-        Server.Start(50, 42069);
-    }
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = 30;
 
-    private void OnApplicationQuit() {
-        Server.Stop();
-    }
+            Server.Start(50, 42069);
+        }
 
-    public Player InstantiatePlayer() {
-        return Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+        private void OnApplicationQuit() {
+            Server.Stop();
+        }
+
+        public Player InstantiatePlayer() {
+            return Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<Player>();
+        }
     }
 }
