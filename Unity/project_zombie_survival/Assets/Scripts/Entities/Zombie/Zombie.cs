@@ -1,28 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using Mirror;
 
-public class Zombie : Entity {
+namespace ChappyGames.Entities {
 
-    public GameObject zombieObj;
-    public AudioSource zombieAudioSource;
+    public class Zombie : Mob {
 
-    public override void Initialize(int aId, EntityType aType) {
-        base.Initialize(aId, aType);
-    }
+        public GameObject zombieObj;
+        public AudioSource zombieAudioSource;
 
-    protected override void OnDie() {
-        base.OnDie();
-        Debug.Log("Zombie Dying...");
-        zombieObj.SetActive(false);
-    }
+        public override void Initialize(int aId, EntityType aType) {
+            base.Initialize(aId, aType);
+        }
 
-    public override void OnRespawn() {
-        base.OnRespawn();
-        Debug.Log("Zombie Respawning...");
-        zombieObj.SetActive(true);
-        SetHealth(maxHealth);
+        protected override void OnDie() {
+            base.OnDie();
+            Debug.Log("Zombie Dying...");
+            zombieObj.SetActive(false);
+        }
+
+        public override void OnRespawn() {
+            base.OnRespawn();
+            Debug.Log("Zombie Respawning...");
+            zombieObj.SetActive(true);
+            SetHealth(maxHealth);
+        }
     }
 }

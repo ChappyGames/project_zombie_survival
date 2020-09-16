@@ -19,7 +19,7 @@ namespace ChappyGames.Entities {
 
         public float Health { get { return health; } }
         public float MoveSpeed { get { return rawMoveSpeed / Constants.TICKS_PER_SECOND; } }
-        public Inventory Inventory => inventory;
+        public Inventory Inventory { get { return inventory; } }
         public OnEntityDamagedEvent OnEntityDamaged { get; private set; } = new OnEntityDamagedEvent();
         public UnityEvent OnEntityDeath { get; private set; } = new UnityEvent();
 
@@ -27,7 +27,7 @@ namespace ChappyGames.Entities {
             base.Initialize(aId, aType);
 
             health = maxHealth;
-            inventory = new Inventory();
+            inventory = new Inventory(this);
 
             OnEntityDamaged.AddListener(EntityDamaged);
             OnEntityDeath.AddListener(EntityDeath);

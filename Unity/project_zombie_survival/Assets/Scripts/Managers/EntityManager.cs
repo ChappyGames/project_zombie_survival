@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public class EntityManager : Singleton<EntityManager> {
 
     [SerializeField] private EntityDatabase entityDatabase;
 
-    private Dictionary<int, Dictionary<int, IEntity>> entities;
+    private Dictionary<int, Dictionary<int, Entity>> entities;
 
     public EntityDatabase EntityDatabase => entityDatabase;
 
@@ -18,14 +20,14 @@ public class EntityManager : Singleton<EntityManager> {
 
     private void Initialize() {
         entityDatabase.Initialize();
-        entities = new Dictionary<int, Dictionary<int, IEntity>>();
+        entities = new Dictionary<int, Dictionary<int, Entity>>();
     }
 
-    public bool RegisterEntity(IEntity aEntity) {
+    public bool RegisterEntity(Entity aEntity) {
         bool lEntityAdded = false;
 
         if (!entities.ContainsKey((int)aEntity.Type)) {
-            entities.Add((int)aEntity.Type, new Dictionary<int, IEntity>());
+            entities.Add((int)aEntity.Type, new Dictionary<int, Entity>());
         }
 
         if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
@@ -60,7 +62,7 @@ public class EntityManager : Singleton<EntityManager> {
         return lEntityRemoved;
     }
 
-    public bool UnregisterEntity(IEntity aEntity) {
+    public bool UnregisterEntity(Entity aEntity) {
         return UnregisterEntity((int)aEntity.Type, aEntity.ID);
     }
 
@@ -84,5 +86,9 @@ public class EntityManager : Singleton<EntityManager> {
         return lEntity;
     }
 
+    // This is fucked. Refactor.
+    public Mob GetMob(int aEntityType, int aEntityId) {
+        return GetEntity(aEntityType, aEntityId) as Mob;
+    }
 
 }

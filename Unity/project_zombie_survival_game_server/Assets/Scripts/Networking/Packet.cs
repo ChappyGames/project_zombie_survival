@@ -18,7 +18,10 @@ public enum ServerPackets {
     ENTITY_RESPAWNED,
     PLAYER_WEAPON_EQUIPPED,
     ENTITY_ATTACK,
-    PLAYER_WEAPON_RELOADED
+    PLAYER_WEAPON_RELOADED,
+    INVENTORY_ITEM_ADDED,
+    INVENTORY_ITEM_REMOVED,
+    INVENTORY_ITEM_USED
 }
 
 /// <summary>
@@ -27,7 +30,8 @@ public enum ServerPackets {
 public enum ClientPackets {
     WELCOME_RECEIVED = 1,
     PLAYER_MOVEMENT,
-    PLAYER_ATTACK
+    PLAYER_ATTACK,
+    PLAYER_ITEM_USED
 }
 
 public class Packet : IDisposable {

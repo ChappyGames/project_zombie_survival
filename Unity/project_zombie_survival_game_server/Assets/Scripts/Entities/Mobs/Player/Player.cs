@@ -16,7 +16,7 @@ namespace ChappyGames.Entities {
             username = aUsername;
             inputs = new bool[4];
 
-            Inventory.OnPrimaryWeaponChanged.AddListener(OnPrimaryWeaponEquipped);
+            //Inventory.OnPrimaryWeaponChanged.AddListener(OnPrimaryWeaponEquipped);
             attack.Initialize(this);
 
             SpawnAllEntitiesToPlayerClient();

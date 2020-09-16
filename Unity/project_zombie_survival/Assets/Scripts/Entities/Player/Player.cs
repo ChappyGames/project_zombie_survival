@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using Mirror;
 
-public class Player : Entity {
+using ChappyGames.Entities;
+
+public class Player : Mob {
 
     [SerializeField] private PlayerAttack attack;
     [SerializeField] private Rigidbody rb;

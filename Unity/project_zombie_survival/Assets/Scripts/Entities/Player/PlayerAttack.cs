@@ -8,18 +8,20 @@ public class PlayerAttack : NetworkBehaviour {
     [SerializeField] private Player player;
     [SerializeField] private AudioSource weaponAudioSource;
 
-    [SerializeField] private Weapon weapon;
+    
     [SerializeField] private GameObject attackPoint;
 
     private int currentAmmo;
 
-    public int MaxAmmo => weapon.AmmoCapacity;
-    public int Damage => weapon.Damage;
-    public float ReloadSpeed => weapon.ReloadSpeed;
-    public float FiringSpeed => weapon.FiringSpeed;
-    public float Accuracy => weapon.Accuracy;
-    public float Range => weapon.Range;
-    public float CriticalChance => weapon.CriticalChance;
+    private Weapon Weapon { get { return player.Inventory.PrimaryWeapon; } }
+
+    public int MaxAmmo => Weapon.AmmoCapacity;
+    public int Damage => Weapon.Damage;
+    public float ReloadSpeed => Weapon.ReloadSpeed;
+    public float FiringSpeed => Weapon.FiringSpeed;
+    public float Accuracy => Weapon.Accuracy;
+    public float Range => Weapon.Range;
+    public float CriticalChance => Weapon.CriticalChance;
 
     private bool readyToFire = true;
 
@@ -102,7 +104,7 @@ public class PlayerAttack : NetworkBehaviour {
     }
 
     private void RpcPlayWeaponAttackSound() {
-        weaponAudioSource.clip = weapon.FireSound;
+        weaponAudioSource.clip = Weapon.FireSound;
         weaponAudioSource.Play();
     }
 
@@ -116,7 +118,7 @@ public class PlayerAttack : NetworkBehaviour {
 
         readyToFire = false;
         Debug.Log("reloading");
-        weaponAudioSource.clip = weapon.ReloadSound;
+        weaponAudioSource.clip = Weapon.ReloadSound;
         weaponAudioSource.Play();
         yield return new WaitForSeconds(ReloadSpeed);
         currentAmmo = MaxAmmo;

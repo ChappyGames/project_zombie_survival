@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public class ClientHandle : MonoBehaviour { 
 
     public static void Welcome(Packet aPacket) {
@@ -77,21 +79,50 @@ public class ClientHandle : MonoBehaviour {
         int lId = aPacket.ReadInt();
         float lHealth = aPacket.ReadFloat();
 
-        EntityManager.Instance.GetEntity(lType, lId).SetHealth(lHealth);
+        EntityManager.Instance.GetMob(lType, lId).SetHealth(lHealth);
     }
 
     public static void EntityRespawned(Packet aPacket) {
         int lType = aPacket.ReadInt();
         int lId = aPacket.ReadInt();
 
-        EntityManager.Instance.GetEntity(lType, lId).OnRespawn();
+        EntityManager.Instance.GetMob(lType, lId).OnRespawn();
+    }
+
+    public static void InventoryItemAdded(Packet aPacket) {
+        int lMobType = aPacket.ReadInt();
+        int lMobId = aPacket.ReadInt();
+        int lItemType = aPacket.ReadInt();
+        string lItemId = aPacket.ReadString();
+        int lItemStack = aPacket.ReadInt();
+
+        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.AddItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
+    }
+
+    public static void InventoryItemUsed(Packet aPacket) {
+        int lMobType = aPacket.ReadInt();
+        int lMobId = aPacket.ReadInt();
+        int lItemType = aPacket.ReadInt();
+        string lItemId = aPacket.ReadString();
+
+        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.UseItem(new InventoryItem((ItemType)lItemType, lItemId));
+    }
+
+    public static void InventoryItemRemoved(Packet aPacket) {
+        int lMobType = aPacket.ReadInt();
+        int lMobId = aPacket.ReadInt();
+        int lItemType = aPacket.ReadInt();
+        string lItemId = aPacket.ReadString();
+        int lItemStack = aPacket.ReadInt();
+
+        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.RemoveItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
     }
 
     public static void WeaponEquipped(Packet aPacket) {
         int lId = aPacket.ReadInt();
         string lWeaponId = aPacket.ReadString();
 
-        GameManager.players[lId].SetWeapon(lWeaponId);
+        GameManager.players[lId].Inventory.SetWeapon(lWeaponId);
     }
 
     public static void WeaponFired(Packet aPacket) {

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public class GameManager : Singleton<GameManager> {
 
     public static Dictionary<int, PlayerManager> players = new Dictionary<int, PlayerManager>();

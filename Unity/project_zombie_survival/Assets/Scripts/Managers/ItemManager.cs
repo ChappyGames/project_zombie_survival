@@ -12,7 +12,17 @@ public class ItemManager : Singleton<ItemManager> {
         itemDatabase.Initialize();
     }
 
-    public Weapon GetWeapon(string aWeaponId) {
-        return itemDatabase.GetWeapon(aWeaponId);
+    public Item GetItem(ItemType aType, string aItemId) {
+        Item lItem = null;
+        switch (aType) {
+            case ItemType.ITEM_BASIC:
+                lItem = itemDatabase.GetItem(aItemId);
+                break;
+            case ItemType.ITEM_WEAPON:
+                lItem = itemDatabase.GetWeapon(aItemId);
+                break;
+        }
+
+        return lItem;
     }
 }

@@ -128,6 +128,41 @@ namespace ChappyGames.Networking {
             }
         }
 
+        public static void InventoryItemAdded(Mob aMob, InventoryItem aItem) {
+            using (Packet lPacket = new Packet((int)ServerPackets.INVENTORY_ITEM_ADDED)) {
+                lPacket.Write((int)aMob.Type);
+                lPacket.Write(aMob.ID);
+                lPacket.Write((int)aItem.type);
+                lPacket.Write(aItem.itemId);
+                lPacket.Write(aItem.stack);
+
+                SendTCPDataToAll(lPacket);
+            }
+        }
+
+        public static void InventoryItemUsed(Mob aMob, InventoryItem aItem) {
+            using (Packet lPacket = new Packet((int)ServerPackets.INVENTORY_ITEM_USED)) {
+                lPacket.Write((int)aMob.Type);
+                lPacket.Write(aMob.ID);
+                lPacket.Write((int)aItem.type);
+                lPacket.Write(aItem.itemId);
+
+                SendTCPDataToAll(lPacket);
+            }
+        }
+
+        public static void InventoryItemRemoved(Mob aMob, InventoryItem aItem) {
+            using (Packet lPacket = new Packet((int)ServerPackets.INVENTORY_ITEM_REMOVED)) {
+                lPacket.Write((int)aMob.Type);
+                lPacket.Write(aMob.ID);
+                lPacket.Write((int)aItem.type);
+                lPacket.Write(aItem.itemId);
+                lPacket.Write(aItem.stack);
+
+                SendTCPDataToAll(lPacket);
+            }
+        }
+
         public static void WeaponEquipped(Player aPlayer) {
             using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_WEAPON_EQUIPPED)) {
                 lPacket.Write(aPlayer.ID);

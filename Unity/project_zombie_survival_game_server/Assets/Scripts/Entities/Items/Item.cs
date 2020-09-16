@@ -7,7 +7,7 @@ namespace ChappyGames.Entities {
 
         [Header("Item Properties")]
         [SerializeField] private string itemId;
-        [SerializeField] private int stack;
+        [SerializeField] private uint stack;
 
         public void Initialize(int aEntityId, string aItemId = null) {
             base.Initialize(aEntityId, EntityType.ENTITY_ITEM);

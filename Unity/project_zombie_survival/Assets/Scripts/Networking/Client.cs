@@ -235,8 +235,11 @@ public class Client : MonoBehaviour {
             { (int)ServerPackets.ENTITY_HEALTH, ClientHandle.EntityHealth },
             { (int)ServerPackets.ENTITY_RESPAWNED, ClientHandle.EntityRespawned },
             { (int)ServerPackets.PLAYER_WEAPON_EQUIPPED, ClientHandle.WeaponEquipped },
-            { (int)ServerPackets.PLAYER_WEAPON_FIRED, ClientHandle.WeaponFired },
-            { (int)ServerPackets.PLAYER_WEAPON_RELOADED, ClientHandle.WeaponReloaded }
+            { (int)ServerPackets.ENTITY_ATTACK, ClientHandle.WeaponFired },
+            { (int)ServerPackets.PLAYER_WEAPON_RELOADED, ClientHandle.WeaponReloaded },
+            { (int)ServerPackets.INVENTORY_ITEM_ADDED, ClientHandle.InventoryItemAdded },
+            { (int)ServerPackets.INVENTORY_ITEM_USED, ClientHandle.InventoryItemUsed },
+            { (int)ServerPackets.INVENTORY_ITEM_REMOVED, ClientHandle.InventoryItemRemoved }
         };
         Debug.Log("[Client] - Initialized packets.");
     }

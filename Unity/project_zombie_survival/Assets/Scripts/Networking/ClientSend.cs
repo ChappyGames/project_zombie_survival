@@ -44,5 +44,15 @@ public class ClientSend : MonoBehaviour {
             SendTCPData(lPacket);
         }
     }
+
+    public static void PlayerItemUsed(InventoryItem aItem) {
+        using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ITEM_USED)) {
+            lPacket.Write((int)aItem.type);
+            lPacket.Write(aItem.itemId);
+            lPacket.Write(aItem.stack);
+
+            SendTCPData(lPacket);
+        }
+    }
     #endregion
 }

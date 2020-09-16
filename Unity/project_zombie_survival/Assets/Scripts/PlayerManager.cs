@@ -2,45 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : Entity {
+namespace ChappyGames.Entities {
 
-    public GameObject playerObj;
+    public class PlayerManager : Mob {
 
-    public AudioSource playerAudioSource;
+        public GameObject playerObj;
 
-    public string username;
+        public AudioSource playerAudioSource;
 
-    private string currentWeaponId;
+        public string username;
 
-    public override Vector3 Position { get { return transform.position; } set { transform.position = value; } }
-    public override Quaternion Rotation { get { return playerObj.transform.rotation; } set { playerObj.transform.rotation = value; } }
+        public override Vector3 Position { get { return transform.position; } set { transform.position = value; } }
+        public override Quaternion Rotation { get { return playerObj.transform.rotation; } set { playerObj.transform.rotation = value; } }
 
-    public Weapon CurrentWeapon { get { return ItemManager.Instance.GetWeapon(currentWeaponId); } }
+        public Weapon CurrentWeapon { get { return Inventory.PrimaryWeapon; } }
 
-    public void Initialize(int aId, string aUsername) {
-        base.Initialize(aId, EntityType.ENTITY_PLAYER);
+        public void Initialize(int aId, string aUsername) {
+            base.Initialize(aId, EntityType.ENTITY_PLAYER);
 
-        username = aUsername;
-    }
+            username = aUsername;
+        }
 
-    public void SetWeapon(string aWeaponId) {
-        currentWeaponId = aWeaponId;
-    }
+        public void FireWeapon() {
+            if (CurrentWeapon != null) {
+                playerAudioSource.PlayOneShot(CurrentWeapon.FireSound);
+            }
+        }
 
-    public void FireWeapon() {
-        playerAudioSource.PlayOneShot(CurrentWeapon.FireSound);
-    }
+        public void ReloadWeapon() {
+            if (CurrentWeapon != null) {
+                playerAudioSource.PlayOneShot(CurrentWeapon.ReloadSound);
+            }
+        }
 
-    public void ReloadWeapon() {
-        playerAudioSource.PlayOneShot(CurrentWeapon.ReloadSound);
-    }
+        protected override void OnDie() {
+            playerObj.SetActive(false);
+        }
 
-    protected override void OnDie() {
-        playerObj.SetActive(false);
-    }
-
-    public override void OnRespawn() {
-        playerObj.SetActive(true);
-        SetHealth(maxHealth);
+        public override void OnRespawn() {
+            playerObj.SetActive(true);
+            SetHealth(maxHealth);
+        }
     }
 }

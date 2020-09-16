@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public enum WeaponType {
     NONE,
     PISTOL
@@ -50,4 +52,10 @@ public class Weapon : Item {
 
     public AudioClip FireSound { get { return fireSound; } }
     public AudioClip ReloadSound { get { return reloadSound; } }
+
+    public override void Use(Mob aMob) {
+        base.Use(aMob);
+
+        aMob.Inventory.SetWeapon(new InventoryItem(ItemType.ITEM_WEAPON, ID));
+    }
 }

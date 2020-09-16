@@ -29,6 +29,6 @@ public class Item : ScriptableObject {
     public GameObject WorldModel => worldModel;
 
     public virtual void Use(Mob aMob) {
+        // Pass the mob that is using this item.
     }
-
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public enum WeaponType {
     NONE,
     PISTOL
@@ -12,13 +14,10 @@ public enum AmmoType {
     PISTOL_32
 }
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/Items/Weapons/New Weapon")]
-public class Weapon : ScriptableObject {
+[CreateAssetMenu(menuName = "Project Zombie Survival/New Weapon")]
+public class Weapon : Item {
 
-    [SerializeField] private string id;
-    [SerializeField] private string weaponName;
-    [TextArea(3, 5)]
-    [SerializeField] private string weaponDescription;
+    [Header("Weapon Properties")]
 
     [SerializeField] private WeaponType weaponType;
 
@@ -38,7 +37,7 @@ public class Weapon : ScriptableObject {
     [SerializeField] private AudioClip fireSound;
     [SerializeField] private AudioClip reloadSound;
 
-    public string ID { get { return id; } }
+    public override ItemType Type { get { return ItemType.ITEM_WEAPON; } }
     public WeaponType WeaponType { get { return weaponType; } }
     public AmmoType AmmoType { get { return ammoType; } }
 
@@ -53,4 +52,10 @@ public class Weapon : ScriptableObject {
 
     public AudioClip FireSound { get { return fireSound; } }
     public AudioClip ReloadSound { get { return reloadSound; } }
+
+    public override void Use(Mob aMob) {
+        base.Use(aMob);
+
+        aMob.Inventory.SetWeapon(ID);
+    }
 }

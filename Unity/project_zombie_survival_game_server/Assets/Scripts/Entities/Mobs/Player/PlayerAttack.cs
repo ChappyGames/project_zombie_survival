@@ -21,13 +21,16 @@ namespace ChappyGames.Entities {
 
         public void Initialize(Player aPlayer) {
             base.Initialize(aPlayer);
-            Parent.Inventory.SetWeapon("pistol_beta_tomcat");
+            InventoryItem lTestItem = new InventoryItem(ItemType.ITEM_WEAPON, "pistol_beta_tomcat");
+            Parent.Inventory.AddItem(lTestItem);
+            Parent.Inventory.UseItem(lTestItem);
             currentAmmo = CurrentWeapon.AmmoCapacity;
             Debug.Log($"[Player Attack] - Player '{aPlayer.username}' equipped weapon '{CurrentWeapon.ID}'.");
         }
 
         public override bool TryPerformAttack(Vector3 aViewDirection) {
-            if (readyToAttack == false) {
+            
+            if (readyToAttack == false || CurrentWeapon == false) {
                 return false;
             }
 

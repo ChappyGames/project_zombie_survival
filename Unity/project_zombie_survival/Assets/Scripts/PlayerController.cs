@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Entities;
+
 public class PlayerController : MonoBehaviour {
 
     public Camera camera;
