@@ -2,27 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemManager : Singleton<ItemManager> {
+namespace ChappyGames.Client.Items {
 
-    [SerializeField] private ItemDatabase itemDatabase;
+    public class ItemManager : Singleton<ItemManager> {
 
-    protected override void Awake() {
-        base.Awake();
+        [SerializeField] private ItemDatabase itemDatabase;
 
-        itemDatabase.Initialize();
-    }
+        protected override void Awake() {
+            base.Awake();
 
-    public Item GetItem(ItemType aType, string aItemId) {
-        Item lItem = null;
-        switch (aType) {
-            case ItemType.ITEM_BASIC:
-                lItem = itemDatabase.GetItem(aItemId);
-                break;
-            case ItemType.ITEM_WEAPON:
-                lItem = itemDatabase.GetWeapon(aItemId);
-                break;
+            itemDatabase.Initialize();
         }
 
-        return lItem;
+        public Item GetItem(ItemType aType, string aItemId) {
+            Item lItem = null;
+            switch (aType) {
+                case ItemType.ITEM_BASIC:
+                    lItem = itemDatabase.GetItem(aItemId);
+                    break;
+                case ItemType.ITEM_WEAPON:
+                    lItem = itemDatabase.GetWeapon(aItemId);
+                    break;
+            }
+
+            return lItem;
+        }
     }
 }

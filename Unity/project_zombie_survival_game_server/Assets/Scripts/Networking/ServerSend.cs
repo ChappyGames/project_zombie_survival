@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ChappyGames.Entities; // Should move functions that use this library into their respective classes
 
-namespace ChappyGames.Networking {
+using ChappyGames.Server.Entities;
+using ChappyGames.Server.InventorySystem;
+
+namespace ChappyGames.Server.Networking {
 
     public class ServerSend {
 

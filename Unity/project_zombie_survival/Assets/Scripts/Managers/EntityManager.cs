@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ChappyGames.Entities;
+using ChappyGames.Client.Entities;
 
 public class EntityManager : Singleton<EntityManager> {
 

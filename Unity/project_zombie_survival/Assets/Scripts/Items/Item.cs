@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ChappyGames.Entities;
+using ChappyGames.Client.Entities;
 
-public enum ItemType {
-    ITEM_NONE = 0,
-    ITEM_BASIC = 1,
-    ITEM_WEAPON = 2,
-}
+namespace ChappyGames.Client.Items {
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/New Item")]
-public class Item : ScriptableObject {
+    public enum ItemType {
+        ITEM_NONE = 0,
+        ITEM_BASIC = 1,
+        ITEM_WEAPON = 2,
+    }
 
-    [Header("Item Properties")]
-    [SerializeField] private string id;
-    [SerializeField] private string itemName;
-    [SerializeField] private string itemDescription;
-    [SerializeField] private float itemWeight;
+    [CreateAssetMenu(menuName = "Project Zombie Survival/Items/New Item")]
+    public class Item : ScriptableObject {
 
-    [SerializeField] private GameObject worldModel;
+        [Header("Item Properties")]
+        [SerializeField] private string id;
+        [SerializeField] private string itemName;
+        [SerializeField] private string itemDescription;
+        [SerializeField] private float itemWeight;
 
-    public string ID => id;
-    public virtual ItemType Type { get { return ItemType.ITEM_BASIC; } }
-    public string ItemName => itemName;
-    public string ItemDescription => itemDescription;
-    public float ItemWeight => itemWeight;
-    public GameObject WorldModel => worldModel;
+        [SerializeField] private GameObject worldModel;
 
-    public virtual void Use(Mob aMob) {
-        // Pass the mob that is using this item.
+        public string ID => id;
+        public virtual ItemType Type { get { return ItemType.ITEM_BASIC; } }
+        public string ItemName => itemName;
+        public string ItemDescription => itemDescription;
+        public float ItemWeight => itemWeight;
+        public GameObject WorldModel => worldModel;
+
+        public virtual void Use(Mob aMob) {
+            // Pass the mob that is using this item.
+        }
     }
 }

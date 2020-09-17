@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using ChappyGames.Networking;
 
-namespace ChappyGames.Entities {
+using ChappyGames.Server.Networking;
+
+namespace ChappyGames.Server.Entities {
 
     [RequireComponent(typeof(FieldOfView))]
     [RequireComponent(typeof(NavMeshAgent))]

@@ -2,57 +2,62 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClientSend : MonoBehaviour {
+using ChappyGames.Client.InventorySystem;
 
-    private static void SendTCPData(Packet aPacket) {
-        aPacket.WriteLength();
-        Client.instance.tcp.SendData(aPacket);
-    }
+namespace ChappyGames.Client.Networking {
 
-    private static void SendUDPData(Packet aPacket) {
-        aPacket.WriteLength();
-        Client.instance.udp.SendData(aPacket);
-    }
+    public class ClientSend : MonoBehaviour {
 
-    #region Packets
-    public static void WelcomeReceived() {
-        using (Packet lPacket = new Packet((int)ClientPackets.WELCOME_RECEIVED)) {
-            lPacket.Write(Client.instance.id);
-            lPacket.Write(UIManager.instance.usernameField.text);
-
-            SendTCPData(lPacket);
+        private static void SendTCPData(Packet aPacket) {
+            aPacket.WriteLength();
+            Client.instance.tcp.SendData(aPacket);
         }
-    }
 
-    public static void PlayerMovement(bool[] aInputs) {
-        using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_MOVEMENT)) {
-            lPacket.Write(aInputs.Length);
-            foreach(bool lInput in aInputs) {
-                lPacket.Write(lInput);
+        private static void SendUDPData(Packet aPacket) {
+            aPacket.WriteLength();
+            Client.instance.udp.SendData(aPacket);
+        }
+
+        #region Packets
+        public static void WelcomeReceived() {
+            using (Packet lPacket = new Packet((int)ClientPackets.WELCOME_RECEIVED)) {
+                lPacket.Write(Client.instance.id);
+                lPacket.Write(UIManager.instance.usernameField.text);
+
+                SendTCPData(lPacket);
             }
-
-            lPacket.Write(GameManager.players[Client.instance.id].Rotation);
-
-            SendUDPData(lPacket);
         }
-    }
 
-    public static void PlayerAttack(Vector3 aFacing) {
-        using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ATTACK)) {
-            lPacket.Write(aFacing);
+        public static void PlayerMovement(bool[] aInputs) {
+            using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_MOVEMENT)) {
+                lPacket.Write(aInputs.Length);
+                foreach (bool lInput in aInputs) {
+                    lPacket.Write(lInput);
+                }
 
-            SendTCPData(lPacket);
+                lPacket.Write(GameManager.players[Client.instance.id].Rotation);
+
+                SendUDPData(lPacket);
+            }
         }
-    }
 
-    public static void PlayerItemUsed(InventoryItem aItem) {
-        using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ITEM_USED)) {
-            lPacket.Write((int)aItem.type);
-            lPacket.Write(aItem.itemId);
-            lPacket.Write(aItem.stack);
+        public static void PlayerAttack(Vector3 aFacing) {
+            using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ATTACK)) {
+                lPacket.Write(aFacing);
 
-            SendTCPData(lPacket);
+                SendTCPData(lPacket);
+            }
         }
+
+        public static void PlayerItemUsed(InventoryItem aItem) {
+            using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ITEM_USED)) {
+                lPacket.Write((int)aItem.type);
+                lPacket.Write(aItem.itemId);
+                lPacket.Write(aItem.stack);
+
+                SendTCPData(lPacket);
+            }
+        }
+        #endregion
     }
-    #endregion
 }

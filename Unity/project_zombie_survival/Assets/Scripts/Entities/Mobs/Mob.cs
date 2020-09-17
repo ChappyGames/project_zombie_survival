@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ChappyGames.Entities {
+using ChappyGames.Client.InventorySystem;
+
+namespace ChappyGames.Client.Entities {
 
     public interface IMob : IEntity {
 

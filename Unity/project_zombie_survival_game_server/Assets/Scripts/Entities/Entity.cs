@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ChappyGames.Networking;
 
-namespace ChappyGames.Entities {
+using ChappyGames.Server.Networking;
+
+namespace ChappyGames.Server.Entities {
 
     public enum EntityType {
         ENTITY_NONE = 0,
@@ -36,7 +37,7 @@ namespace ChappyGames.Entities {
         }
 
         protected virtual void SpawnToAllExistingPlayers() {
-            foreach (Client lClient in Server.clients.Values) {
+            foreach (Client lClient in Networking.Server.clients.Values) {
                 if (lClient.player != null) {
                     ServerSpawnEntity(lClient.id);
                 }

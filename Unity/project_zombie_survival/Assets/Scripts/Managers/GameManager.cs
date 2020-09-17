@@ -1,0 +1,34 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+using ChappyGames.Client.Entities;
+using ChappyGames.Client.Networking;
+
+public class GameManager : Singleton<GameManager> {
+
+    public static Dictionary<int, Player> players = new Dictionary<int, Player>();
+
+    public GameObject localPlayerPrefab;
+    public GameObject playerPrefab;
+
+    public void SpawnPlayer(int aId, string aUsername, Vector3 aPosition, Quaternion aRotation) {
+        GameObject lPlayer;
+
+        if (aId == Client.instance.id) {
+            //lPlayer = Instantiate(localPlayerPrefab, aPosition, aRotation);
+            lPlayer = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData("player_local").EntityObject, aPosition, aRotation);
+        } else {
+            //lPlayer = Instantiate(playerPrefab, aPosition, aRotation);
+            lPlayer = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData("player_other").EntityObject, aPosition, aRotation);
+        }
+
+        lPlayer.GetComponent<Player>().Initialize(aId, aUsername);
+        players.Add(aId, lPlayer.GetComponent<Player>());
+    }
+
+    public void SpawnEntity(int aId, int aType, string aEntityId, Vector3 aPosition, Quaternion aRotation) {
+        GameObject lEntity = Instantiate(EntityManager.Instance.EntityDatabase.GetPlayerEntityData(aEntityId).EntityObject, aPosition, aRotation);
+        lEntity.GetComponent<Entity>().Initialize(aId, (EntityType)aType);
+    }
+}

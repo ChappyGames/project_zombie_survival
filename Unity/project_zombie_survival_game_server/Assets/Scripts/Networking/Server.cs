@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
 
-namespace ChappyGames.Networking {
+namespace ChappyGames.Server.Networking {
 
     public class Server {
         public static int MaxPlayers { get; private set; }

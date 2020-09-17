@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ChappyGames.Entities;
 
-namespace ChappyGames.Networking {
+using ChappyGames.Server.Entities;
+
+namespace ChappyGames.Server.Networking {
 
     public class NetworkManager : Singleton<NetworkManager> {
 

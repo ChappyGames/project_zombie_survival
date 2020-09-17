@@ -3,39 +3,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryItem : IEquatable<InventoryItem> {
-    public ItemType type;
-    public string itemId;
-    public int stack;
+using ChappyGames.Server.Items;
 
-    public InventoryItem(ItemType aType, string aId, int aStack) {
-        type = aType;
-        itemId = aId;
-        stack = aStack;
-    }
+namespace ChappyGames.Server.InventorySystem {
+    public class InventoryItem : IEquatable<InventoryItem> {
+        public ItemType type;
+        public string itemId;
+        public int stack;
 
-    public InventoryItem(ItemType aType, string aId) {
-        type = aType;
-        itemId = aId;
-        stack = 1;
-    }
+        public InventoryItem(ItemType aType, string aId, int aStack) {
+            type = aType;
+            itemId = aId;
+            stack = aStack;
+        }
 
-    public Item Item => ItemManager.Instance.GetItem(type, itemId);
+        public InventoryItem(ItemType aType, string aId) {
+            type = aType;
+            itemId = aId;
+            stack = 1;
+        }
 
-    public override bool Equals(object obj) {
-        return Equals(obj as InventoryItem);
-    }
+        public Item Item => ItemManager.Instance.GetItem(type, itemId);
 
-    public bool Equals(InventoryItem other) {
-        return other != null &&
-               type == other.type &&
-               itemId == other.itemId;
-    }
+        public override bool Equals(object obj) {
+            return Equals(obj as InventoryItem);
+        }
 
-    public override int GetHashCode() {
-        var hashCode = 371274160;
-        hashCode = hashCode * -1521134295 + type.GetHashCode();
-        hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(itemId);
-        return hashCode;
+        public bool Equals(InventoryItem other) {
+            return other != null &&
+                   type == other.type &&
+                   itemId == other.itemId;
+        }
+
+        public override int GetHashCode() {
+            var hashCode = 371274160;
+            hashCode = hashCode * -1521134295 + type.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(itemId);
+            return hashCode;
+        }
     }
 }

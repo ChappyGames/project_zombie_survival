@@ -3,138 +3,143 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
 
-using ChappyGames.Entities;
+using ChappyGames.Client.Entities;
+using ChappyGames.Client.Items;
+using ChappyGames.Client.InventorySystem;
 
-public class ClientHandle : MonoBehaviour { 
+namespace ChappyGames.Client.Networking {
 
-    public static void Welcome(Packet aPacket) {
-        string lMessage = aPacket.ReadString();
-        int lMyId = aPacket.ReadInt();
+    public class ClientHandle : MonoBehaviour {
 
-        Debug.Log($"[Client Handle] - Message from server: {lMessage}");
-        Client.instance.id = lMyId;
-        ClientSend.WelcomeReceived();
+        public static void Welcome(Packet aPacket) {
+            string lMessage = aPacket.ReadString();
+            int lMyId = aPacket.ReadInt();
 
-        Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
-    }
+            Debug.Log($"[Client Handle] - Message from server: {lMessage}");
+            Client.instance.id = lMyId;
+            ClientSend.WelcomeReceived();
 
-    public static void SpawnPlayer(Packet aPacket) {
-        int lId = aPacket.ReadInt();
-        // Quick fix for the issue where the server sends two spawn player packets for the client.
-        if (EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
-            return;
+            Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
         }
-        string lUsername = aPacket.ReadString();
-        Vector3 lPosition = aPacket.ReadVector3();
-        Quaternion lRotation = aPacket.ReadQuaternion();
 
-        GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation);
-    }
+        public static void SpawnPlayer(Packet aPacket) {
+            int lId = aPacket.ReadInt();
+            // Quick fix for the issue where the server sends two spawn player packets for the client.
+            if (EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
+                return;
+            }
+            string lUsername = aPacket.ReadString();
+            Vector3 lPosition = aPacket.ReadVector3();
+            Quaternion lRotation = aPacket.ReadQuaternion();
 
-    public static void SpawnEntity(Packet aPacket) {
-        int lType = aPacket.ReadInt();
-        int lId = aPacket.ReadInt();
-        Vector3 lPosition = aPacket.ReadVector3();
-        Quaternion lRotation = aPacket.ReadQuaternion();
-
-        GameManager.Instance.SpawnEntity(lId, lType, "zombie", lPosition, lRotation);
-    }
-
-    public static void EntityPosition(Packet aPacket) {
-        int lType = aPacket.ReadInt();
-        int lId = aPacket.ReadInt();
-        Vector3 lPosition = aPacket.ReadVector3();
-
-        IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
-        if (lEntity != null) {
-            lEntity.Position = lPosition;
+            GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation);
         }
-    }
 
-    public static void EntityRotation(Packet aPacket) {
-        // Quick fix for the issue where the server sends rotation packets for the client.
-        int lType = aPacket.ReadInt();
-        int lId = aPacket.ReadInt();
+        public static void SpawnEntity(Packet aPacket) {
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+            Vector3 lPosition = aPacket.ReadVector3();
+            Quaternion lRotation = aPacket.ReadQuaternion();
 
-        if (lType == (int)EntityType.ENTITY_PLAYER && lId == Client.instance.id) {
-            return;
+            GameManager.Instance.SpawnEntity(lId, lType, "zombie", lPosition, lRotation);
         }
-        Quaternion lRotation = aPacket.ReadQuaternion();
 
-        IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
-        if (lEntity != null) {
-            lEntity.Rotation = lRotation;
+        public static void EntityPosition(Packet aPacket) {
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+            Vector3 lPosition = aPacket.ReadVector3();
+
+            IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
+            if (lEntity != null) {
+                lEntity.Position = lPosition;
+            }
         }
+
+        public static void EntityRotation(Packet aPacket) {
+            // Quick fix for the issue where the server sends rotation packets for the client.
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+
+            if (lType == (int)EntityType.ENTITY_PLAYER && lId == Client.instance.id) {
+                return;
+            }
+            Quaternion lRotation = aPacket.ReadQuaternion();
+
+            IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
+            if (lEntity != null) {
+                lEntity.Rotation = lRotation;
+            }
+        }
+
+        public static void PlayerDisconnected(Packet aPacket) {
+            int lId = aPacket.ReadInt();
+
+            Destroy(GameManager.players[lId].gameObject);
+            GameManager.players.Remove(lId);
+        }
+
+        public static void EntityHealth(Packet aPacket) {
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+            float lHealth = aPacket.ReadFloat();
+
+            EntityManager.Instance.GetMob(lType, lId).SetHealth(lHealth);
+        }
+
+        public static void EntityRespawned(Packet aPacket) {
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+
+            EntityManager.Instance.GetMob(lType, lId).OnRespawn();
+        }
+
+        public static void InventoryItemAdded(Packet aPacket) {
+            int lMobType = aPacket.ReadInt();
+            int lMobId = aPacket.ReadInt();
+            int lItemType = aPacket.ReadInt();
+            string lItemId = aPacket.ReadString();
+            int lItemStack = aPacket.ReadInt();
+
+            EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.AddItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
+        }
+
+        public static void InventoryItemUsed(Packet aPacket) {
+            int lMobType = aPacket.ReadInt();
+            int lMobId = aPacket.ReadInt();
+            int lItemType = aPacket.ReadInt();
+            string lItemId = aPacket.ReadString();
+
+            EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.UseItem(new InventoryItem((ItemType)lItemType, lItemId));
+        }
+
+        public static void InventoryItemRemoved(Packet aPacket) {
+            int lMobType = aPacket.ReadInt();
+            int lMobId = aPacket.ReadInt();
+            int lItemType = aPacket.ReadInt();
+            string lItemId = aPacket.ReadString();
+            int lItemStack = aPacket.ReadInt();
+
+            EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.RemoveItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
+        }
+
+        public static void WeaponEquipped(Packet aPacket) {
+            int lId = aPacket.ReadInt();
+            string lWeaponId = aPacket.ReadString();
+
+            GameManager.players[lId].Inventory.SetWeapon(lWeaponId);
+        }
+
+        public static void WeaponFired(Packet aPacket) {
+            int lId = aPacket.ReadInt();
+
+            GameManager.players[lId].FireWeapon();
+        }
+
+        public static void WeaponReloaded(Packet aPacket) {
+            int lId = aPacket.ReadInt();
+
+            GameManager.players[lId].ReloadWeapon();
+        }
+
     }
-
-    public static void PlayerDisconnected(Packet aPacket) {
-        int lId = aPacket.ReadInt();
-
-        Destroy(GameManager.players[lId].gameObject);
-        GameManager.players.Remove(lId);
-    }
-
-    public static void EntityHealth(Packet aPacket) {
-        int lType = aPacket.ReadInt();
-        int lId = aPacket.ReadInt();
-        float lHealth = aPacket.ReadFloat();
-
-        EntityManager.Instance.GetMob(lType, lId).SetHealth(lHealth);
-    }
-
-    public static void EntityRespawned(Packet aPacket) {
-        int lType = aPacket.ReadInt();
-        int lId = aPacket.ReadInt();
-
-        EntityManager.Instance.GetMob(lType, lId).OnRespawn();
-    }
-
-    public static void InventoryItemAdded(Packet aPacket) {
-        int lMobType = aPacket.ReadInt();
-        int lMobId = aPacket.ReadInt();
-        int lItemType = aPacket.ReadInt();
-        string lItemId = aPacket.ReadString();
-        int lItemStack = aPacket.ReadInt();
-
-        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.AddItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
-    }
-
-    public static void InventoryItemUsed(Packet aPacket) {
-        int lMobType = aPacket.ReadInt();
-        int lMobId = aPacket.ReadInt();
-        int lItemType = aPacket.ReadInt();
-        string lItemId = aPacket.ReadString();
-
-        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.UseItem(new InventoryItem((ItemType)lItemType, lItemId));
-    }
-
-    public static void InventoryItemRemoved(Packet aPacket) {
-        int lMobType = aPacket.ReadInt();
-        int lMobId = aPacket.ReadInt();
-        int lItemType = aPacket.ReadInt();
-        string lItemId = aPacket.ReadString();
-        int lItemStack = aPacket.ReadInt();
-
-        EntityManager.Instance.GetMob(lMobType, lMobId).Inventory.RemoveItem(new InventoryItem((ItemType)lItemType, lItemId, lItemStack));
-    }
-
-    public static void WeaponEquipped(Packet aPacket) {
-        int lId = aPacket.ReadInt();
-        string lWeaponId = aPacket.ReadString();
-
-        GameManager.players[lId].Inventory.SetWeapon(lWeaponId);
-    }
-
-    public static void WeaponFired(Packet aPacket) {
-        int lId = aPacket.ReadInt();
-
-        GameManager.players[lId].FireWeapon();
-    }
-
-    public static void WeaponReloaded(Packet aPacket) {
-        int lId = aPacket.ReadInt();
-
-        GameManager.players[lId].ReloadWeapon();
-    }
-
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using ChappyGames.Client.Networking;
+
 public class UIManager : MonoBehaviour {
 
     public static UIManager instance;

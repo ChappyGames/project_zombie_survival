@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ChappyGames.Networking;
 
-namespace ChappyGames.Entities {
+using ChappyGames.Server.Networking;
+using ChappyGames.Server.Items;
+using ChappyGames.Server.InventorySystem;
+
+namespace ChappyGames.Server.Entities {
 
     public class PlayerAttack : EntityAttack {
 

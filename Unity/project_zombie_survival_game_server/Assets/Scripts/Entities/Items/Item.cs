@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ChappyGames.Entities {
+namespace ChappyGames.Server.Entities {
     public class Item : Entity {
 
         [Header("Item Properties")]

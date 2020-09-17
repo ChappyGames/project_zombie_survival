@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ChappyGames.Networking {
+namespace ChappyGames.Server.Networking {
 
     public class ServerHandle {
         public static void WelcomeReceived(int aFromClient, Packet aPacket) {

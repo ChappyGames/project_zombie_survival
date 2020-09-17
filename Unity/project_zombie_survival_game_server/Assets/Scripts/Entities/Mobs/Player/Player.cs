@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ChappyGames.Networking;
 
-namespace ChappyGames.Entities {
+using ChappyGames.Server.Networking;
+
+namespace ChappyGames.Server.Entities {
     public class Player : Mob {
         [Header("Player Properties")]
         public string username;

@@ -2,60 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ChappyGames.Entities;
+using ChappyGames.Client.Entities;
 
-public enum WeaponType {
-    NONE,
-    PISTOL
-}
+namespace ChappyGames.Client.Items {
 
-public enum AmmoType {
-    NONE,
-    PISTOL_32
-}
+    public enum WeaponType {
+        NONE,
+        PISTOL
+    }
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/New Weapon")]
-public class Weapon : Item {
+    public enum AmmoType {
+        NONE,
+        PISTOL_32
+    }
 
-    [Header("Weapon Properties")]
+    [CreateAssetMenu(menuName = "Project Zombie Survival/Items/New Weapon")]
+    public class Weapon : Item {
 
-    [SerializeField] private WeaponType weaponType;
+        [Header("Weapon Properties")]
 
-    [SerializeField] private AmmoType ammoType;
-    [SerializeField] private int ammoCapacity;
+        [SerializeField] private WeaponType weaponType;
 
-    [SerializeField] private int damage;
+        [SerializeField] private AmmoType ammoType;
+        [SerializeField] private int ammoCapacity;
 
-    [SerializeField] private float reloadSpeed;
-    [SerializeField] private float firingSpeed;
-    [SerializeField] private float accuracy;
-    [SerializeField] private float range;
-    [SerializeField] private float criticalChance;
+        [SerializeField] private int damage;
 
-    [SerializeField] private int skillRequired;
+        [SerializeField] private float reloadSpeed;
+        [SerializeField] private float firingSpeed;
+        [SerializeField] private float accuracy;
+        [SerializeField] private float range;
+        [SerializeField] private float criticalChance;
 
-    [SerializeField] private AudioClip fireSound;
-    [SerializeField] private AudioClip reloadSound;
+        [SerializeField] private int skillRequired;
 
-    public override ItemType Type { get { return ItemType.ITEM_WEAPON; } }
-    public WeaponType WeaponType { get { return weaponType; } }
-    public AmmoType AmmoType { get { return ammoType; } }
+        [SerializeField] private AudioClip fireSound;
+        [SerializeField] private AudioClip reloadSound;
 
-    public int AmmoCapacity { get { return ammoCapacity; } }
-    public int Damage { get { return damage; } }
+        public override ItemType Type { get { return ItemType.ITEM_WEAPON; } }
+        public WeaponType WeaponType { get { return weaponType; } }
+        public AmmoType AmmoType { get { return ammoType; } }
 
-    public float ReloadSpeed { get { return reloadSpeed; } }
-    public float FiringSpeed { get { return firingSpeed; } }
-    public float Accuracy { get { return accuracy; } }
-    public float Range { get { return range; } }
-    public float CriticalChance { get { return criticalChance; } }
+        public int AmmoCapacity { get { return ammoCapacity; } }
+        public int Damage { get { return damage; } }
 
-    public AudioClip FireSound { get { return fireSound; } }
-    public AudioClip ReloadSound { get { return reloadSound; } }
+        public float ReloadSpeed { get { return reloadSpeed; } }
+        public float FiringSpeed { get { return firingSpeed; } }
+        public float Accuracy { get { return accuracy; } }
+        public float Range { get { return range; } }
+        public float CriticalChance { get { return criticalChance; } }
 
-    public override void Use(Mob aMob) {
-        base.Use(aMob);
+        public AudioClip FireSound { get { return fireSound; } }
+        public AudioClip ReloadSound { get { return reloadSound; } }
 
-        aMob.Inventory.SetWeapon(ID);
+        public override void Use(Mob aMob) {
+            base.Use(aMob);
+
+            aMob.Inventory.SetWeapon(ID);
+        }
     }
 }

@@ -2,39 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Project Zombie Survival/Entities/New Entity Database")]
-public class EntityDatabase : ScriptableObject {
-    [Header("Players")]
-    [SerializeField] private List<EntityData> playerEntities;
+namespace ChappyGames.Client.Entities {
 
-    public List<EntityData> PlayerEntities => playerEntities;
+    [CreateAssetMenu(menuName = "Project Zombie Survival/Entities/New Entity Database")]
+    public class EntityDatabase : ScriptableObject {
+        [Header("Players")]
+        [SerializeField] private List<EntityData> playerEntities;
 
-    [SerializeField] private Dictionary<string, EntityData> playersById;
+        public List<EntityData> PlayerEntities => playerEntities;
 
-    public void Initialize() {
-        playersById = new Dictionary<string, EntityData>();
+        [SerializeField] private Dictionary<string, EntityData> playersById;
 
-        for (int i = 0; i < playerEntities.Count; i++) {
-            if (!playersById.ContainsKey(playerEntities[i].ID)) {
-                playersById.Add(playerEntities[i].ID, playerEntities[i]);
+        public void Initialize() {
+            playersById = new Dictionary<string, EntityData>();
+
+            for (int i = 0; i < playerEntities.Count; i++) {
+                if (!playersById.ContainsKey(playerEntities[i].ID)) {
+                    playersById.Add(playerEntities[i].ID, playerEntities[i]);
+                }
+                else {
+                    Debug.LogError($"[Item Database] - ERROR: Database already contains weapon ID '{playerEntities[i].ID}'.");
+                }
+            }
+        }
+
+        public EntityData GetPlayerEntityData(string aEntityId) {
+            EntityData lEntity = null;
+
+            if (playersById.ContainsKey(aEntityId) == true) {
+                lEntity = playersById[aEntityId];
             }
             else {
-                Debug.LogError($"[Item Database] - ERROR: Database already contains weapon ID '{playerEntities[i].ID}'.");
+                Debug.LogError($"[Item Database] - ERROR: Weapon ID '{aEntityId}' not found.");
             }
+
+            return lEntity;
         }
+
     }
-
-    public EntityData GetPlayerEntityData(string aEntityId) {
-        EntityData lEntity = null;
-
-        if (playersById.ContainsKey(aEntityId) == true) {
-            lEntity = playersById[aEntityId];
-        }
-        else {
-            Debug.LogError($"[Item Database] - ERROR: Weapon ID '{aEntityId}' not found.");
-        }
-
-        return lEntity;
-    }
-    
 }
