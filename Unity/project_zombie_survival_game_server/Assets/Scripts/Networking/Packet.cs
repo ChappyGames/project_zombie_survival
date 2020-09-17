@@ -21,7 +21,8 @@ public enum ServerPackets {
     PLAYER_WEAPON_RELOADED,
     INVENTORY_ITEM_ADDED,
     INVENTORY_ITEM_REMOVED,
-    INVENTORY_ITEM_USED
+    INVENTORY_ITEM_USED,
+    ITEM_SPAWN,
 }
 
 /// <summary>

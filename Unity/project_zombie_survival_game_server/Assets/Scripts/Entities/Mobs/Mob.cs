@@ -51,8 +51,9 @@ namespace ChappyGames.Server.Entities {
             health -= aDamage;
             if (health <= 0f) {
                 health = 0f;
-                transform.position = new Vector3(0f, 0f, 0f);
+                
                 OnEntityDeath.Invoke();
+                transform.position = new Vector3(0f, 0f, 0f);
             }
 
             OnEntityDamaged.Invoke(aDamage);

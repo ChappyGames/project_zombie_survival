@@ -23,7 +23,7 @@ namespace ChappyGames.Server.InventorySystem {
             stack = 1;
         }
 
-        public Item Item => ItemManager.Instance.GetItem(type, itemId);
+        public Item Item => ItemManager.Instance.GetItem(itemId);
 
         public override bool Equals(object obj) {
             return Equals(obj as InventoryItem);

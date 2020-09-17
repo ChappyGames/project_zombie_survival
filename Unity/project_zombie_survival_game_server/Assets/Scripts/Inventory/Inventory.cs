@@ -17,7 +17,7 @@ namespace ChappyGames.Server.InventorySystem {
         private Mob parent;
         private string primaryWeaponId;
 
-        public Weapon PrimaryWeapon { get { return ItemManager.Instance.GetItem(ItemType.ITEM_WEAPON, primaryWeaponId) as Weapon; } }
+        public Weapon PrimaryWeapon { get { return ItemManager.Instance.GetWeapon(primaryWeaponId); } }
 
         public UnityEvent OnInventoryChanged { get; private set; } = new UnityEvent();
         public WeaponChangedEvent OnPrimaryWeaponChanged { get; private set; } = new WeaponChangedEvent();

@@ -7,7 +7,8 @@ namespace ChappyGames.Client.Entities {
     public enum EntityType {
         ENTITY_NONE = 0,
         ENTITY_PLAYER = 1,
-        ENTITY_ZOMBIE = 2
+        ENTITY_ZOMBIE = 2,
+        ENTITY_ITEM = 3
     }
 
     public interface IEntity {

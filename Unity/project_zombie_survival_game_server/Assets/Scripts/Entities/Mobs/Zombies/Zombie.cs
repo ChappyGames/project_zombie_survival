@@ -75,6 +75,10 @@ namespace ChappyGames.Server.Entities {
         private void OnZombieDeath() {
             target = null;
             nav.SetDestination(transform.position);
+
+            /* TEMP */
+            Item lItemInstance = Instantiate(EntityManager.Instance.ItemPrefab);
+            lItemInstance.Initialize(EntityManager.Instance.GetEntityCount((int)EntityType.ENTITY_ITEM) + 1, transform.position, "pistol_beta_tomcat");
         }
     }
 }

@@ -13,18 +13,16 @@ namespace ChappyGames.Server.Items {
             itemDatabase.Initialize();
         }
 
-        public Item GetItem(ItemType aType, string aItemId) {
+        public Item GetItem(string aItemId) {
             Item lItem = null;
-            switch (aType) {
-                case ItemType.ITEM_BASIC:
-                    lItem = itemDatabase.GetItem(aItemId);
-                    break;
-                case ItemType.ITEM_WEAPON:
-                    lItem = itemDatabase.GetWeapon(aItemId);
-                    break;
-            }
-
+            lItem = itemDatabase.GetItem(aItemId);
             return lItem;
+        }
+
+        public Weapon GetWeapon(string aWeaponId) {
+            Weapon lWeapon = null;
+            lWeapon = itemDatabase.GetWeapon(aWeaponId);
+            return lWeapon;
         }
     }
 }
