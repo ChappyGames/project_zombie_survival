@@ -32,6 +32,7 @@ namespace ChappyGames.Server.InventorySystem {
             if (lItem != null) {
                 primaryWeaponId = aItem.itemId;
                 OnPrimaryWeaponChanged?.Invoke(aItem.itemId);
+                Debug.Log($"[Inventory] - Entity of type '{parent.Type}' with ID '{parent.ID}' has equipped a weapon with ID '{aItem.itemId}'.");
             }
         }
 

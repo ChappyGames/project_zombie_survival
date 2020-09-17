@@ -2,93 +2,94 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using ChappyGames.Client.Entities;
+namespace ChappyGames.Client.Entities {
 
-public class EntityManager : Singleton<EntityManager> {
+    public class EntityManager : Singleton<EntityManager> {
 
-    [SerializeField] private EntityDatabase entityDatabase;
+        [SerializeField] private EntityDatabase entityDatabase;
 
-    private Dictionary<int, Dictionary<int, Entity>> entities;
+        private Dictionary<int, Dictionary<int, Entity>> entities;
 
-    public EntityDatabase EntityDatabase => entityDatabase;
+        public EntityDatabase EntityDatabase => entityDatabase;
 
-    protected override void Awake() {
-        base.Awake();
+        protected override void Awake() {
+            base.Awake();
 
-        Initialize();
-    }
-
-    private void Initialize() {
-        entityDatabase.Initialize();
-        entities = new Dictionary<int, Dictionary<int, Entity>>();
-    }
-
-    public bool RegisterEntity(Entity aEntity) {
-        bool lEntityAdded = false;
-
-        if (!entities.ContainsKey((int)aEntity.Type)) {
-            entities.Add((int)aEntity.Type, new Dictionary<int, Entity>());
+            Initialize();
         }
 
-        if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
-            entities[(int)aEntity.Type].Add(aEntity.ID, aEntity);
-            lEntityAdded = true;
-        }
-        else {
-            Debug.LogError($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' already exists.");
+        private void Initialize() {
+            entityDatabase.Initialize();
+            entities = new Dictionary<int, Dictionary<int, Entity>>();
         }
 
-        return lEntityAdded;
-    }
+        public bool RegisterEntity(Entity aEntity) {
+            bool lEntityAdded = false;
 
-    public bool UnregisterEntity(int aEntityType, int aEntityId) {
-        bool lEntityRemoved = false;
+            if (!entities.ContainsKey((int)aEntity.Type)) {
+                entities.Add((int)aEntity.Type, new Dictionary<int, Entity>());
+            }
 
-        if (entities.ContainsKey(aEntityType)) {
-
-            if (entities[aEntityType].ContainsKey(aEntityId)) {
-                entities[aEntityType].Remove(aEntityId);
-                lEntityRemoved = true;
+            if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
+                entities[(int)aEntity.Type].Add(aEntity.ID, aEntity);
+                lEntityAdded = true;
             }
             else {
-                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
+                Debug.LogError($"[Entity Manager] - Entity type '{aEntity.Type}' with ID '{aEntity.ID}' already exists.");
             }
 
-        }
-        else {
-            Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
+            return lEntityAdded;
         }
 
-        return lEntityRemoved;
-    }
+        public bool UnregisterEntity(int aEntityType, int aEntityId) {
+            bool lEntityRemoved = false;
 
-    public bool UnregisterEntity(Entity aEntity) {
-        return UnregisterEntity((int)aEntity.Type, aEntity.ID);
-    }
+            if (entities.ContainsKey(aEntityType)) {
 
-    public IEntity GetEntity(int aEntityType, int aEntityId) {
-        IEntity lEntity = null;
+                if (entities[aEntityType].ContainsKey(aEntityId)) {
+                    entities[aEntityType].Remove(aEntityId);
+                    lEntityRemoved = true;
+                }
+                else {
+                    Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
+                }
 
-        if (entities.ContainsKey(aEntityType)) {
-
-            if (entities[aEntityType].ContainsKey(aEntityId)) {
-                lEntity = entities[aEntityType][aEntityId];
             }
             else {
-                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
+                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
             }
 
-        }
-        else {
-            Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
+            return lEntityRemoved;
         }
 
-        return lEntity;
-    }
+        public bool UnregisterEntity(Entity aEntity) {
+            return UnregisterEntity((int)aEntity.Type, aEntity.ID);
+        }
 
-    // This is fucked. Refactor.
-    public Mob GetMob(int aEntityType, int aEntityId) {
-        return GetEntity(aEntityType, aEntityId) as Mob;
-    }
+        public IEntity GetEntity(int aEntityType, int aEntityId) {
+            IEntity lEntity = null;
 
+            if (entities.ContainsKey(aEntityType)) {
+
+                if (entities[aEntityType].ContainsKey(aEntityId)) {
+                    lEntity = entities[aEntityType][aEntityId];
+                }
+                else {
+                    Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' with ID '{aEntityId}' does not exist.");
+                }
+
+            }
+            else {
+                Debug.LogError($"[Entity Manager] - Entity type '{(EntityType)aEntityType}' does not exist.");
+            }
+
+            return lEntity;
+        }
+
+        // This is fucked. Refactor.
+        public Mob GetMob(int aEntityType, int aEntityId) {
+            return GetEntity(aEntityType, aEntityId) as Mob;
+        }
+
+    }
 }

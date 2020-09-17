@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Mouse0)) {
             ClientSend.PlayerAttack(playerModel.transform.forward);
         }
+
+        if (Input.GetKeyDown(KeyCode.I)) {
+            PlayerUIManager.Instance.ToggleInventory();
+        }
     }
 
     private void RotateToCursor() {

@@ -17,6 +17,8 @@ namespace ChappyGames.Client.InventorySystem {
         private Mob parent;
         private string primaryWeaponId;
 
+        public int Count { get { return items.Count; } }
+
         public Weapon PrimaryWeapon { get { return ItemManager.Instance.GetItem(ItemType.ITEM_WEAPON, primaryWeaponId) as Weapon; } }
 
         public UnityEvent OnInventoryChanged { get; private set; } = new UnityEvent();
@@ -47,6 +49,16 @@ namespace ChappyGames.Client.InventorySystem {
             }
 
             Debug.Log($"[Inventory] - Entity of type '{parent.Type}' with ID '{parent.ID}' has picked up {aItem.stack} instances of item with ID '{aItem.itemId}'.");
+        }
+
+        public InventoryItem GetItem(int aIndex) {
+            InventoryItem lItem = null;
+
+            if (aIndex < Count) {
+                lItem = items[aIndex];
+            }
+
+            return lItem;
         }
 
         public void UseItem(InventoryItem aItem) {

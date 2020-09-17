@@ -103,7 +103,8 @@ namespace ChappyGames.Server.Networking {
             packetHandlers = new Dictionary<int, PacketHandler>() {
                 { (int)ClientPackets.WELCOME_RECEIVED, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.PLAYER_MOVEMENT, ServerHandle.PlayerMovement },
-                { (int)ClientPackets.PLAYER_ATTACK, ServerHandle.PlayerAttack }
+                { (int)ClientPackets.PLAYER_ATTACK, ServerHandle.PlayerAttack },
+                { (int)ClientPackets.PLAYER_ITEM_USED, ServerHandle.PlayerItemUsed }
             };
             Debug.Log("Initialized packets.");
         }

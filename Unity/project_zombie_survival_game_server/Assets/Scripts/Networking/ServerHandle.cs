@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Server.Items;
+using ChappyGames.Server.InventorySystem;
+
 namespace ChappyGames.Server.Networking {
 
     public class ServerHandle {
@@ -36,6 +39,14 @@ namespace ChappyGames.Server.Networking {
             Vector3 lAttackDirection = aPacket.ReadVector3();
 
             Server.clients[aFromClient].player.attack.TryPerformAttack(lAttackDirection);
+        }
+
+        public static void PlayerItemUsed(int aFromClient, Packet aPacket) {
+            int lItemType = aPacket.ReadInt();
+            string lItemId = aPacket.ReadString();
+            int lStack = aPacket.ReadInt();
+
+            Server.clients[aFromClient].player.Inventory.UseItem(new InventoryItem((ItemType)lItemType, lItemId, lStack));
         }
     }
 }
