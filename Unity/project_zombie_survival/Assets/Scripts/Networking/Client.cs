@@ -87,6 +87,7 @@ namespace ChappyGames.Client.Networking {
                     ThreadManager.ExecuteOnMainThread(() => {
                         using (Packet lPacket = new Packet(lPacketBytes)) {
                             int lPacketId = lPacket.ReadInt();
+                            //Debug.Log($"Handling Packet with ID '{lPacketId}'");
                             packetHandlers[lPacketId](lPacket);
                         }
                     });
@@ -234,8 +235,7 @@ namespace ChappyGames.Client.Networking {
         private void InitializeClientData() {
             packetHandlers = new Dictionary<int, PacketHandler>() {
             { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
-            { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.SpawnEntity },
-            { (int)ServerPackets.PLAYER_SPAWN, ClientHandle.SpawnPlayer },
+            { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.EntitySpawned },
             { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
             { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },
             { (int)ServerPackets.PLAYER_DISCONNECTED, ClientHandle.PlayerDisconnected },

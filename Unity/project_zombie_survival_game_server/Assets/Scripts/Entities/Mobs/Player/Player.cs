@@ -13,13 +13,13 @@ namespace ChappyGames.Server.Entities {
         private bool[] inputs;
 
         public void Initialize(int aId, string aUsername) {
-            base.Initialize(aId, EntityType.ENTITY_PLAYER);
+            
             username = aUsername;
             inputs = new bool[4];
 
-            //Inventory.OnPrimaryWeaponChanged.AddListener(OnPrimaryWeaponEquipped);
-            attack.Initialize(this);
+            base.Initialize("player", aId, EntityType.ENTITY_PLAYER);
 
+            attack.Initialize(this);
             SpawnAllEntitiesToPlayerClient();
         }
 
@@ -28,9 +28,9 @@ namespace ChappyGames.Server.Entities {
             EntityManager.Instance.InvokeOnAllEntities((lEntity) => { lEntity.ServerSpawnEntity(id); });
         }
 
-        public override void ServerSpawnEntity(int aToClient) {
+        /*public override void ServerSpawnEntity(int aToClient) {
             ServerSend.SpawnPlayer(aToClient, this);
-        }
+        }*/
 
         protected override void FixedUpdate() {
             base.FixedUpdate();
@@ -74,5 +74,15 @@ namespace ChappyGames.Server.Entities {
             Debug.Log("Sending weapon equipped packet!");
             ServerSend.WeaponEquipped(this);
         }
+
+        #region Packets
+        protected override Packet SpawnEntityPacket() {
+            Packet lPacket = base.SpawnEntityPacket();
+
+            lPacket.Write(username);
+
+            return lPacket;
+        }
+        #endregion
     }
 }

@@ -22,26 +22,8 @@ namespace ChappyGames.Client.Networking {
             Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
         }
 
-        public static void SpawnPlayer(Packet aPacket) {
-            int lId = aPacket.ReadInt();
-            // Quick fix for the issue where the server sends two spawn player packets for the client.
-            if (EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
-                return;
-            }
-            string lUsername = aPacket.ReadString();
-            Vector3 lPosition = aPacket.ReadVector3();
-            Quaternion lRotation = aPacket.ReadQuaternion();
-
-            GameManager.Instance.SpawnPlayer(lId, lUsername, lPosition, lRotation);
-        }
-
-        public static void SpawnEntity(Packet aPacket) {
-            int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
-            Vector3 lPosition = aPacket.ReadVector3();
-            Quaternion lRotation = aPacket.ReadQuaternion();
-
-            GameManager.Instance.SpawnEntity(lId, lType, "zombie", lPosition, lRotation);
+        public static void EntitySpawned(Packet aPacket) {
+            EntityManager.Instance?.SpawnEntityPacketHandler(aPacket);
         }
 
         public static void EntityPosition(Packet aPacket) {
@@ -74,8 +56,8 @@ namespace ChappyGames.Client.Networking {
         public static void PlayerDisconnected(Packet aPacket) {
             int lId = aPacket.ReadInt();
 
-            Destroy(GameManager.players[lId].gameObject);
-            GameManager.players.Remove(lId);
+            Destroy(EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId).gameObject);
+            EntityManager.Instance.UnregisterEntity((int)EntityType.ENTITY_PLAYER, lId);
         }
 
         public static void EntityHealth(Packet aPacket) {
@@ -126,19 +108,20 @@ namespace ChappyGames.Client.Networking {
             int lId = aPacket.ReadInt();
             string lWeaponId = aPacket.ReadString();
 
-            GameManager.players[lId].Inventory.SetWeapon(lWeaponId);
+            EntityManager.Instance.GetMob((int)EntityType.ENTITY_PLAYER, lId).Inventory.SetWeapon(lWeaponId);
+
         }
 
         public static void WeaponFired(Packet aPacket) {
             int lId = aPacket.ReadInt();
 
-            GameManager.players[lId].FireWeapon();
+            EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).FireWeapon();
         }
 
         public static void WeaponReloaded(Packet aPacket) {
             int lId = aPacket.ReadInt();
 
-            GameManager.players[lId].ReloadWeapon();
+            EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).ReloadWeapon();
         }
 
     }

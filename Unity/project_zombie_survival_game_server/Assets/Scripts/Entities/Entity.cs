@@ -21,14 +21,18 @@ namespace ChappyGames.Server.Entities {
     }
     public class Entity : MonoBehaviour, IEntity {
 
+        protected string instanceId;
+
         protected int id;
         protected EntityType type;
 
+        public string InstanceId { get { return instanceId; } }
         public int ID { get { return id; } }
         public EntityType Type { get { return type; } }
 
 
-        public virtual void Initialize(int aId, EntityType aType) {
+        public virtual void Initialize(string aInstanceId, int aId, EntityType aType) {
+            instanceId = aInstanceId;
             id = aId;
             type = aType;
 
@@ -45,7 +49,9 @@ namespace ChappyGames.Server.Entities {
         }
 
         public virtual void ServerSpawnEntity(int aToClient) {
-            ServerSend.SpawnEntity(aToClient, this);
+            //ServerSend.SpawnEntity(aToClient, this);
+            // Consider wrapping packets in a Using statement to properly dispose after this method concludes.
+            ServerSend.SendTCPData(aToClient, SpawnEntityPacket());
         }
 
 
@@ -56,5 +62,19 @@ namespace ChappyGames.Server.Entities {
         protected virtual void OnDestroy() {
             EntityManager.Instance.UnregisterEntity(this);
         }
+
+        #region Packets
+        protected virtual Packet SpawnEntityPacket() {
+            Packet lPacket = new Packet((int)ServerPackets.ENTITY_SPAWN);
+
+            lPacket.Write(instanceId);
+            lPacket.Write((int)type);
+            lPacket.Write(id);
+            lPacket.Write(transform.position);
+            lPacket.Write(transform.rotation);
+
+            return lPacket;
+        }
+        #endregion
     }
 }

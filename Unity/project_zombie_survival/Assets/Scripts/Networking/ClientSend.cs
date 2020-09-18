@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using ChappyGames.Client.Entities;
 using ChappyGames.Client.InventorySystem;
 
 namespace ChappyGames.Client.Networking {
@@ -35,7 +36,7 @@ namespace ChappyGames.Client.Networking {
                     lPacket.Write(lInput);
                 }
 
-                lPacket.Write(GameManager.players[Client.instance.id].Rotation);
+                lPacket.Write(EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, Client.instance.id).Rotation);
 
                 SendUDPData(lPacket);
             }

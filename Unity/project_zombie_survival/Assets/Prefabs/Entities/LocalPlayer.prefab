@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6268942575815548536}
   - component: {fileID: 3658788737733200628}
   - component: {fileID: 7245956251391222054}
-  - component: {fileID: 7023183818155222152}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -84,18 +83,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4251281739220616473}
   m_Enabled: 1
---- !u!114 &7023183818155222152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4251281739220616473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53397228053c76c45bb23af77868405c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4342497722243686727
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42064fab68584a348a0c01dbd996dfda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 10
   playerObj: {fileID: 8323573719470617013}
   playerAudioSource: {fileID: 2550718412955502318}
@@ -314,6 +302,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -338,6 +327,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &8323573719470617013
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,8 +339,6 @@ GameObject:
   - component: {fileID: 4728122152048282388}
   - component: {fileID: 442815247249929335}
   - component: {fileID: 2671842533082895357}
-  - component: {fileID: 1708547805250974560}
-  - component: {fileID: 3641158318597288932}
   - component: {fileID: 5667730124553282243}
   m_Layer: 8
   m_Name: Model
@@ -398,6 +386,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -422,36 +411,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &1708547805250974560
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8323573719470617013}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3641158318597288932
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8323573719470617013}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!82 &5667730124553282243
 AudioSource:
   m_ObjectHideFlags: 0
@@ -603,6 +563,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -627,3 +588,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

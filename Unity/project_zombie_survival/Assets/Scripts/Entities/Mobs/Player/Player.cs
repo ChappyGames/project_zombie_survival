@@ -17,10 +17,10 @@ namespace ChappyGames.Client.Entities {
 
         public Weapon CurrentWeapon { get { return Inventory.PrimaryWeapon; } }
 
-        public void Initialize(int aId, string aUsername) {
-            base.Initialize(aId, EntityType.ENTITY_PLAYER);
+        public override void Initialize(int aId, EntityType lType, Packet aPacket) {
+            base.Initialize(aId, EntityType.ENTITY_PLAYER, aPacket);
 
-            username = aUsername;
+            username = aPacket.ReadString();
         }
 
         public void FireWeapon() {

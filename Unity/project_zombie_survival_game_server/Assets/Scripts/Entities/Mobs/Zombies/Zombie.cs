@@ -25,16 +25,17 @@ namespace ChappyGames.Server.Entities {
         }
 
         public void Initialize(int aId) {
-            base.Initialize(aId, EntityType.ENTITY_ZOMBIE);
-
+            
             fov = GetComponent<FieldOfView>();
             nav = GetComponent<NavMeshAgent>();
 
             nav.speed = rawMoveSpeed;
 
-            attack.Initialize(this);
-
             OnEntityDeath.AddListener(OnZombieDeath);
+
+            base.Initialize("zombie", aId, EntityType.ENTITY_ZOMBIE);
+
+            attack.Initialize(this);
         }
 
         protected override void FixedUpdate() {
@@ -77,7 +78,7 @@ namespace ChappyGames.Server.Entities {
             nav.SetDestination(transform.position);
 
             /* TEMP */
-            Item lItemInstance = Instantiate(EntityManager.Instance.ItemPrefab);
+            Item lItemInstance = Instantiate(EntityManager.Instance.ItemPrefab, transform.position, transform.rotation);
             lItemInstance.Initialize(EntityManager.Instance.GetEntityCount((int)EntityType.ENTITY_ITEM) + 1, transform.position, "pistol_beta_tomcat");
         }
     }

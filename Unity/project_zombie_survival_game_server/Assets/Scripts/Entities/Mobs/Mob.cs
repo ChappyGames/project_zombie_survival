@@ -25,14 +25,16 @@ namespace ChappyGames.Server.Entities {
         public OnEntityDamagedEvent OnEntityDamaged { get; private set; } = new OnEntityDamagedEvent();
         public UnityEvent OnEntityDeath { get; private set; } = new UnityEvent();
 
-        public override void Initialize(int aId, EntityType aType) {
-            base.Initialize(aId, aType);
+        public override void Initialize(string aInstanceId, int aId, EntityType aType) {
+            
 
             health = maxHealth;
             inventory = new Inventory(this);
 
             OnEntityDamaged.AddListener(EntityDamaged);
             OnEntityDeath.AddListener(EntityDeath);
+
+            base.Initialize(aInstanceId, aId, aType);
         }
 
         protected override void FixedUpdate() {
@@ -74,5 +76,15 @@ namespace ChappyGames.Server.Entities {
             health = maxHealth;
             ServerSend.EntityRespawned(this);
         }
+
+        #region Packets
+        protected override Packet SpawnEntityPacket() {
+            Packet lPacket = base.SpawnEntityPacket();
+
+            // Mob specific spawning variables here
+
+            return lPacket;
+        }
+        #endregion
     }
 }

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68da25e93b79a79409c9d69023aa8530, type: 3}
   m_Name: EntityDatabase
   m_EditorClassIdentifier: 
-  playerEntities:
+  entities:
   - {fileID: 11400000, guid: 5f95901725fe0fa4ba5985eb598c5621, type: 2}
   - {fileID: 11400000, guid: 6cbf8879e227afe49820d62053984ec1, type: 2}
   - {fileID: 11400000, guid: 64778b83b43141b419032fee827378d7, type: 2}
+  - {fileID: 11400000, guid: 1b275374495ebed45a81bec77343df81, type: 2}

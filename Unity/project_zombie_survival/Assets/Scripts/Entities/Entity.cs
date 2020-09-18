@@ -28,7 +28,7 @@ namespace ChappyGames.Client.Entities {
         public virtual Vector3 Position { get { return transform.position; } set { transform.position = value; } }
         public virtual Quaternion Rotation { get { return transform.rotation; } set { transform.rotation = value; } }
 
-        public virtual void Initialize(int aId, EntityType aType) {
+        public virtual void Initialize(int aId, EntityType aType, Packet aPacket) {
             id = aId;
             type = aType;
 

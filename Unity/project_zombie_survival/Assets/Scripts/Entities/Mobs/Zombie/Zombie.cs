@@ -9,8 +9,8 @@ namespace ChappyGames.Client.Entities {
         public GameObject zombieObj;
         public AudioSource zombieAudioSource;
 
-        public override void Initialize(int aId, EntityType aType) {
-            base.Initialize(aId, aType);
+        public override void Initialize(int aId, EntityType aType, Packet aPacket) {
+            base.Initialize(aId, aType, aPacket);
         }
 
         protected override void OnDie() {

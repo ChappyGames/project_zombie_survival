@@ -12,6 +12,8 @@ namespace ChappyGames.Client.Entities {
 
         public EntityDatabase EntityDatabase => entityDatabase;
 
+        #region Life Cycle
+
         protected override void Awake() {
             base.Awake();
 
@@ -22,6 +24,10 @@ namespace ChappyGames.Client.Entities {
             entityDatabase.Initialize();
             entities = new Dictionary<int, Dictionary<int, Entity>>();
         }
+
+        #endregion
+
+        #region Register/UnRegister
 
         public bool RegisterEntity(Entity aEntity) {
             bool lEntityAdded = false;
@@ -67,8 +73,12 @@ namespace ChappyGames.Client.Entities {
             return UnregisterEntity((int)aEntity.Type, aEntity.ID);
         }
 
-        public IEntity GetEntity(int aEntityType, int aEntityId) {
-            IEntity lEntity = null;
+        #endregion
+
+        #region Get Entity
+
+        public Entity GetEntity(int aEntityType, int aEntityId) {
+            Entity lEntity = null;
 
             if (entities.ContainsKey(aEntityType)) {
 
@@ -92,5 +102,42 @@ namespace ChappyGames.Client.Entities {
             return GetEntity(aEntityType, aEntityId) as Mob;
         }
 
+        public Player GetPlayer(int aEntityType, int aEntityId) {
+            return GetEntity(aEntityType, aEntityId) as Player;
+        }
+
+        #endregion
+
+        public void SpawnEntityPacketHandler(Packet aPacket) {
+            string lInstanceId = aPacket.ReadString();
+            EntityType lType = (EntityType)aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+            Vector3 lPosition = aPacket.ReadVector3();
+            Quaternion lRotation = aPacket.ReadQuaternion();
+
+            GameObject lEntity = null;
+
+            //Temporary switch case to handle the uniqueness of the player entity
+            switch (lType) {
+                case EntityType.ENTITY_PLAYER:
+                    // Quick fix for the issue where the server sends two spawn player packets for the client.
+                    if (GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
+                        return;
+                    }
+
+                    if (lId == Networking.Client.instance.id) {
+                        lEntity = Instantiate(entityDatabase.GetEntityData("player_local").EntityObject, lPosition, lRotation);
+                    }
+                    else {
+                        lEntity = Instantiate(entityDatabase.GetEntityData("player_other").EntityObject, lPosition, lRotation);
+                    }
+                    break;
+                default:
+                    lEntity = Instantiate(entityDatabase.GetEntityData(lInstanceId).EntityObject, lPosition, lRotation);
+                    break;
+            }
+
+            lEntity.GetComponent<Entity>().Initialize(lId, lType, aPacket);
+        }
     }
 }

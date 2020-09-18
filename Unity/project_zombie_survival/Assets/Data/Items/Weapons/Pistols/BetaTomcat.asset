@@ -16,7 +16,8 @@ MonoBehaviour:
   itemName: Beta Tomcat
   itemDescription: This is a dumb pistol.
   itemWeight: 1
-  worldModel: {fileID: 0}
+  worldModel: {fileID: 8986387233452285725, guid: 3dd0cf044a61b4c4fa19376b884ac55a,
+    type: 3}
   weaponType: 1
   ammoType: 1
   ammoCapacity: 7

@@ -19,7 +19,7 @@ namespace ChappyGames.Client.InventorySystem {
 
         public int Count { get { return items.Count; } }
 
-        public Weapon PrimaryWeapon { get { return ItemManager.Instance.GetItem(ItemType.ITEM_WEAPON, primaryWeaponId) as Weapon; } }
+        public Weapon PrimaryWeapon { get { return ItemManager.Instance.GetItem(primaryWeaponId) as Weapon; } }
 
         public UnityEvent OnInventoryChanged { get; private set; } = new UnityEvent();
         public WeaponChangedEvent OnPrimaryWeaponChanged { get; private set; } = new WeaponChangedEvent();

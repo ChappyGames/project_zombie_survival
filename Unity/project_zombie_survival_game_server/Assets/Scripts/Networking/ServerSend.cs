@@ -9,24 +9,24 @@ namespace ChappyGames.Server.Networking {
 
     public class ServerSend {
 
-        private static void SendTCPData(int aToClient, Packet aPacket) {
+        public static void SendTCPData(int aToClient, Packet aPacket) {
             aPacket.WriteLength();
             Server.clients[aToClient].tcp.SendData(aPacket);
         }
 
-        private static void SendUDPData(int aToClient, Packet aPacket) {
+        public static void SendUDPData(int aToClient, Packet aPacket) {
             aPacket.WriteLength();
             Server.clients[aToClient].udp.SendData(aPacket);
         }
 
-        private static void SendTCPDataToAll(Packet aPacket) {
+        public static void SendTCPDataToAll(Packet aPacket) {
             aPacket.WriteLength();
             for (int i = 1; i <= Server.MaxPlayers; i++) {
                 Server.clients[i].tcp.SendData(aPacket);
             }
         }
 
-        private static void SendTCPDataToAll(int aExceptClient, Packet aPacket) {
+        public static void SendTCPDataToAll(int aExceptClient, Packet aPacket) {
             aPacket.WriteLength();
             for (int i = 1; i <= Server.MaxPlayers; i++) {
                 if (i != aExceptClient) {
@@ -35,14 +35,14 @@ namespace ChappyGames.Server.Networking {
             }
         }
 
-        private static void SendUDPDataToAll(Packet aPacket) {
+        public static void SendUDPDataToAll(Packet aPacket) {
             aPacket.WriteLength();
             for (int i = 1; i <= Server.MaxPlayers; i++) {
                 Server.clients[i].udp.SendData(aPacket);
             }
         }
 
-        private static void SendUDPDataToAll(int aExceptClient, Packet aPacket) {
+        public static void SendUDPDataToAll(int aExceptClient, Packet aPacket) {
             aPacket.WriteLength();
             for (int i = 1; i <= Server.MaxPlayers; i++) {
                 if (i != aExceptClient) {
@@ -80,6 +80,19 @@ namespace ChappyGames.Server.Networking {
                 lPacket.Write(aEntity.transform.rotation);
 
                 SendTCPData(aToClient, lPacket);
+            }
+        }
+
+        public static void SpawnItem(int aToClient, Item aItem) {
+            using (Packet lPacket = new Packet((int)ServerPackets.ITEM_SPAWN)) {
+                lPacket.Write((int)aItem.Type);
+                lPacket.Write(aItem.ID);
+                lPacket.Write(aItem.transform.position);
+                lPacket.Write(aItem.transform.rotation);
+                lPacket.Write(aItem.ItemId);
+                lPacket.Write(aItem.Stack);
+
+                SendTCPDataToAll(lPacket);
             }
         }
 

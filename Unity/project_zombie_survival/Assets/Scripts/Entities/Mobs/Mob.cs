@@ -27,8 +27,8 @@ namespace ChappyGames.Client.Entities {
         public float Health { get { return health; } }
         public Inventory Inventory { get { return inventory; } }
 
-        public override void Initialize(int aId, EntityType aType) {
-            base.Initialize(aId, aType);
+        public override void Initialize(int aId, EntityType aType, Packet aPacket) {
+            base.Initialize(aId, aType, aPacket);
 
             health = maxHealth;
             inventory = new Inventory(this);
