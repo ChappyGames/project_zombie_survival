@@ -124,5 +124,21 @@ namespace ChappyGames.Client.Networking {
             EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).ReloadWeapon();
         }
 
+        public static void PlayerItemInRange(Packet aPacket) {
+            string lItemId = aPacket.ReadString();
+            int lStack = aPacket.ReadInt();
+
+            string lPickupMessage = ItemManager.Instance.GetItem(lItemId).ItemName;
+            if (lStack > 1) {
+                lPickupMessage += $" ({lStack})";
+            }
+
+            PlayerUIManager.Instance.PickupUI.Prompt(lPickupMessage);
+        }
+
+        public static void PlayerItemOutRange(Packet aPacket) {
+            PlayerUIManager.Instance.PickupUI.Hide();
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 using ChappyGames.Server.Networking;
 using ChappyGames.Server.Items;
+using ChappyGames.Server.InventorySystem;
 
 namespace ChappyGames.Server.Entities {
     public class Item : Entity {
@@ -14,6 +15,7 @@ namespace ChappyGames.Server.Entities {
 
         public string ItemId { get { return itemId; } }
         public int Stack { get { return stack; } }
+        public ItemType ItemType { get { return ItemManager.Instance.GetItem(itemId).Type; } }
 
         public void Initialize(int aEntityId, Vector3 aPosition, string aItemId = null, int aStack = 1) {
             
@@ -42,6 +44,9 @@ namespace ChappyGames.Server.Entities {
 
         public void Pickup(Mob aMob) {
             // Transfer this stack of items to the mob's inventory
+            aMob.Inventory.AddItem(new InventoryItem(ItemType, itemId, stack));
+
+            // Integrate unregistering entity logic.
         }
 
         #region Packets

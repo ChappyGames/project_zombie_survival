@@ -20,7 +20,10 @@ public enum ServerPackets {
     PLAYER_WEAPON_RELOADED,
     INVENTORY_ITEM_ADDED,
     INVENTORY_ITEM_REMOVED,
-    INVENTORY_ITEM_USED
+    INVENTORY_ITEM_USED,
+    ITEM_SPAWN,
+    PLAYER_ITEM_IN_RANGE,
+    PLAYER_ITEM_OUT_RANGE
 }
 
 /// <summary>
@@ -30,7 +33,8 @@ public enum ClientPackets {
     WELCOME_RECEIVED = 1,
     PLAYER_MOVEMENT,
     PLAYER_ATTACK,
-    PLAYER_ITEM_USED
+    PLAYER_ITEM_USED,
+    PLAYER_ACTION
 }
 
 public class Packet : IDisposable {

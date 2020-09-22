@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using ChappyGames.Server.Networking;
+using ChappyGames.Server.InventorySystem;
 
 namespace ChappyGames.Server.Entities {
     public class Player : Mob {
         [Header("Player Properties")]
         public string username;
         public PlayerAttack attack;
+        public PlayerPickup pickup;
 
         private bool[] inputs;
 
@@ -20,6 +22,7 @@ namespace ChappyGames.Server.Entities {
             base.Initialize("player", aId, EntityType.ENTITY_PLAYER);
 
             attack.Initialize(this);
+            pickup.Initialize(this);
             SpawnAllEntitiesToPlayerClient();
         }
 

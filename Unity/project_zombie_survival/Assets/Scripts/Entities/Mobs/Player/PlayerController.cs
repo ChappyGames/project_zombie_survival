@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour {
             ClientSend.PlayerAttack(playerModel.transform.forward);
         }
 
+        if (Input.GetKeyDown(KeyCode.E)) {
+            ClientSend.PlayerAction();
+        }
+
         if (Input.GetKeyDown(KeyCode.I)) {
             PlayerUIManager.Instance.ToggleInventory();
         }

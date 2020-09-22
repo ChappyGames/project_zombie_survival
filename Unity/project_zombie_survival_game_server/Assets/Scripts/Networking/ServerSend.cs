@@ -205,6 +205,22 @@ namespace ChappyGames.Server.Networking {
                 SendTCPDataToAll(lPacket);
             }
         }
+
+        public static void PlayerItemInRange(int aToClient, Item aItem) {
+            using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_ITEM_IN_RANGE)) {
+                lPacket.Write(aItem.ItemId);
+                lPacket.Write(aItem.Stack);
+
+                SendTCPData(aToClient, lPacket);
+            }
+        }
+
+        public static void PlayerItemOutRange(int aToClient) {
+            using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_ITEM_OUT_RANGE)) {
+
+                SendTCPData(aToClient, lPacket);
+            }
+        }
         #endregion
     }
 }

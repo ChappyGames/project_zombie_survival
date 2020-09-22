@@ -234,20 +234,22 @@ namespace ChappyGames.Client.Networking {
 
         private void InitializeClientData() {
             packetHandlers = new Dictionary<int, PacketHandler>() {
-            { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
-            { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.EntitySpawned },
-            { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
-            { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },
-            { (int)ServerPackets.PLAYER_DISCONNECTED, ClientHandle.PlayerDisconnected },
-            { (int)ServerPackets.ENTITY_HEALTH, ClientHandle.EntityHealth },
-            { (int)ServerPackets.ENTITY_RESPAWNED, ClientHandle.EntityRespawned },
-            { (int)ServerPackets.PLAYER_WEAPON_EQUIPPED, ClientHandle.WeaponEquipped },
-            { (int)ServerPackets.ENTITY_ATTACK, ClientHandle.WeaponFired },
-            { (int)ServerPackets.PLAYER_WEAPON_RELOADED, ClientHandle.WeaponReloaded },
-            { (int)ServerPackets.INVENTORY_ITEM_ADDED, ClientHandle.InventoryItemAdded },
-            { (int)ServerPackets.INVENTORY_ITEM_USED, ClientHandle.InventoryItemUsed },
-            { (int)ServerPackets.INVENTORY_ITEM_REMOVED, ClientHandle.InventoryItemRemoved }
-        };
+                { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
+                { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.EntitySpawned },
+                { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
+                { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },
+                { (int)ServerPackets.PLAYER_DISCONNECTED, ClientHandle.PlayerDisconnected },
+                { (int)ServerPackets.ENTITY_HEALTH, ClientHandle.EntityHealth },
+                { (int)ServerPackets.ENTITY_RESPAWNED, ClientHandle.EntityRespawned },
+                { (int)ServerPackets.PLAYER_WEAPON_EQUIPPED, ClientHandle.WeaponEquipped },
+                { (int)ServerPackets.ENTITY_ATTACK, ClientHandle.WeaponFired },
+                { (int)ServerPackets.PLAYER_WEAPON_RELOADED, ClientHandle.WeaponReloaded },
+                { (int)ServerPackets.INVENTORY_ITEM_ADDED, ClientHandle.InventoryItemAdded },
+                { (int)ServerPackets.INVENTORY_ITEM_USED, ClientHandle.InventoryItemUsed },
+                { (int)ServerPackets.INVENTORY_ITEM_REMOVED, ClientHandle.InventoryItemRemoved },
+                { (int)ServerPackets.PLAYER_ITEM_IN_RANGE, ClientHandle.PlayerItemInRange },
+                { (int)ServerPackets.PLAYER_ITEM_OUT_RANGE, ClientHandle.PlayerItemOutRange },
+            };
             Debug.Log("[Client] - Initialized packets.");
         }
 

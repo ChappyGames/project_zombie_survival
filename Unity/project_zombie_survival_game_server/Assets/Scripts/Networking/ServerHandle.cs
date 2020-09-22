@@ -48,5 +48,9 @@ namespace ChappyGames.Server.Networking {
 
             Server.clients[aFromClient].player.Inventory.UseItem(new InventoryItem((ItemType)lItemType, lItemId, lStack));
         }
+
+        public static void PlayerAction(int aFromClient, Packet aPacket) {
+            // Do something
+        }
     }
 }

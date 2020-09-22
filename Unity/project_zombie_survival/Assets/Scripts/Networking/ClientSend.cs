@@ -59,6 +59,12 @@ namespace ChappyGames.Client.Networking {
                 SendTCPData(lPacket);
             }
         }
+
+        public static void PlayerAction() {
+            using (Packet lPacket = new Packet((int)ClientPackets.PLAYER_ACTION)) {
+                SendTCPData(lPacket);
+            }
+        }
         #endregion
     }
 }
