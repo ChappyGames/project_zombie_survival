@@ -9,7 +9,7 @@ using UnityEngine;
 public enum ServerPackets {
     WELCOME = 1,
     ENTITY_SPAWN,
-    PLAYER_SPAWN,
+    ENTITY_DESPAWN,
     ENTITY_POS,
     ENTITY_ROTATION,
     PLAYER_DISCONNECTED,
@@ -21,7 +21,6 @@ public enum ServerPackets {
     INVENTORY_ITEM_ADDED,
     INVENTORY_ITEM_REMOVED,
     INVENTORY_ITEM_USED,
-    ITEM_SPAWN,
     PLAYER_ITEM_IN_RANGE,
     PLAYER_ITEM_OUT_RANGE
 }

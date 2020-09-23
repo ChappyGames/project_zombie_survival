@@ -236,6 +236,7 @@ namespace ChappyGames.Client.Networking {
             packetHandlers = new Dictionary<int, PacketHandler>() {
                 { (int)ServerPackets.WELCOME, ClientHandle.Welcome },
                 { (int)ServerPackets.ENTITY_SPAWN, ClientHandle.EntitySpawned },
+                { (int)ServerPackets.ENTITY_DESPAWN, ClientHandle.EntityDespawned },
                 { (int)ServerPackets.ENTITY_POS, ClientHandle.EntityPosition },
                 { (int)ServerPackets.ENTITY_ROTATION, ClientHandle.EntityRotation },
                 { (int)ServerPackets.PLAYER_DISCONNECTED, ClientHandle.PlayerDisconnected },

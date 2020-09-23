@@ -61,17 +61,6 @@ namespace ChappyGames.Server.Networking {
             }
         }
 
-        public static void SpawnPlayer(int aToClient, Player aPlayer) {
-            using (Packet lPacket = new Packet((int)ServerPackets.PLAYER_SPAWN)) {
-                lPacket.Write(aPlayer.ID);
-                lPacket.Write(aPlayer.username);
-                lPacket.Write(aPlayer.transform.position);
-                lPacket.Write(aPlayer.transform.rotation);
-
-                SendTCPData(aToClient, lPacket);
-            }
-        }
-
         public static void SpawnEntity(int aToClient, Entity aEntity) {
             using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_SPAWN)) {
                 lPacket.Write((int)aEntity.Type);
@@ -80,19 +69,6 @@ namespace ChappyGames.Server.Networking {
                 lPacket.Write(aEntity.transform.rotation);
 
                 SendTCPData(aToClient, lPacket);
-            }
-        }
-
-        public static void SpawnItem(int aToClient, Item aItem) {
-            using (Packet lPacket = new Packet((int)ServerPackets.ITEM_SPAWN)) {
-                lPacket.Write((int)aItem.Type);
-                lPacket.Write(aItem.ID);
-                lPacket.Write(aItem.transform.position);
-                lPacket.Write(aItem.transform.rotation);
-                lPacket.Write(aItem.ItemId);
-                lPacket.Write(aItem.Stack);
-
-                SendTCPDataToAll(lPacket);
             }
         }
 

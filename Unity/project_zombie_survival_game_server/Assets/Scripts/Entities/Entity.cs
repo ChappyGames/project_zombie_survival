@@ -54,6 +54,9 @@ namespace ChappyGames.Server.Entities {
             ServerSend.SendTCPData(aToClient, SpawnEntityPacket());
         }
 
+        public virtual void ServerDespawnEntity() {
+            ServerSend.SendTCPDataToAll(DespawnEntityPacket());
+        }
 
         protected virtual void FixedUpdate() {
             // NO OP
@@ -61,6 +64,7 @@ namespace ChappyGames.Server.Entities {
 
         protected virtual void OnDestroy() {
             EntityManager.Instance.UnregisterEntity(this);
+            ServerDespawnEntity();
         }
 
         #region Packets
@@ -72,6 +76,15 @@ namespace ChappyGames.Server.Entities {
             lPacket.Write(id);
             lPacket.Write(transform.position);
             lPacket.Write(transform.rotation);
+
+            return lPacket;
+        }
+
+        protected virtual Packet DespawnEntityPacket() {
+            Packet lPacket = new Packet((int)ServerPackets.ENTITY_DESPAWN);
+
+            lPacket.Write((int)type);
+            lPacket.Write(id);
 
             return lPacket;
         }

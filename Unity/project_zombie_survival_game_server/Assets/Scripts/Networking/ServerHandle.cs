@@ -50,7 +50,7 @@ namespace ChappyGames.Server.Networking {
         }
 
         public static void PlayerAction(int aFromClient, Packet aPacket) {
-            // Do something
+            Server.clients[aFromClient].player.pickup.Pickup();
         }
     }
 }

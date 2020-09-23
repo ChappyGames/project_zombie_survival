@@ -26,6 +26,13 @@ namespace ChappyGames.Client.Networking {
             EntityManager.Instance?.SpawnEntityPacketHandler(aPacket);
         }
 
+        public static void EntityDespawned(Packet aPacket) {
+            int lType = aPacket.ReadInt();
+            int lId = aPacket.ReadInt();
+
+            Destroy(EntityManager.Instance.GetEntity(lType, lId).gameObject);
+        }
+
         public static void EntityPosition(Packet aPacket) {
             int lType = aPacket.ReadInt();
             int lId = aPacket.ReadInt();

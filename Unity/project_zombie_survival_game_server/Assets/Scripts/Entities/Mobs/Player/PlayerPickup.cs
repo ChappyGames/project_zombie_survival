@@ -18,7 +18,9 @@ namespace ChappyGames.Server.Entities {
 
         public void Pickup() {
             if (pickupsInRange.Count > 0) {
-                
+                pickupsInRange[0].Pickup(parent);
+                pickupsInRange.RemoveAt(0);
+                Refresh();
             }
         }
 
@@ -41,13 +43,18 @@ namespace ChappyGames.Server.Entities {
 
             if (lItem != null) {
                 Debug.Log($"[Player Pickup] - Item '{lItem.ItemId}' is outside the range of Player '{parent.username}'.");
-                bool lNewItemPickup = pickupsInRange[0] == lItem;
+                //bool lNewItemPickup = pickupsInRange[0] == lItem;
                 pickupsInRange.Remove(lItem);
-                if (lNewItemPickup && pickupsInRange.Count > 0) {
-                    Networking.ServerSend.PlayerItemInRange(parent.ID, pickupsInRange[0]);
-                } else if (pickupsInRange.Count == 0) {
-                    Networking.ServerSend.PlayerItemOutRange(parent.ID);
-                }
+                Refresh();
+            }
+        }
+
+        private void Refresh() {
+            if (pickupsInRange.Count > 0) {
+                Networking.ServerSend.PlayerItemInRange(parent.ID, pickupsInRange[0]);
+            }
+            else if (pickupsInRange.Count == 0) {
+                Networking.ServerSend.PlayerItemOutRange(parent.ID);
             }
         }
     }

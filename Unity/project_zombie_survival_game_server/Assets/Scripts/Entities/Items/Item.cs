@@ -46,7 +46,7 @@ namespace ChappyGames.Server.Entities {
             // Transfer this stack of items to the mob's inventory
             aMob.Inventory.AddItem(new InventoryItem(ItemType, itemId, stack));
 
-            // Integrate unregistering entity logic.
+            Destroy(this.gameObject);
         }
 
         #region Packets
