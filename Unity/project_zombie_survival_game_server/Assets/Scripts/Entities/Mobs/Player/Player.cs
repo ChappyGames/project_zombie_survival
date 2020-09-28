@@ -14,12 +14,12 @@ namespace ChappyGames.Server.Entities {
 
         private bool[] inputs;
 
-        public void Initialize(int aId, string aUsername) {
+        public void Initialize(string aUsername) {
             
             username = aUsername;
             inputs = new bool[4];
 
-            base.Initialize("player", aId, EntityType.ENTITY_PLAYER);
+            base.Initialize("player", EntityType.ENTITY_PLAYER);
 
             attack.Initialize(this);
             pickup.Initialize(this);

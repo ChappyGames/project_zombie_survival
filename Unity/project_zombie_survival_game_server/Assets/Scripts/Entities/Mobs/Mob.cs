@@ -25,7 +25,7 @@ namespace ChappyGames.Server.Entities {
         public OnEntityDamagedEvent OnEntityDamaged { get; private set; } = new OnEntityDamagedEvent();
         public UnityEvent OnEntityDeath { get; private set; } = new UnityEvent();
 
-        public override void Initialize(string aInstanceId, int aId, EntityType aType) {
+        public override void Initialize(string aInstanceId, EntityType aType) {
             
 
             health = maxHealth;
@@ -34,7 +34,7 @@ namespace ChappyGames.Server.Entities {
             OnEntityDamaged.AddListener(EntityDamaged);
             OnEntityDeath.AddListener(EntityDeath);
 
-            base.Initialize(aInstanceId, aId, aType);
+            base.Initialize(aInstanceId, aType);
         }
 
         protected override void FixedUpdate() {
@@ -55,7 +55,6 @@ namespace ChappyGames.Server.Entities {
                 health = 0f;
                 
                 OnEntityDeath.Invoke();
-                transform.position = new Vector3(0f, 0f, 0f);
             }
 
             OnEntityDamaged.Invoke(aDamage);
@@ -66,8 +65,7 @@ namespace ChappyGames.Server.Entities {
         }
 
         private void EntityDeath() {
-            ServerSend.EntityPosition(this);
-            StartCoroutine(Respawn());
+            Destroy(this.gameObject);
         }
 
         private IEnumerator Respawn() {

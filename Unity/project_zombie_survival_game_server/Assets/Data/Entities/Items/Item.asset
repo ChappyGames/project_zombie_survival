@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 680a9a055cbf61445a9fa0792a1df359, type: 3}
-  m_Name: ItemDatabase
+  m_Script: {fileID: 11500000, guid: af70b69ed7ea27641b8113e424f5eaae, type: 3}
+  m_Name: Item
   m_EditorClassIdentifier: 
-  weapons:
-  - {fileID: 11400000, guid: bd32021a13df9494d9fc5523df9bda31, type: 2}
+  id: item
+  entityName: Item
+  entityType: 3
+  entityObject: {fileID: 6083139916215637521, guid: e27bf24f1d2837442bfa001fe34e7f8f,
+    type: 3}

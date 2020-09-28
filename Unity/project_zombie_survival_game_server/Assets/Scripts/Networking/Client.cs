@@ -167,7 +167,11 @@ namespace ChappyGames.Server.Networking {
 
         public void SendIntoGame(string aPlayerName) {
             player = NetworkManager.Instance.InstantiatePlayer();
-            player.Initialize(id, aPlayerName);
+            player.Initialize(aPlayerName);
+
+            if (id != player.ID) {
+                Debug.LogError($"[Client] - Player has assumed the wrong ID! Perhaps manually pass ID to player entity initialization.");
+            }
         }
 
         private void Disconnect() {

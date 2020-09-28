@@ -19,12 +19,7 @@ namespace ChappyGames.Server.Entities {
 
         private Player target;
 
-        private void Start() {
-            // IDs should start at 1
-            Initialize(EntityManager.Instance.GetEntityCount((int)EntityType.ENTITY_ZOMBIE) + 1);
-        }
-
-        public void Initialize(int aId) {
+        public override void Initialize(string aInstanceId, EntityType aType) {
             
             fov = GetComponent<FieldOfView>();
             nav = GetComponent<NavMeshAgent>();
@@ -33,7 +28,7 @@ namespace ChappyGames.Server.Entities {
 
             OnEntityDeath.AddListener(OnZombieDeath);
 
-            base.Initialize("zombie", aId, EntityType.ENTITY_ZOMBIE);
+            base.Initialize(aInstanceId, aType);
 
             attack.Initialize(this);
         }
@@ -75,11 +70,10 @@ namespace ChappyGames.Server.Entities {
 
         private void OnZombieDeath() {
             target = null;
-            nav.SetDestination(transform.position);
 
             /* TEMP */
-            Item lItemInstance = Instantiate(EntityManager.Instance.ItemPrefab, transform.position, transform.rotation);
-            lItemInstance.Initialize(EntityManager.Instance.GetEntityCount((int)EntityType.ENTITY_ITEM) + 1, transform.position, "pistol_beta_tomcat");
+            Item lItemInstance = Instantiate(EntityManager.Instance.EntityDatabase.GetEntityData("item").EntityObject, transform.position, transform.rotation).GetComponent<Item>();
+            lItemInstance.Initialize("pistol_beta_tomcat");
         }
     }
 }

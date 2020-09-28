@@ -7,11 +7,11 @@ namespace ChappyGames.Server.Entities {
 
     public class EntityManager : Singleton<EntityManager> {
 
-        [SerializeField] private Item itemPrefab;
+        [SerializeField] private EntityDatabase entityDatabase;
 
         private Dictionary<int, Dictionary<int, IEntity>> entities;
 
-        public Item ItemPrefab { get { return itemPrefab; } }
+        public EntityDatabase EntityDatabase => entityDatabase;
 
         protected override void Awake() {
             base.Awake();
@@ -21,6 +21,8 @@ namespace ChappyGames.Server.Entities {
 
         private void Initialize() {
             entities = new Dictionary<int, Dictionary<int, IEntity>>();
+
+            entityDatabase.Initialize();
         }
 
         public bool RegisterEntity(IEntity aEntity) {

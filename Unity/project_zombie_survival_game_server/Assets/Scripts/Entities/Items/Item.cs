@@ -17,7 +17,7 @@ namespace ChappyGames.Server.Entities {
         public int Stack { get { return stack; } }
         public ItemType ItemType { get { return ItemManager.Instance.GetItem(itemId).Type; } }
 
-        public void Initialize(int aEntityId, Vector3 aPosition, string aItemId = null, int aStack = 1) {
+        public void Initialize(string aItemId = null, int aStack = 1) {
             
             if (!string.IsNullOrEmpty(aItemId)) {
                 itemId = aItemId;
@@ -27,7 +27,7 @@ namespace ChappyGames.Server.Entities {
                 stack = aStack;
             }
 
-            base.Initialize("item", aEntityId, EntityType.ENTITY_ITEM);
+            base.Initialize("item", EntityType.ENTITY_ITEM);
 
             GameObject lWorldModel = Instantiate(ItemManager.Instance.GetItem(itemId).WorldModel);
             lWorldModel.transform.position = new Vector3(0f, 0f, 0f);

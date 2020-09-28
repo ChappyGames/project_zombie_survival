@@ -17,6 +17,8 @@ namespace ChappyGames.Server.Entities {
         int ID { get; }
         EntityType Type { get; }
 
+        void Initialize(string aInstanceId, EntityType aType);
+
         void ServerSpawnEntity(int aToClient);
     }
     public class Entity : MonoBehaviour, IEntity {
@@ -30,11 +32,12 @@ namespace ChappyGames.Server.Entities {
         public int ID { get { return id; } }
         public EntityType Type { get { return type; } }
 
-
-        public virtual void Initialize(string aInstanceId, int aId, EntityType aType) {
+        public virtual void Initialize(string aInstanceId, EntityType aType) {
             instanceId = aInstanceId;
-            id = aId;
             type = aType;
+
+            // TODO: Replace all incrementing IDs with a GUID system.
+            id = EntityManager.Instance.GetEntityCount((int)type) + 1;
 
             EntityManager.Instance.RegisterEntity(this);
             SpawnToAllExistingPlayers();
