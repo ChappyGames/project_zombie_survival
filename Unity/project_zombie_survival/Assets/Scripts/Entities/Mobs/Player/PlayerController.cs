@@ -7,7 +7,6 @@ using ChappyGames.Client.Entities;
 
 public class PlayerController : MonoBehaviour {
 
-    public Camera camera;
     public GameObject playerModel;
     public Player parent;
     public Vector3 cameraPosOffset;
@@ -40,7 +39,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void RotateToCursor() {
-        Ray lCameraRay = camera.ScreenPointToRay(Input.mousePosition);
+        Ray lCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         float lRayLength;
         Vector3 lPointToLook = Vector3.zero;
 
@@ -53,9 +52,9 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 lPlayerToCursorDistance = lPointToLook - transform.position;
 
-        camera.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z);
+        Camera.main.transform.position = cameraPosOffset + new Vector3(transform.position.x, 0f, transform.position.z);
         if (parent.CurrentWeapon != null) {
-            camera.transform.position += lPlayerToCursorDistance * (parent.CurrentWeapon.Range / 100f);
+            Camera.main.transform.position += lPlayerToCursorDistance * (parent.CurrentWeapon.Range / 100f);
         }
     }
 

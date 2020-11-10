@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using UnityEngine;
@@ -28,14 +29,14 @@ namespace ChappyGames.Client.Networking {
 
         public static void EntityDespawned(Packet aPacket) {
             int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
             Destroy(EntityManager.Instance.GetEntity(lType, lId).gameObject);
         }
 
         public static void EntityPosition(Packet aPacket) {
             int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
             Vector3 lPosition = aPacket.ReadVector3();
 
             IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
@@ -47,11 +48,12 @@ namespace ChappyGames.Client.Networking {
         public static void EntityRotation(Packet aPacket) {
             // Quick fix for the issue where the server sends rotation packets for the client.
             int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
-            if (lType == (int)EntityType.ENTITY_PLAYER && lId == Client.instance.id) {
+            if (EntityManager.Instance.GetEntity(lType, lId) == GameManager.players[Client.instance.id]) {
                 return;
             }
+
             Quaternion lRotation = aPacket.ReadQuaternion();
 
             IEntity lEntity = EntityManager.Instance.GetEntity(lType, lId);
@@ -61,7 +63,7 @@ namespace ChappyGames.Client.Networking {
         }
 
         public static void PlayerDisconnected(Packet aPacket) {
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
             Destroy(EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, lId).gameObject);
             EntityManager.Instance.UnregisterEntity((int)EntityType.ENTITY_PLAYER, lId);
@@ -69,7 +71,7 @@ namespace ChappyGames.Client.Networking {
 
         public static void EntityHealth(Packet aPacket) {
             int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
             float lHealth = aPacket.ReadFloat();
 
             EntityManager.Instance.GetMob(lType, lId).SetHealth(lHealth);
@@ -77,14 +79,14 @@ namespace ChappyGames.Client.Networking {
 
         public static void EntityRespawned(Packet aPacket) {
             int lType = aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
             EntityManager.Instance.GetMob(lType, lId).OnRespawn();
         }
 
         public static void InventoryItemAdded(Packet aPacket) {
             int lMobType = aPacket.ReadInt();
-            int lMobId = aPacket.ReadInt();
+            Guid lMobId = aPacket.ReadGuid();
             int lItemType = aPacket.ReadInt();
             string lItemId = aPacket.ReadString();
             int lItemStack = aPacket.ReadInt();
@@ -94,7 +96,7 @@ namespace ChappyGames.Client.Networking {
 
         public static void InventoryItemUsed(Packet aPacket) {
             int lMobType = aPacket.ReadInt();
-            int lMobId = aPacket.ReadInt();
+            Guid lMobId = aPacket.ReadGuid();
             int lItemType = aPacket.ReadInt();
             string lItemId = aPacket.ReadString();
 
@@ -103,7 +105,7 @@ namespace ChappyGames.Client.Networking {
 
         public static void InventoryItemRemoved(Packet aPacket) {
             int lMobType = aPacket.ReadInt();
-            int lMobId = aPacket.ReadInt();
+            Guid lMobId = aPacket.ReadGuid();
             int lItemType = aPacket.ReadInt();
             string lItemId = aPacket.ReadString();
             int lItemStack = aPacket.ReadInt();
@@ -112,7 +114,7 @@ namespace ChappyGames.Client.Networking {
         }
 
         public static void WeaponEquipped(Packet aPacket) {
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
             string lWeaponId = aPacket.ReadString();
 
             EntityManager.Instance.GetMob((int)EntityType.ENTITY_PLAYER, lId).Inventory.SetWeapon(lWeaponId);
@@ -120,13 +122,13 @@ namespace ChappyGames.Client.Networking {
         }
 
         public static void WeaponFired(Packet aPacket) {
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
             EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).FireWeapon();
         }
 
         public static void WeaponReloaded(Packet aPacket) {
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
 
             EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).ReloadWeapon();
         }

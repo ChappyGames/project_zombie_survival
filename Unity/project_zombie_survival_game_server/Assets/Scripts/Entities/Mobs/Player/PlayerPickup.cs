@@ -33,7 +33,7 @@ namespace ChappyGames.Server.Entities {
 
                 // Only send a packet to the client if this is the first item within range.
                 if (pickupsInRange.Count == 1) {
-                    Networking.ServerSend.PlayerItemInRange(parent.ID, lItem);
+                    Networking.ServerSend.PlayerItemInRange(parent.clientId, lItem);
                 }
             }
         }
@@ -51,10 +51,10 @@ namespace ChappyGames.Server.Entities {
 
         private void Refresh() {
             if (pickupsInRange.Count > 0) {
-                Networking.ServerSend.PlayerItemInRange(parent.ID, pickupsInRange[0]);
+                Networking.ServerSend.PlayerItemInRange(parent.clientId, pickupsInRange[0]);
             }
             else if (pickupsInRange.Count == 0) {
-                Networking.ServerSend.PlayerItemOutRange(parent.ID);
+                Networking.ServerSend.PlayerItemOutRange(parent.clientId);
             }
         }
     }

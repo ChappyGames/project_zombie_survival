@@ -9,14 +9,16 @@ namespace ChappyGames.Server.Entities {
     public class Player : Mob {
         [Header("Player Properties")]
         public string username;
+        public int clientId;
         public PlayerAttack attack;
         public PlayerPickup pickup;
 
         private bool[] inputs;
 
-        public void Initialize(string aUsername) {
+        public void Initialize(string aUsername, int aClientId) {
             
             username = aUsername;
+            clientId = aClientId;
             inputs = new bool[4];
 
             base.Initialize("player", EntityType.ENTITY_PLAYER);
@@ -28,7 +30,7 @@ namespace ChappyGames.Server.Entities {
 
         private void SpawnAllEntitiesToPlayerClient() {
             //TODO: This spawns all server entities to the client INCLUDING the client entity itself. We should skip that one instance.
-            EntityManager.Instance.InvokeOnAllEntities((lEntity) => { lEntity.ServerSpawnEntity(id); });
+            EntityManager.Instance.InvokeOnAllEntities((lEntity) => { lEntity.ServerSpawnEntity(clientId); });
         }
 
         /*public override void ServerSpawnEntity(int aToClient) {
@@ -83,6 +85,7 @@ namespace ChappyGames.Server.Entities {
             Packet lPacket = base.SpawnEntityPacket();
 
             lPacket.Write(username);
+            lPacket.Write(clientId);
 
             return lPacket;
         }

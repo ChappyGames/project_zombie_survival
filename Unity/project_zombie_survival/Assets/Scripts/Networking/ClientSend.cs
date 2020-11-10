@@ -36,7 +36,7 @@ namespace ChappyGames.Client.Networking {
                     lPacket.Write(lInput);
                 }
 
-                lPacket.Write(EntityManager.Instance.GetEntity((int)EntityType.ENTITY_PLAYER, Client.instance.id).Rotation);
+                lPacket.Write(GameManager.players[Client.instance.id].Rotation);
 
                 SendUDPData(lPacket);
             }

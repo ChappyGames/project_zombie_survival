@@ -21,7 +21,7 @@ namespace ChappyGames.Server.Networking {
                 Debug.Log($"Hello {lUsername}!");
             }
 
-            Server.clients[aFromClient].SendIntoGame(lUsername);
+            Server.clients[aFromClient].SendIntoGame(lUsername, aFromClient);
         }
 
         public static void PlayerMovement(int aFromClient, Packet aPacket) {

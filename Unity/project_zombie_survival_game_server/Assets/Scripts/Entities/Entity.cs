@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 using ChappyGames.Server.Networking;
@@ -14,7 +13,7 @@ namespace ChappyGames.Server.Entities {
     }
 
     public interface IEntity {
-        int ID { get; }
+        Guid ID { get; }
         EntityType Type { get; }
 
         void Initialize(string aInstanceId, EntityType aType);
@@ -25,22 +24,24 @@ namespace ChappyGames.Server.Entities {
 
         protected string instanceId;
 
-        protected int id;
+        protected Guid id;
         protected EntityType type;
 
         public string InstanceId { get { return instanceId; } }
-        public int ID { get { return id; } }
+        public Guid ID { get { return id; } }
         public EntityType Type { get { return type; } }
 
         public virtual void Initialize(string aInstanceId, EntityType aType) {
             instanceId = aInstanceId;
             type = aType;
 
-            // TODO: Replace all incrementing IDs with a GUID system.
-            id = EntityManager.Instance.GetEntityCount((int)type) + 1;
+            id = Guid.NewGuid();
 
-            EntityManager.Instance.RegisterEntity(this);
-            SpawnToAllExistingPlayers();
+            if (EntityManager.Instance.RegisterEntity(this)) {
+                SpawnToAllExistingPlayers();
+            } else {
+                Debug.LogError($"[Entity] - Entity '{type}' with ID '{id}' failed to initialize properly. Destroying associated Game Object.");
+            }
         }
 
         protected virtual void SpawnToAllExistingPlayers() {
@@ -66,8 +67,9 @@ namespace ChappyGames.Server.Entities {
         }
 
         protected virtual void OnDestroy() {
-            EntityManager.Instance.UnregisterEntity(this);
-            ServerDespawnEntity();
+            if (EntityManager.Instance.UnregisterEntity(this)) {
+                ServerDespawnEntity();
+            }
         }
 
         #region Packets

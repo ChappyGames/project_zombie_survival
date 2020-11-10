@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -197,7 +198,7 @@ public class Packet : IDisposable {
     }
 
     /// <summary>
-    /// Adds a sstring to the packet.
+    /// Adds a string to the packet.
     /// </summary>
     /// <param name="aValue">The string to add.</param>
     public void Write(string aValue) {
@@ -224,6 +225,14 @@ public class Packet : IDisposable {
         Write(aValue.y);
         Write(aValue.z);
         Write(aValue.w);
+    }
+
+    /// <summary>
+    /// Adds a GUID to the packet.
+    /// </summary>
+    /// <param name="aValue">The GUID to add.</param>
+    public void Write(Guid aValue) {
+        Write(aValue.ToByteArray());
     }
     #endregion
 
@@ -396,6 +405,14 @@ public class Packet : IDisposable {
     public Quaternion ReadQuaternion(bool aMoveReadPos = true) {
         return new Quaternion(ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos), ReadFloat(aMoveReadPos));
     }
+
+    /// <summary>
+    /// Reads a GUID from the packet.
+    /// </summary>
+    /// <param name="aMoveReadPos">Whether or not to move the buffer's read position.</param>
+    public Guid ReadGuid(bool aMoveReadPos = true) {
+        return new Guid(ReadBytes(16, aMoveReadPos)); // Convert the bytes to a GUID. GUIDs are stored in a 16-element byte array.
+    }
     #endregion
 
     protected virtual void Dispose(bool aDisposing) {
@@ -416,4 +433,3 @@ public class Packet : IDisposable {
     }
 
 }
-

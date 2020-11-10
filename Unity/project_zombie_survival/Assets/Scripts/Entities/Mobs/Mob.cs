@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace ChappyGames.Client.Entities {
         public float Health { get { return health; } }
         public Inventory Inventory { get { return inventory; } }
 
-        public override void Initialize(int aId, EntityType aType, Packet aPacket) {
+        public override void Initialize(Guid aId, EntityType aType, Packet aPacket) {
             base.Initialize(aId, aType, aPacket);
 
             health = maxHealth;

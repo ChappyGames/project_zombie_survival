@@ -165,13 +165,16 @@ namespace ChappyGames.Server.Networking {
             udp = new UDP(id);
         }
 
-        public void SendIntoGame(string aPlayerName) {
+        public void SendIntoGame(string aPlayerName, int aClientId) {
             player = NetworkManager.Instance.InstantiatePlayer();
-            player.Initialize(aPlayerName);
+            player.Initialize(aPlayerName, aClientId);
 
+            //TODO: As of right now, players will have a GUID for their associated entity as well as a player ID (int) for their associated client.
+            /*
             if (id != player.ID) {
                 Debug.LogError($"[Client] - Player has assumed the wrong ID! Perhaps manually pass ID to player entity initialization.");
             }
+            */
         }
 
         private void Disconnect() {

@@ -13,7 +13,7 @@ public class InventoryMenuController : MonoBehaviour {
 
     private SortedList<string, InventoryItemSlot> slots = new SortedList<string, InventoryItemSlot>();
 
-    private Inventory ParentInventory { get { return EntityManager.Instance.GetMob((int)EntityType.ENTITY_PLAYER, Client.instance.id).Inventory; } }
+    private Inventory ParentInventory { get { return GameManager.players[Client.instance.id].Inventory; } }
 
     private void OnEnable() {
         ParentInventory.OnInventoryChanged.AddListener(Refresh);

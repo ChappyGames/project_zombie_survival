@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace ChappyGames.Client.Entities {
 
         [SerializeField] private EntityDatabase entityDatabase;
 
-        private Dictionary<int, Dictionary<int, Entity>> entities;
+        private Dictionary<int, Dictionary<Guid, Entity>> entities;
 
         public EntityDatabase EntityDatabase => entityDatabase;
 
@@ -22,7 +23,7 @@ namespace ChappyGames.Client.Entities {
 
         private void Initialize() {
             entityDatabase.Initialize();
-            entities = new Dictionary<int, Dictionary<int, Entity>>();
+            entities = new Dictionary<int, Dictionary<Guid, Entity>>();
         }
 
         #endregion
@@ -33,7 +34,7 @@ namespace ChappyGames.Client.Entities {
             bool lEntityAdded = false;
 
             if (!entities.ContainsKey((int)aEntity.Type)) {
-                entities.Add((int)aEntity.Type, new Dictionary<int, Entity>());
+                entities.Add((int)aEntity.Type, new Dictionary<Guid, Entity>());
             }
 
             if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
@@ -48,7 +49,7 @@ namespace ChappyGames.Client.Entities {
             return lEntityAdded;
         }
 
-        public bool UnregisterEntity(int aEntityType, int aEntityId) {
+        public bool UnregisterEntity(int aEntityType, Guid aEntityId) {
             bool lEntityRemoved = false;
 
             if (entities.ContainsKey(aEntityType)) {
@@ -77,7 +78,7 @@ namespace ChappyGames.Client.Entities {
 
         #region Get Entity
 
-        public Entity GetEntity(int aEntityType, int aEntityId) {
+        public Entity GetEntity(int aEntityType, Guid aEntityId) {
             Entity lEntity = null;
 
             if (entities.ContainsKey(aEntityType)) {
@@ -98,11 +99,11 @@ namespace ChappyGames.Client.Entities {
         }
 
         // This is fucked. Refactor.
-        public Mob GetMob(int aEntityType, int aEntityId) {
+        public Mob GetMob(int aEntityType, Guid aEntityId) {
             return GetEntity(aEntityType, aEntityId) as Mob;
         }
 
-        public Player GetPlayer(int aEntityType, int aEntityId) {
+        public Player GetPlayer(int aEntityType, Guid aEntityId) {
             return GetEntity(aEntityType, aEntityId) as Player;
         }
 
@@ -111,33 +112,16 @@ namespace ChappyGames.Client.Entities {
         public void SpawnEntityPacketHandler(Packet aPacket) {
             string lInstanceId = aPacket.ReadString();
             EntityType lType = (EntityType)aPacket.ReadInt();
-            int lId = aPacket.ReadInt();
+            Guid lId = aPacket.ReadGuid();
             Vector3 lPosition = aPacket.ReadVector3();
             Quaternion lRotation = aPacket.ReadQuaternion();
 
-            GameObject lEntity = null;
-
-            //Temporary switch case to handle the uniqueness of the player entity
-            switch (lType) {
-                case EntityType.ENTITY_PLAYER:
-                    // Quick fix for the issue where the server sends two spawn player packets for the client.
-                    if (GetEntity((int)EntityType.ENTITY_PLAYER, lId) != null) {
-                        return;
-                    }
-
-                    if (lId == Networking.Client.instance.id) {
-                        lEntity = Instantiate(entityDatabase.GetEntityData("player_local").EntityObject, lPosition, lRotation);
-                    }
-                    else {
-                        lEntity = Instantiate(entityDatabase.GetEntityData("player_other").EntityObject, lPosition, lRotation);
-                    }
-                    break;
-                default:
-                    lEntity = Instantiate(entityDatabase.GetEntityData(lInstanceId).EntityObject, lPosition, lRotation);
-                    break;
+            if (!GetEntity((int)lType, lId)) {
+                GameObject lEntity = Instantiate(entityDatabase.GetEntityData(lInstanceId).EntityObject, lPosition, lRotation);
+                lEntity.GetComponent<Entity>().Initialize(lId, lType, aPacket);
+            } else {
+                Debug.LogError($"[Entity Manager] - Failed to spawn Entity of type '{lType}' with ID '{lId}'. Entity already exists. Perhaps the existing Entity failed to despawn properly?");
             }
-
-            lEntity.GetComponent<Entity>().Initialize(lId, lType, aPacket);
         }
     }
 }

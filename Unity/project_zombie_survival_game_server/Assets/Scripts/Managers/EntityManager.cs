@@ -9,7 +9,7 @@ namespace ChappyGames.Server.Entities {
 
         [SerializeField] private EntityDatabase entityDatabase;
 
-        private Dictionary<int, Dictionary<int, IEntity>> entities;
+        private Dictionary<int, Dictionary<Guid, IEntity>> entities;
 
         public EntityDatabase EntityDatabase => entityDatabase;
 
@@ -20,7 +20,7 @@ namespace ChappyGames.Server.Entities {
         }
 
         private void Initialize() {
-            entities = new Dictionary<int, Dictionary<int, IEntity>>();
+            entities = new Dictionary<int, Dictionary<Guid, IEntity>>();
 
             entityDatabase.Initialize();
         }
@@ -29,7 +29,7 @@ namespace ChappyGames.Server.Entities {
             bool lEntityAdded = false;
 
             if (!entities.ContainsKey((int)aEntity.Type)) {
-                entities.Add((int)aEntity.Type, new Dictionary<int, IEntity>());
+                entities.Add((int)aEntity.Type, new Dictionary<Guid, IEntity>());
             }
 
             if (!entities[(int)aEntity.Type].ContainsKey(aEntity.ID)) {
@@ -44,7 +44,7 @@ namespace ChappyGames.Server.Entities {
             return lEntityAdded;
         }
 
-        public bool UnregisterEntity(int aEntityType, int aEntityId) {
+        public bool UnregisterEntity(int aEntityType, Guid aEntityId) {
             bool lEntityRemoved = false;
 
             if (entities.ContainsKey(aEntityType)) {
@@ -69,7 +69,7 @@ namespace ChappyGames.Server.Entities {
             return UnregisterEntity((int)aEntity.Type, aEntity.ID);
         }
 
-        public IEntity GetEntity(int aEntityType, int aEntityId) {
+        public IEntity GetEntity(int aEntityType, Guid aEntityId) {
             IEntity lEntity = null;
 
             if (entities.ContainsKey(aEntityType)) {
@@ -100,7 +100,7 @@ namespace ChappyGames.Server.Entities {
         }
 
         public void InvokeOnAllEntities(Action<IEntity> aAction) {
-            foreach (KeyValuePair<int, Dictionary<int, IEntity>> lEntityType in entities) {
+            foreach (KeyValuePair<int, Dictionary<Guid, IEntity>> lEntityType in entities) {
                 foreach (IEntity lEntity in lEntityType.Value.Values) {
                     aAction.Invoke(lEntity);
                 }

@@ -61,7 +61,7 @@ namespace ChappyGames.Server.Networking {
             }
         }
 
-        public static void SpawnEntity(int aToClient, Entity aEntity) {
+        /*public static void SpawnEntity(int aToClient, Entity aEntity) {
             using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_SPAWN)) {
                 lPacket.Write((int)aEntity.Type);
                 lPacket.Write(aEntity.ID);
@@ -70,7 +70,7 @@ namespace ChappyGames.Server.Networking {
 
                 SendTCPData(aToClient, lPacket);
             }
-        }
+        }*/
 
         public static void EntityPosition(Entity aEntity) {
             using (Packet lPacket = new Packet((int)ServerPackets.ENTITY_POS)) {
