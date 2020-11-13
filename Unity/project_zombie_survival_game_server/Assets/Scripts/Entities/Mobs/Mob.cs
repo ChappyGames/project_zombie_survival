@@ -68,13 +68,6 @@ namespace ChappyGames.Server.Entities {
             Destroy(this.gameObject);
         }
 
-        private IEnumerator Respawn() {
-            yield return new WaitForSeconds(5f);
-
-            health = maxHealth;
-            ServerSend.EntityRespawned(this);
-        }
-
         #region Packets
         protected override Packet SpawnEntityPacket() {
             Packet lPacket = base.SpawnEntityPacket();

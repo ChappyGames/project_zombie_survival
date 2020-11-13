@@ -11,6 +11,7 @@ namespace ChappyGames.Client.Entities {
         [Header("Player Properties")]
         public GameObject playerObj;
         public MeshRenderer mesh;
+        public Camera playerCamera;
         public AudioSource playerAudioSource;
         public string username;
         public int clientId;
@@ -26,10 +27,10 @@ namespace ChappyGames.Client.Entities {
             username = aPacket.ReadString();
             clientId = aPacket.ReadInt();
 
-            if (Networking.Client.instance.id == clientId) {
-                mesh.material = GameManager.Instance.localPlayerMat;
-                gameObject.AddComponent<PlayerController>().playerModel = playerObj;
-                Camera.main.transform.SetParent(gameObject.transform);
+            if (Networking.Client.instance.id != clientId) {
+                mesh.material = GameManager.Instance.otherPlayerMat;
+                Destroy(gameObject.GetComponent<PlayerController>());
+                Destroy(playerCamera.gameObject);
             }
 
             GameManager.players.Add(clientId, this);

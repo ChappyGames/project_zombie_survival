@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: player
   entityName: Player
-  entityObject: {fileID: 2769288668829226302, guid: 8ab2ee74ec04b9348a083e4e7b7df1cd,
+  entityObject: {fileID: 4342497722243686727, guid: c4b6155acebe8f44d890bcc6c252a1cf,
     type: 3}

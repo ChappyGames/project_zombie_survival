@@ -32,7 +32,7 @@ namespace ChappyGames.Server.Networking {
             }
             Quaternion lRotation = aPacket.ReadQuaternion();
 
-            Server.clients[aFromClient].player.SetInput(lInputs, lRotation);
+            Server.clients[aFromClient].player?.SetInput(lInputs, lRotation);
         }
 
         public static void PlayerAttack(int aFromClient, Packet aPacket) {

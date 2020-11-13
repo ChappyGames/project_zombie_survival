@@ -10,5 +10,6 @@ public class GameManager : Singleton<GameManager> {
     public static Dictionary<int, Player> players = new Dictionary<int, Player>();
 
     public Material localPlayerMat;
+    public Material otherPlayerMat;
     
 }

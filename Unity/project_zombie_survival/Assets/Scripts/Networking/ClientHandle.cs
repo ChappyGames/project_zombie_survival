@@ -122,9 +122,10 @@ namespace ChappyGames.Client.Networking {
         }
 
         public static void WeaponFired(Packet aPacket) {
+            int lType = aPacket.ReadInt();
             Guid lId = aPacket.ReadGuid();
 
-            EntityManager.Instance.GetPlayer((int)EntityType.ENTITY_PLAYER, lId).FireWeapon();
+            EntityManager.Instance.GetPlayer(lType, lId).FireWeapon();
         }
 
         public static void WeaponReloaded(Packet aPacket) {

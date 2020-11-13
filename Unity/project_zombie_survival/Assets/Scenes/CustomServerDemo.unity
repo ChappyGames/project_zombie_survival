@@ -1430,7 +1430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1198077343
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1658,6 +1658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localPlayerMat: {fileID: 2100000, guid: 1098daf4bb3c0b64fb5f4da571997b79, type: 2}
+  otherPlayerMat: {fileID: 2100000, guid: 826d1c40740d2444284354fc9711c11e, type: 2}
 --- !u!4 &1483893014
 Transform:
   m_ObjectHideFlags: 0

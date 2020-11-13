@@ -80,6 +80,17 @@ namespace ChappyGames.Server.Entities {
             ServerSend.WeaponEquipped(this);
         }
 
+        private void OnPlayerDeath() {
+
+        }
+
+        private IEnumerator Respawn() {
+            yield return new WaitForSeconds(5f);
+
+            health = maxHealth;
+            ServerSend.EntityRespawned(this);
+        }
+
         #region Packets
         protected override Packet SpawnEntityPacket() {
             Packet lPacket = base.SpawnEntityPacket();
